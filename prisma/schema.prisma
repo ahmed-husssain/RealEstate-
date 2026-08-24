@@ -1,0 +1,209 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// --------------------------------------------------------
+// Enums
+// --------------------------------------------------------
+
+enum PropertyStatus {
+  FOR_SALE
+  FOR_LEASE
+  EXCLUSIVE
+  UNDER_OFFER
+  SOLD
+}
+
+enum PropertyType {
+  HOUSE
+  APARTMENT
+  PENTHOUSE
+  VILLA
+  PLOT
+  COMMERCIAL
+  PORTION
+  ESTATE
+  TOWNHOUSE
+}
+
+enum AreaUnit {
+  SQFT
+  SQYD
+  MARLA
+  KANAL
+}
+
+enum PropertyCondition {
+  BRAND_NEW
+  EXCELLENT
+  GOOD
+  NEEDS_RENOVATION
+  UNDER_CONSTRUCTION
+}
+
+enum InquiryType {
+  VIEWING
+  GENERAL
+  VALUATION
+  CALL_REQUEST
+}
+
+enum InquiryStatus {
+  NEW
+  CONTACTED
+  IN_PROGRESS
+  CLOSED
+  ARCHIVED
+}
+
+enum ValuationStatus {
+  PENDING
+  ESTIMATED
+  CONTACTED
+  COMPLETED
+}
+
+// --------------------------------------------------------
+// Models
+// --------------------------------------------------------
+
+model Property {
+  id           String         @id @default(cuid())
+  slug         String         @unique
+  title        String
+  description  String         @db.Text
+  price        Decimal        @db.Decimal(14, 2)
+  priceType    String         @default("TOTAL")
+  status       PropertyStatus @default(FOR_SALE)
+  propertyType PropertyType
+  bedrooms     Int            @default(0)
+  bathrooms    Int            @default(0)
+  areaSize     Decimal        @db.Decimal(10, 2)
+  areaUnit     AreaUnit       @default(SQYD)
+  address      String
+  areaId       String
+  agentId      String?
+  isFeatured   Boolean        @default(false)
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+
+  // Relationships
+  area      Area            @relation(fields: [areaId], references: [id], onDelete: Restrict)
+  agent     Agent?          @relation(fields: [agentId], references: [id], onDelete: SetNull)
+  images    PropertyImage[]
+  inquiries Inquiry[]
+
+  // Indexes
+  @@index([slug])
+  @@index([areaId])
+  @@index([agentId])
+  @@index([status])
+  @@index([propertyType])
+  @@index([isFeatured])
+}
+
+model Area {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  name        String
+  city        String   @default("Karachi")
+  description String?  @db.Text
+  heroImage   String?
+  isPopular   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relationships
+  properties Property[]
+
+  // Indexes
+  @@index([slug])
+  @@index([city])
+  @@index([isPopular])
+}
+
+model PropertyImage {
+  id           String   @id @default(cuid())
+  propertyId   String
+  url          String
+  alt          String?
+  isHero       Boolean  @default(false)
+  displayOrder Int      @default(0)
+
+  // Relationships
+  property Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+
+  // Indexes
+  @@index([propertyId])
+}
+
+model Agent {
+  id        String   @id @default(cuid())
+  name      String
+  phone     String
+  email     String   @unique
+  whatsapp  String?
+  avatarUrl String?
+  role      String   @default("Consultant")
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relationships
+  properties Property[]
+
+  // Indexes
+  @@index([email])
+  @@index([isActive])
+}
+
+model Inquiry {
+  id            String        @id @default(cuid())
+  propertyId    String?
+  type          InquiryType   @default(GENERAL)
+  name          String
+  phone         String
+  email         String
+  preferredDate String?
+  timeSlot      String?
+  message       String?       @db.Text
+  status        InquiryStatus @default(NEW)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  // Relationships
+  property Property? @relation(fields: [propertyId], references: [id], onDelete: SetNull)
+
+  // Indexes
+  @@index([propertyId])
+  @@index([status])
+  @@index([createdAt])
+}
+
+model ValuationRequest {
+  id           String            @id @default(cuid())
+  propertyType PropertyType
+  areaName     String
+  areaSize     Decimal           @db.Decimal(10, 2)
+  areaUnit     AreaUnit          @default(SQYD)
+  bedrooms     Int               @default(0)
+  bathrooms    Int               @default(0)
+  condition    PropertyCondition @default(GOOD)
+  ownerName    String
+  ownerPhone   String
+  ownerEmail   String
+  estimatedMin Decimal?          @db.Decimal(14, 2)
+  estimatedMax Decimal?          @db.Decimal(14, 2)
+  status       ValuationStatus   @default(PENDING)
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+
+  // Indexes
+  @@index([status])
+  @@index([createdAt])
+}

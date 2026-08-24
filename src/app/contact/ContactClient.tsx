@@ -211,6 +211,7 @@ export function ContactClient({ siteSettings }: { siteSettings: PublicSiteSettin
                     src="/amber-property-corner-whatsapp.png"
                     alt="WhatsApp"
                     fill
+                    sizes="24px"
                     className="object-contain"
                   />
                 </div>

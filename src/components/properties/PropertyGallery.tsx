@@ -92,6 +92,7 @@ export function PropertyGallery({ images, title }: PropertyGalleryProps) {
             src={allImages[activeIndex]}
             alt={`${title} - Expanded Photo ${activeIndex + 1}`}
             fill
+            sizes="(max-width: 1024px) 100vw, 896px"
             className="object-contain"
           />
 
@@ -129,7 +130,7 @@ export function PropertyGallery({ images, title }: PropertyGalleryProps) {
                   : 'border-transparent opacity-60 hover:opacity-100'
               }`}
             >
-              <Image src={thumb} alt="thumbnail" fill className="object-cover" />
+              <Image src={thumb} alt="thumbnail" fill sizes="80px" className="object-cover" />
             </button>
           ))}
         </div>

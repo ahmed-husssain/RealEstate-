@@ -240,6 +240,7 @@ export function PropertyDetailClient({
                     src={property.agent.avatarUrl}
                     alt={property.agent.name}
                     fill
+                    sizes="56px"
                     className="object-cover"
                   />
                 </div>
@@ -266,6 +267,7 @@ export function PropertyDetailClient({
                       src="/amber-property-corner-whatsapp.png"
                       alt="WhatsApp"
                       fill
+                      sizes="20px"
                       className="object-contain"
                     />
                   </div>

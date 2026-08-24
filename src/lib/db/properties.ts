@@ -1,5 +1,6 @@
 import prisma from '@/lib/prisma';
 import { PropertyStatus, PropertyType } from '@prisma/client';
+import { unstable_cache } from 'next/cache';
 
 export interface PropertyQueryOptions {
   search?: string;
@@ -11,7 +12,7 @@ export interface PropertyQueryOptions {
   limit?: number;
 }
 
-export async function getProperties(options: PropertyQueryOptions = {}) {
+async function fetchPropertiesFromDb(options: PropertyQueryOptions = {}) {
   try {
     const where: any = {};
 
@@ -79,7 +80,26 @@ export async function getProperties(options: PropertyQueryOptions = {}) {
   }
 }
 
-export async function getPropertyBySlug(slug: string) {
+export const getProperties = async (options: PropertyQueryOptions = {}) => {
+  const cacheKey = [
+    'properties-list',
+    options.search || '',
+    options.propertyType || '',
+    options.areaSlug || '',
+    String(options.bedrooms || ''),
+    options.status || '',
+    options.sortBy || '',
+    String(options.limit || ''),
+  ];
+
+  return unstable_cache(
+    () => fetchPropertiesFromDb(options),
+    cacheKey,
+    { revalidate: 60, tags: ['properties'] }
+  )();
+};
+
+async function fetchPropertyBySlugFromDb(slug: string) {
   try {
     const property = await prisma.property.findUnique({
       where: { slug },
@@ -104,6 +124,14 @@ export async function getPropertyBySlug(slug: string) {
     return null;
   }
 }
+
+export const getPropertyBySlug = async (slug: string) => {
+  return unstable_cache(
+    () => fetchPropertyBySlugFromDb(slug),
+    ['property-detail', slug],
+    { revalidate: 60, tags: ['properties', `property-${slug}`] }
+  )();
+};
 
 export async function getFeaturedProperties(limit = 3) {
   return getProperties({ limit, sortBy: 'featured' });

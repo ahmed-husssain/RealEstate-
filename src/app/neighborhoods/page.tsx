@@ -9,6 +9,8 @@ import { Badge } from '@/ui/Badge';
 import { Button } from '@/ui/Button';
 import { ArrowUpRight } from 'lucide-react';
 
+export const revalidate = 60;
+
 export default async function NeighborhoodsPage() {
   const dbAreas = await getAreas();
   const neighborhoods = dbAreas.length > 0

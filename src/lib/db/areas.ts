@@ -1,6 +1,7 @@
 import prisma from '@/lib/prisma';
+import { unstable_cache } from 'next/cache';
 
-export async function getAreas() {
+async function fetchAreasFromDb() {
   try {
     const areas = await prisma.area.findMany({
       orderBy: [{ isPopular: 'desc' }, { name: 'asc' }],
@@ -22,7 +23,15 @@ export async function getAreas() {
   }
 }
 
-export async function getAreaBySlug(slug: string) {
+export const getAreas = async () => {
+  return unstable_cache(
+    fetchAreasFromDb,
+    ['areas-list'],
+    { revalidate: 120, tags: ['areas'] }
+  )();
+};
+
+async function fetchAreaBySlugFromDb(slug: string) {
   try {
     const area = await prisma.area.findUnique({
       where: { slug },
@@ -55,3 +64,11 @@ export async function getAreaBySlug(slug: string) {
     return null;
   }
 }
+
+export const getAreaBySlug = async (slug: string) => {
+  return unstable_cache(
+    () => fetchAreaBySlugFromDb(slug),
+    ['area-detail', slug],
+    { revalidate: 120, tags: ['areas', `area-${slug}`] }
+  )();
+};

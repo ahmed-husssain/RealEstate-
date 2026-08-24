@@ -19,6 +19,8 @@ import {
   CheckCircle2,
 } from 'lucide-react';
 
+export const revalidate = 60;
+
 export default async function HomePage() {
   const dbProperties = await getProperties({ limit: 6 });
   const dbAreas = await getAreas();

@@ -4,6 +4,8 @@ import { mapDbPropertyToProperty } from '@/lib/db/mappers';
 import { mockProperties } from '@/data/mockProperties';
 import { PropertiesCatalogClient } from '@/components/properties/PropertiesCatalogClient';
 
+export const revalidate = 60;
+
 export default async function PropertiesPage() {
   const dbProperties = await getProperties();
   const initialProperties = dbProperties.length > 0

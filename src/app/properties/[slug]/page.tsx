@@ -11,6 +11,8 @@ interface PageProps {
   params: Promise<{ slug: string }> | { slug: string };
 }
 
+export const revalidate = 60;
+
 export default async function PropertyDetailPage(props: PageProps) {
   const resolvedParams = await props.params;
   const slug = resolvedParams.slug;

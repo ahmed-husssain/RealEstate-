@@ -12,12 +12,7 @@ import {
   Paintbrush,
   Droplets,
   CheckCircle2,
-  ArrowRight,
   ShieldCheck,
-  Zap,
-  Flame,
-  Bug,
-  Compass,
 } from 'lucide-react';
 
 export default function ServicesPage() {
@@ -103,7 +98,7 @@ export default function ServicesPage() {
       ],
     },
     {
-      id: 3,
+      id: 2,
       title: '3. Full House & Structural Construction',
       shortTitle: 'Turnkey Construction',
       icon: <Hammer className="w-5 h-5 text-[#5c3822]" />,
@@ -134,7 +129,7 @@ export default function ServicesPage() {
       ],
     },
     {
-      id: 4,
+      id: 3,
       title: '4. Room-by-Room & Interior Remodeling',
       shortTitle: 'Interior Remodeling',
       icon: <Paintbrush className="w-5 h-5 text-[#847666]" />,
@@ -165,7 +160,7 @@ export default function ServicesPage() {
       ],
     },
     {
-      id: 5,
+      id: 4,
       title: '5. Specialized Infrastructure & Remedial Solutions',
       shortTitle: 'Remedial & Infrastructure',
       icon: <Droplets className="w-5 h-5 text-[#2e3a2f]" />,
@@ -197,7 +192,8 @@ export default function ServicesPage() {
     },
   ];
 
-  const current = pillars[activePillar];
+  const current = pillars.find((p) => p.id === activePillar) || pillars[0];
+  const currentIdx = pillars.findIndex((p) => p.id === current.id);
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-12 space-y-10">
@@ -222,7 +218,7 @@ export default function ServicesPage() {
             key={pillar.id}
             onClick={() => setActivePillar(pillar.id)}
             className={`flex items-center gap-2 px-4 py-3 rounded-2xl text-xs font-sans whitespace-nowrap transition-all cursor-pointer border ${
-              activePillar === pillar.id
+              current.id === pillar.id
                 ? 'bg-[#5c3822] text-[#F8F4ED] border-[#5c3822] shadow-sm font-semibold'
                 : 'bg-[#fbf6f0] text-[#1F1B16] border-[#d8cebe] hover:bg-white'
             }`}
@@ -239,7 +235,7 @@ export default function ServicesPage() {
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-6 border-b border-[#d8cebe]/60">
             <div className="space-y-2 max-w-3xl">
               <div className="flex items-center gap-2">
-                <Badge variant="exclusive" size="sm">Wing 0{activePillar + 1}</Badge>
+                <Badge variant="exclusive" size="sm">Wing 0{currentIdx + 1}</Badge>
                 <span className="text-xs font-mono text-[#7e7365]">{current.tagline}</span>
               </div>
               <h2 className="font-display font-medium text-2xl sm:text-4xl text-[#1F1B16]">
@@ -301,7 +297,7 @@ export default function ServicesPage() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {pillars.map((pillar) => (
+            {pillars.map((pillar, idx) => (
               <button
                 key={pillar.id}
                 onClick={() => {
@@ -309,7 +305,7 @@ export default function ServicesPage() {
                   window.scrollTo({ top: 150, behavior: 'smooth' });
                 }}
                 className={`p-5 rounded-2xl text-left border transition-all cursor-pointer flex flex-col justify-between space-y-3 ${
-                  activePillar === pillar.id
+                  current.id === pillar.id
                     ? 'bg-[#5c3822]/10 border-[#5c3822] shadow-sm'
                     : 'bg-[#fbf6f0] border-[#d8cebe] hover:bg-white'
                 }`}
@@ -319,7 +315,7 @@ export default function ServicesPage() {
                     {pillar.icon}
                   </div>
                   <span className="text-[10px] font-mono text-[#7e7365] uppercase">
-                    0{pillar.id + 1}
+                    0{idx + 1}
                   </span>
                 </div>
 

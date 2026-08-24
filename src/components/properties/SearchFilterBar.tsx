@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/ui/Button';
 import { GlassCard } from '@/ui/GlassCard';
@@ -30,6 +30,15 @@ export function SearchFilterBar({
     status: initialValues?.status || 'all',
     sortBy: initialValues?.sortBy || 'featured',
   });
+
+  useEffect(() => {
+    if (initialValues) {
+      setFilters((prev) => ({
+        ...prev,
+        ...initialValues,
+      }));
+    }
+  }, [initialValues]);
 
   const [isExpanded, setIsExpanded] = useState(false);
   const isRentMode = filters.status === 'for-lease';

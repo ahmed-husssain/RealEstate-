@@ -10,30 +10,54 @@ import {
   getCurrentAdminUser,
   requireAuthUser,
 } from '@/lib/auth/admin';
+import { checkRateLimit, resetRateLimit, getClientIp } from '@/lib/security/rate-limit';
 import { revalidatePath } from 'next/cache';
 
 const loginSchema = z.object({
-  email: z.string().email('Please enter a valid email address'),
-  password: z.string().min(6, 'Password must be at least 6 characters'),
+  email: z
+    .string()
+    .trim()
+    .toLowerCase()
+    .email('Please enter a valid email address')
+    .max(150, 'Email address exceeds maximum length'),
+  password: z
+    .string()
+    .min(6, 'Password must be at least 6 characters')
+    .max(62, 'Password exceeds maximum allowed length'),
 });
 
-const updatePasswordSchema = z.object({
-  currentPassword: z.string().min(1, 'Current password is required'),
-  newPassword: z.string().min(8, 'New password must be at least 8 characters'),
-  confirmPassword: z.string().min(8, 'Please confirm your new password'),
-}).refine((data) => data.newPassword === data.confirmPassword, {
-  message: 'New passwords do not match',
-  path: ['confirmPassword'],
-});
+const updatePasswordSchema = z
+  .object({
+    currentPassword: z.string().min(1, 'Current password is required').max(128),
+    newPassword: z.string().min(8, 'New password must be at least 8 characters').max(128),
+    confirmPassword: z.string().min(8, 'Please confirm your new password').max(128),
+  })
+  .refine((data) => data.newPassword === data.confirmPassword, {
+    message: 'New passwords do not match',
+    path: ['confirmPassword'],
+  });
 
 export async function loginAdminAction(data: { email: string; password: string }) {
   try {
     const validated = loginSchema.parse(data);
 
+    // 1. Rate Limiting Protection (5 failed attempts per 15 minutes per IP + normalized email)
+    const clientIp = await getClientIp();
+    const rateLimitKey = `admin_login:${clientIp}:${validated.email}`;
+    const rateCheck = checkRateLimit(rateLimitKey, 5, 15 * 60 * 1000);
+
+    if (!rateCheck.success) {
+      return {
+        success: false,
+        error: `Too many failed login attempts. For security protection, please try again in ${rateCheck.retryAfterSeconds} seconds.`,
+      };
+    }
+
     const user = await prisma.adminUser.findUnique({
-      where: { email: validated.email.toLowerCase().trim() },
+      where: { email: validated.email },
     });
 
+    // Constant-time check mitigation: generic rejection for nonexistent or inactive user
     if (!user || !user.isActive) {
       return { success: false, error: 'Invalid email or password. Access denied.' };
     }
@@ -43,7 +67,10 @@ export async function loginAdminAction(data: { email: string; password: string }
       return { success: false, error: 'Invalid email or password. Access denied.' };
     }
 
-    // Set Session Cookie
+    // Reset rate limiter on successful authentication
+    resetRateLimit(rateLimitKey);
+
+    // Set Secure Session Cookie
     await setAdminSessionCookie({
       userId: user.id,
       email: user.email,
@@ -68,11 +95,10 @@ export async function loginAdminAction(data: { email: string; password: string }
       },
     };
   } catch (error: any) {
-    console.error('Admin Login Error:', error);
     if (error instanceof z.ZodError) {
       return { success: false, error: error.issues[0]?.message || 'Validation failed' };
     }
-    return { success: false, error: error.message || 'An unexpected error occurred during login' };
+    return { success: false, error: 'An error occurred during authentication. Access denied.' };
   }
 }
 

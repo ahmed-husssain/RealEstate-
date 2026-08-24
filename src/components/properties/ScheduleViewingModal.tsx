@@ -27,6 +27,7 @@ export function ScheduleViewingModal({
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
+  const [websiteHp, setWebsiteHp] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -46,6 +47,7 @@ export function ScheduleViewingModal({
         preferredDate: date,
         timeSlot,
         message: `Type: ${viewingType === 'in-person' ? 'On-site Visit' : 'Video Tour'}. Property: ${property.title} (${property.location.address})`,
+        website_hp: websiteHp,
       });
 
       if (res.success) {
@@ -105,6 +107,18 @@ export function ScheduleViewingModal({
         </div>
       ) : (
         <form onSubmit={handleSubmit} className="space-y-4">
+          {/* Anti-spam honeypot (hidden from real users) */}
+          <input
+            type="text"
+            name="website_hp"
+            value={websiteHp}
+            onChange={(e) => setWebsiteHp(e.target.value)}
+            tabIndex={-1}
+            autoComplete="off"
+            aria-hidden="true"
+            className="hidden opacity-0 pointer-events-none absolute -left-[9999px]"
+          />
+
           {/* Viewing Type Selector */}
           <div>
             <label className="block text-xs font-mono font-medium text-[#7e7365] mb-2">

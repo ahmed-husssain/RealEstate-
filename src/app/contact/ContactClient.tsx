@@ -20,6 +20,7 @@ export function ContactClient({ siteSettings }: { siteSettings: PublicSiteSettin
   const [phone, setPhone] = useState('');
   const [inquiryType, setInquiryType] = useState('sales-buying');
   const [message, setMessage] = useState('');
+  const [websiteHp, setWebsiteHp] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -39,6 +40,7 @@ export function ContactClient({ siteSettings }: { siteSettings: PublicSiteSettin
         phone,
         type,
         message: `Topic: ${inquiryType}. Message: ${message}`,
+        website_hp: websiteHp,
       });
 
       if (res.success) {
@@ -100,6 +102,18 @@ export function ContactClient({ siteSettings }: { siteSettings: PublicSiteSettin
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4">
+                {/* Anti-spam honeypot (hidden from human users) */}
+                <input
+                  type="text"
+                  name="website_hp"
+                  value={websiteHp}
+                  onChange={(e) => setWebsiteHp(e.target.value)}
+                  tabIndex={-1}
+                  autoComplete="off"
+                  aria-hidden="true"
+                  className="hidden opacity-0 pointer-events-none absolute -left-[9999px]"
+                />
+
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <Input
                     label="Full Name *"

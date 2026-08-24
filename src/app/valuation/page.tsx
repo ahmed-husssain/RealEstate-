@@ -26,6 +26,7 @@ export default function ValuationPage() {
   const [contactName, setContactName] = useState('');
   const [contactEmail, setContactEmail] = useState('');
   const [contactPhone, setContactPhone] = useState('');
+  const [websiteHp, setWebsiteHp] = useState('');
   const [isCalculated, setIsCalculated] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -100,6 +101,7 @@ export default function ValuationPage() {
         ownerEmail: contactEmail,
         estimatedMin: est.low,
         estimatedMax: est.high,
+        website_hp: websiteHp,
       });
 
       if (res.success) {
@@ -438,6 +440,19 @@ export default function ValuationPage() {
                 <h3 className="font-display font-medium text-lg text-[#1F1B16]">
                   3. Where should we send the estimate?
                 </h3>
+
+                {/* Anti-spam honeypot (hidden from human users) */}
+                <input
+                  type="text"
+                  name="website_hp"
+                  value={websiteHp}
+                  onChange={(e) => setWebsiteHp(e.target.value)}
+                  tabIndex={-1}
+                  autoComplete="off"
+                  aria-hidden="true"
+                  className="hidden opacity-0 pointer-events-none absolute -left-[9999px]"
+                />
+
                 <div className="space-y-3.5">
                   <Input
                     label="Your Name"

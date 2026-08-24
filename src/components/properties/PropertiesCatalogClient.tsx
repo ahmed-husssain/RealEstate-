@@ -79,7 +79,7 @@ export function PropertiesCatalogClient({ initialProperties }: PropertiesCatalog
       if (filters.sortBy === 'price-asc') return a.price - b.price;
       if (filters.sortBy === 'price-desc') return b.price - a.price;
       if (filters.sortBy === 'area-desc') return b.specs.areaSqFt - a.specs.areaSqFt;
-      if (filters.sortBy === 'newest') return new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime();
+      if (filters.sortBy === 'newest') return new Date(b.publishedAt || 0).getTime() - new Date(a.publishedAt || 0).getTime();
       return (b.isFeatured ? 1 : 0) - (a.isFeatured ? 1 : 0);
     });
   }, [filters, initialProperties]);

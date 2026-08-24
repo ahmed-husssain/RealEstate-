@@ -15,10 +15,10 @@ export default function ValuationPage() {
   const [step, setStep] = useState(1);
   const [propertyType, setPropertyType] = useState('luxury-villa');
   const [address, setAddress] = useState('');
-  const [city, setCity] = useState('DHA Phase 6, Karachi');
+  const [city, setCity] = useState('North Nazimabad');
   const [bedrooms, setBedrooms] = useState(5);
   const [bathrooms, setBathrooms] = useState(6);
-  const [areaSqYd, setAreaSqYd] = useState(500);
+  const [areaSqYd, setAreaSqYd] = useState(240);
   const [condition, setCondition] = useState('turnkey');
   const [hasPool, setHasPool] = useState(false);
   const [hasView, setHasView] = useState(true);
@@ -31,25 +31,39 @@ export default function ValuationPage() {
   const [errorMessage, setErrorMessage] = useState('');
 
   const calculateEstimate = () => {
-    // Karachi base rate per Sq Yd
-    let basePerSqYd = 550000; // PKR 5.5 Lakh / Sq Yd for modern DHA bungalow
-    if (propertyType === 'penthouse') basePerSqYd = 450000;
-    if (propertyType === 'estate') basePerSqYd = 400000; // Plot
-    if (propertyType === 'modern-apartment') basePerSqYd = 300000;
+    // Area-specific base rate per Sq Yd (PKR)
+    let areaMultiplier = 280000; // Default North Nazimabad built rate
+
+    if (city.includes('DHA')) areaMultiplier = 550000;
+    else if (city.includes('Clifton')) areaMultiplier = 500000;
+    else if (city.includes('North Nazimabad')) areaMultiplier = 280000;
+    else if (city.includes('Gulshan')) areaMultiplier = 260000;
+    else if (city.includes('Federal B Area') || city.includes('F.B Area')) areaMultiplier = 220000;
+    else if (city.includes('Gulberg')) areaMultiplier = 210000;
+    else if (city.includes('Buffer Zone')) areaMultiplier = 190000;
+    else if (city.includes('Scheme 33')) areaMultiplier = 175000;
+    else if (city.includes('North Karachi')) areaMultiplier = 160000;
+    else if (city.includes('Scheme 45') || city.includes('Taiser')) areaMultiplier = 75000;
+
+    let basePerSqYd = areaMultiplier;
+    if (propertyType === 'penthouse') basePerSqYd *= 0.9;
+    if (propertyType === 'estate') basePerSqYd *= 0.65; // Plot/Land only
+    if (propertyType === 'modern-apartment') basePerSqYd *= 0.75;
+    if (propertyType === 'townhouse') basePerSqYd *= 0.85;
 
     if (condition === 'museum') basePerSqYd *= 1.25;
     if (condition === 'turnkey') basePerSqYd *= 1.05;
     if (condition === 'renovation') basePerSqYd *= 0.85;
 
     let amenityBonus = 0;
-    if (hasPool) amenityBonus += 15000000;
-    if (hasView) amenityBonus += 25000000;
-    if (hasElevator) amenityBonus += 8000000;
+    if (hasPool) amenityBonus += 5000000;
+    if (hasView) amenityBonus += 2000000;
+    if (hasElevator) amenityBonus += 3500000;
 
     const estimatedMid = areaSqYd * basePerSqYd + amenityBonus;
-    const low = Math.round((estimatedMid * 0.94) / 500000) * 500000;
-    const high = Math.round((estimatedMid * 1.06) / 500000) * 500000;
-    const mid = Math.round(estimatedMid / 500000) * 500000;
+    const low = Math.round((estimatedMid * 0.93) / 100000) * 100000;
+    const high = Math.round((estimatedMid * 1.07) / 100000) * 100000;
+    const mid = Math.round(estimatedMid / 100000) * 100000;
 
     return { low, high, mid, avgSqYd: Math.round(mid / areaSqYd) };
   };
@@ -261,19 +275,33 @@ export default function ValuationPage() {
                   </div>
 
                   <Input
-                    label="Street Address / Block (Optional)"
-                    placeholder="e.g. Street 14, Phase 6, DHA"
+                    label="Street / Block Details (Optional)"
+                    placeholder="e.g. Block F, Street 14 / Sector 15-A"
                     value={address}
                     onChange={(e) => setAddress(e.target.value)}
                   />
 
-                  <Input
-                    label="Area / Neighborhood"
-                    placeholder="e.g. DHA Phase 5, Clifton Block 4, KDA Scheme 1"
-                    value={city}
-                    onChange={(e) => setCity(e.target.value)}
-                    required
-                  />
+                  <div className="space-y-1.5">
+                    <label className="block text-xs font-mono font-medium text-[#7e7365]">
+                      Select Karachi Area
+                    </label>
+                    <select
+                      value={city}
+                      onChange={(e) => setCity(e.target.value)}
+                      className="w-full bg-white text-[#1F1B16] border border-[#d8cebe] rounded-full px-4 py-2.5 text-xs sm:text-sm outline-none focus:border-[#5c3822] shadow-inner cursor-pointer"
+                    >
+                      <option value="North Nazimabad">North Nazimabad (Blocks A–W)</option>
+                      <option value="Gulshan-e-Iqbal">Gulshan-e-Iqbal (All Blocks)</option>
+                      <option value="Federal B Area">Federal B Area (F.B Area)</option>
+                      <option value="Scheme 33">Scheme 33 (Gulzar-e-Hijri)</option>
+                      <option value="Buffer Zone">Buffer Zone (Sector 15-A & B)</option>
+                      <option value="North Karachi">North Karachi (Sectors 1–11)</option>
+                      <option value="Gulberg">Gulberg Karachi</option>
+                      <option value="Scheme 45">Scheme 45 (Taiser Town)</option>
+                      <option value="DHA Karachi">DHA Karachi (Phases 1–8)</option>
+                      <option value="Clifton">Clifton & Sea View</option>
+                    </select>
+                  </div>
                 </div>
 
                 <div className="flex justify-end pt-3">

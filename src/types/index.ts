@@ -37,13 +37,14 @@ export interface PropertyLocation {
 }
 
 export interface PropertyAgent {
-  id: string;
+  id?: string;
   name: string;
-  title: string;
+  title?: string;
   phone: string;
   email: string;
   avatarUrl: string;
-  experienceYears: number;
+  experienceYears?: number;
+  whatsapp?: string;
 }
 
 export interface FloorPlan {
@@ -75,7 +76,7 @@ export interface Property {
     virtualTourUrl?: string;
   };
   agent: PropertyAgent;
-  publishedAt: string;
+  publishedAt?: string;
 }
 
 export interface Neighborhood {

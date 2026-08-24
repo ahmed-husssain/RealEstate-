@@ -202,12 +202,17 @@ export function SearchFilterBar({
                 }}
                 className="w-full bg-white text-[#1F1B16] border border-[#d8cebe] rounded-full px-3.5 py-1.5 text-xs outline-none focus:border-[#5c3822]"
               >
-                <option value="all">All Karachi Areas</option>
-                <option value="DHA Phase 8">DHA Phase 8 & Seafront</option>
-                <option value="DHA Phase 6">DHA Phase 5 & 6</option>
+                <option value="all">All Karachi Locations</option>
+                <option value="North Nazimabad">North Nazimabad (Blocks A–W)</option>
+                <option value="Gulshan-e-Iqbal">Gulshan-e-Iqbal (All Blocks)</option>
+                <option value="Federal B Area">Federal B Area (F.B Area)</option>
+                <option value="Scheme 33">Scheme 33 (Gulzar-e-Hijri)</option>
+                <option value="Buffer Zone">Buffer Zone (Sector 15-A & B)</option>
+                <option value="North Karachi">North Karachi (Sectors 1–11)</option>
+                <option value="Gulberg">Gulberg Karachi</option>
+                <option value="Scheme 45">Scheme 45 (Taiser Town)</option>
+                <option value="DHA Karachi">DHA Karachi (Phases 1–8)</option>
                 <option value="Clifton">Clifton & Sea View</option>
-                <option value="KDA Scheme 1">KDA Scheme 1</option>
-                <option value="Bath Island">Bath Island</option>
               </select>
             </div>
 

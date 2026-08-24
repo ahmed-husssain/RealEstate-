@@ -58,8 +58,8 @@ export default async function HomePage() {
           </h1>
 
           {/* Clean Subtitle */}
-          <p className="text-sm sm:text-base text-[#7e7365] max-w-xl mx-auto font-sans leading-relaxed">
-            Buy, sell, build, and renovate verified luxury houses, penthouses, and residential plots across DHA, Clifton, and KDA.
+          <p className="text-sm sm:text-base text-[#7e7365] max-w-2xl mx-auto font-sans leading-relaxed">
+            Buy, sell, build, and renovate verified bangalows, houses, and plots across North Nazimabad, Gulshan-e-Iqbal, Federal B Area, Scheme 33, Buffer Zone, North Karachi, Gulberg, Scheme 45, and DHA.
           </p>
 
           {/* Search Filter Bar Component */}
@@ -273,9 +273,9 @@ export default async function HomePage() {
           </Link>
         </div>
 
-        {/* 4 Neighborhood Cards */}
+        {/* Target Karachi Neighborhood Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          {neighborhoods.slice(0, 4).map((neighborhood) => (
+          {neighborhoods.slice(0, 8).map((neighborhood) => (
             <Link
               key={neighborhood.id}
               href={`/neighborhoods/${neighborhood.slug}`}

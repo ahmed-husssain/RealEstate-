@@ -1,9 +1,9 @@
-import { PrismaClient, PropertyStatus, PropertyType, AreaUnit, PropertyCondition } from '@prisma/client';
+import { PrismaClient, PropertyStatus, PropertyType, AreaUnit } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
 async function main() {
-  console.log('🌱 Starting Amber Property Corner database seeding for Karachi Luxury Market...');
+  console.log('🌱 Starting Amber Property Corner database seeding for Karachi Core & Emerging Markets...');
 
   // 1. Clean existing records in reverse dependency order
   await prisma.propertyImage.deleteMany();
@@ -23,19 +23,7 @@ async function main() {
       email: 'tariq.siddiqui@amberproperty.com',
       whatsapp: '+923008224110',
       avatarUrl: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=600&q=80',
-      role: 'Senior Managing Partner | DHA & Coastal Estates',
-      isActive: true,
-    },
-  });
-
-  const zainab = await prisma.agent.create({
-    data: {
-      name: 'Zainab Farooq',
-      phone: '+92 321 945 6670',
-      email: 'zainab.farooq@amberproperty.com',
-      whatsapp: '+923219456670',
-      avatarUrl: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=600&q=80',
-      role: 'Managing Director | Clifton & Trophy Penthouses',
+      role: 'Senior Managing Partner | North Nazimabad & Construction',
       isActive: true,
     },
   });
@@ -47,238 +35,306 @@ async function main() {
       email: 'kamran.alvi@amberproperty.com',
       whatsapp: '+923332198830',
       avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80',
-      role: 'Partner | KDA Scheme 1 & Commercial Portfolios',
+      role: 'Senior Advisor | Gulshan, FB Area & Scheme 33',
+      isActive: true,
+    },
+  });
+
+  const zainab = await prisma.agent.create({
+    data: {
+      name: 'Zainab Farooq',
+      phone: '+92 321 945 6670',
+      email: 'zainab.farooq@amberproperty.com',
+      whatsapp: '+923219456670',
+      avatarUrl: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=600&q=80',
+      role: 'Director | DHA, Clifton & High-Yield Commercial',
       isActive: true,
     },
   });
 
   console.log('✅ Created 3 Senior Real Estate Advisors.');
 
-  // 3. Create Karachi Prime Districts & Enclaves
-  const dhaPhase8 = await prisma.area.create({
+  // 3. Create All Target Karachi Areas
+  const northNazimabad = await prisma.area.create({
     data: {
-      slug: 'dha-phase-8',
-      name: 'DHA Phase 8 (Creek & Marina)',
+      slug: 'north-nazimabad',
+      name: 'North Nazimabad',
       city: 'Karachi',
-      description: 'Karachi’s most prestigious coastal enclave offering modern seafront mansions, golf club access, and private sea-facing promenades.',
-      heroImage: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80',
-      isPopular: true,
-    },
-  });
-
-  const clifton = await prisma.area.create({
-    data: {
-      slug: 'clifton-blocks',
-      name: 'Clifton (Blocks 2, 4 & 5)',
-      city: 'Karachi',
-      description: 'Historic prestige neighborhood home to diplomatic compounds, iconic heritage architecture, oceanfront high-rises, and private residences.',
+      description: 'Planned residential sectors (Blocks A to W) celebrated for wide boulevards, luxury 240 to 600 Gaz bangalows, top schools, and vibrant commercial centers.',
       heroImage: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80',
       isPopular: true,
     },
   });
 
-  const kdaScheme1 = await prisma.area.create({
+  const gulshan = await prisma.area.create({
     data: {
-      slug: 'kda-scheme-1',
-      name: 'KDA Scheme 1 (Tipu Sultan)',
+      slug: 'gulshan-e-iqbal',
+      name: 'Gulshan-e-Iqbal',
       city: 'Karachi',
-      description: 'Central premier sanctuary celebrated for sprawling 1000–2000 Sq Yd private family estates, canopy tree-lined avenues, and total security.',
-      heroImage: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80',
+      description: 'Educational and commercial epicenter along University Road featuring gated blocks, multi-family residences, and premium family villas.',
+      heroImage: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80',
       isPopular: true,
     },
   });
 
-  const dhaPhase6 = await prisma.area.create({
+  const fbArea = await prisma.area.create({
     data: {
-      slug: 'dha-phase-6',
-      name: 'DHA Phase 6 (Hilal & Ittehad)',
+      slug: 'federal-b-area',
+      name: 'Federal B Area (F.B Area)',
       city: 'Karachi',
-      description: 'The dynamic center of modern DHA living featuring brand new contemporary architectural villas and immediate proximity to high-end dining and shopping.',
+      description: 'Central planned grid development across Blocks 1 to 21 with high rental yields, 120/240 Gaz houses, and immediate access to Shahrah-e-Pakistan.',
       heroImage: 'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1200&q=80',
       isPopular: true,
     },
   });
 
-  console.log('✅ Created 4 Prime Karachi Enclaves.');
-
-  // 4. Create Karachi Prime Properties with Galleries
-  // Property 1: 1000 Sq Yd Phase 8 Mansion
-  const prop1 = await prisma.property.create({
+  const scheme33 = await prisma.area.create({
     data: {
-      slug: '1000-sqyd-modern-seafront-mansion-dha-phase-8',
-      title: '1000 Sq Yd Modern Seafront Architectural Mansion',
-      description: 'Constructed to uncompromising international standards, this corner 1000 Sq Yd contemporary residence in DHA Phase 8 features double-height Italian travertine volumes, basement cinema, private swimming pool, smart climate control, and uninterrupted Arabian Sea breezes.',
-      price: 385000000.00, // PKR 38.5 Crore
+      slug: 'scheme-33',
+      name: 'Scheme 33 (Gulzar-e-Hijri)',
+      city: 'Karachi',
+      description: 'Rapidly expanding residential corridor with over 100+ approved gated societies, brand new modern turnkey construction, and high investment ROI.',
+      heroImage: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80',
+      isPopular: true,
+    },
+  });
+
+  const bufferZone = await prisma.area.create({
+    data: {
+      slug: 'buffer-zone',
+      name: 'Buffer Zone',
+      city: 'Karachi',
+      description: 'Quiet family sectors 15-A & 15-B adjacent to North Nazimabad with established parks, sports complexes, and excellent renovation potential.',
+      heroImage: 'https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=80',
+      isPopular: true,
+    },
+  });
+
+  const northKarachi = await prisma.area.create({
+    data: {
+      slug: 'north-karachi',
+      name: 'North Karachi',
+      city: 'Karachi',
+      description: 'Vibrant metropolitan zone across Sectors 1 to 11 featuring affordable 80 to 240 Gaz houses, Green Line Metrobus connectivity, and bustling markets.',
+      heroImage: 'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1200&q=80',
+      isPopular: true,
+    },
+  });
+
+  const gulberg = await prisma.area.create({
+    data: {
+      slug: 'gulberg',
+      name: 'Gulberg Karachi',
+      city: 'Karachi',
+      description: 'Established central residential town connecting North Nazimabad and Federal B Area with quiet avenues and strong civic amenities.',
+      heroImage: 'https://images.unsplash.com/photo-1600573472550-8090b5e0745e?auto=format&fit=crop&w=1200&q=80',
+      isPopular: true,
+    },
+  });
+
+  const scheme45 = await prisma.area.create({
+    data: {
+      slug: 'scheme-45',
+      name: 'Scheme 45 (Taiser Town)',
+      city: 'Karachi',
+      description: 'MDA master-planned low-cost investment scheme offering 80, 120 & 240 Gaz residential plots with immense long-term appreciation potential.',
+      heroImage: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1200&q=80',
+      isPopular: true,
+    },
+  });
+
+  const dhaKarachi = await prisma.area.create({
+    data: {
+      slug: 'dha-karachi',
+      name: 'DHA Karachi',
+      city: 'Karachi',
+      description: 'Elite coastal development across Phases 1 to 8 renowned for luxury seafront mansions, high security, and premier commercial boulevards.',
+      heroImage: 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&w=1200&q=80',
+      isPopular: true,
+    },
+  });
+
+  console.log('✅ Created 9 Target Karachi Areas.');
+
+  // 4. Create Properties
+  await prisma.property.create({
+    data: {
+      slug: '500-sq-yd-luxury-bungalow-north-nazimabad-block-f',
+      title: '500 Gaz Luxury Modern Bangalow',
+      description: 'A masterpiece of contemporary construction situated in Block F, North Nazimabad. Built with Grade-60 steel, imported Spanish porcelain tiles, dual German modular kitchens, executive drawing room with false ceilings, and a private landscaped lawn.',
+      price: 145000000.00, // PKR 14.50 Crore
       priceType: 'TOTAL',
       status: PropertyStatus.FOR_SALE,
       propertyType: PropertyType.VILLA,
       bedrooms: 6,
       bathrooms: 7,
-      areaSize: 1000.00,
+      areaSize: 500.00,
       areaUnit: AreaUnit.SQYD,
-      address: 'Khayaban-e-Ghalib, Zone B, DHA Phase 8, Karachi',
-      areaId: dhaPhase8.id,
+      address: 'Street 14, Block F, North Nazimabad, Karachi',
+      areaId: northNazimabad.id,
       agentId: tariq.id,
       isFeatured: true,
       images: {
         create: [
-          {
-            url: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80',
-            alt: 'Front Architectural Elevation of 1000 Sq Yd Mansion',
-            isHero: true,
-            displayOrder: 1,
-          },
           {
             url: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80',
-            alt: 'Double Height Formal Living Lounge with Italian Travertine',
-            isHero: false,
-            displayOrder: 2,
+            alt: 'Front Elevation of 500 Gaz North Nazimabad Bangalow',
+            isHero: true,
+            displayOrder: 1,
           },
           {
-            url: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80',
-            alt: 'Private Courtyard Heated Swimming Pool & Deck',
+            url: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80',
+            alt: 'Spacious Formal Drawing Room with Italian Tiling',
             isHero: false,
-            displayOrder: 3,
+            displayOrder: 2,
           },
         ],
       },
     },
   });
 
-  // Property 2: 600 Sq Yd Luxury Designer Villa - Phase 6
-  const prop2 = await prisma.property.create({
+  await prisma.property.create({
     data: {
-      slug: '600-sqyd-designer-triplex-villa-dha-phase-6',
-      title: '600 Sq Yd Minimalist Triplex Designer Villa',
-      description: 'A masterpiece of contemporary residential engineering on Khayaban-e-Hilal. Features solid teakwood paneling, German open-plan kitchen, private lift/elevator across all levels, rooftop entertainment pavilion, and 4 dedicated basement car parking spots.',
-      price: 245000000.00, // PKR 24.5 Crore
+      slug: '400-sq-yd-turnkey-house-gulshan-e-iqbal-block-4',
+      title: '400 Gaz Executive Turnkey Bangalow',
+      description: 'An elegantly crafted 400 Gaz single-unit residence in Gulshan-e-Iqbal Block 4. Offers an expansive double-height lounge, modern open American kitchen, teak woodwork, and dedicated parking for 3 vehicles.',
+      price: 115000000.00, // PKR 11.50 Crore
       priceType: 'TOTAL',
       status: PropertyStatus.FOR_SALE,
-      propertyType: PropertyType.HOUSE,
+      propertyType: PropertyType.VILLA,
       bedrooms: 5,
       bathrooms: 6,
-      areaSize: 600.00,
+      areaSize: 400.00,
       areaUnit: AreaUnit.SQYD,
-      address: 'Khayaban-e-Hilal, Phase 6, DHA, Karachi',
-      areaId: dhaPhase6.id,
-      agentId: tariq.id,
-      isFeatured: true,
-      images: {
-        create: [
-          {
-            url: 'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1200&q=80',
-            alt: 'Exterior Concrete & Glass Facade in Phase 6',
-            isHero: true,
-            displayOrder: 1,
-          },
-          {
-            url: 'https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=1200&q=80',
-            alt: 'Open Concept Chef Kitchen & Breakfast Island',
-            isHero: false,
-            displayOrder: 2,
-          },
-        ],
-      },
-    },
-  });
-
-  // Property 3: Sky Penthouse - Clifton
-  const prop3 = await prisma.property.create({
-    data: {
-      slug: '5-bed-panoramic-ocean-penthouse-clifton',
-      title: '5-Bedroom Sky Penthouse with Direct Arabian Sea View',
-      description: 'Rare opportunity to acquire an expansive 5,500 Sq Ft full-floor penthouse in an ultra-exclusive Clifton high-rise. Offering 360-degree views over Karachi shoreline, private elevator access, 24/7 armed concierge, and duplex outdoor terraces.',
-      price: 168000000.00, // PKR 16.8 Crore
-      priceType: 'TOTAL',
-      status: PropertyStatus.EXCLUSIVE,
-      propertyType: PropertyType.PENTHOUSE,
-      bedrooms: 5,
-      bathrooms: 5,
-      areaSize: 5500.00,
-      areaUnit: AreaUnit.SQFT,
-      address: 'Marine Drive, Block 2, Clifton, Karachi',
-      areaId: clifton.id,
-      agentId: zainab.id,
-      isFeatured: true,
-      images: {
-        create: [
-          {
-            url: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80',
-            alt: 'Penthouse Living Room with Floor-to-Ceiling Ocean Glazing',
-            isHero: true,
-            displayOrder: 1,
-          },
-          {
-            url: 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80',
-            alt: 'Master Suite Sunset Terrace overlooking Marine Drive',
-            isHero: false,
-            displayOrder: 2,
-          },
-        ],
-      },
-    },
-  });
-
-  // Property 4: 2000 Sq Yd Family Compound - KDA Scheme 1
-  const prop4 = await prisma.property.create({
-    data: {
-      slug: '2000-sqyd-estate-compound-kda-scheme-1',
-      title: '2000 Sq Yd Landmark Family Estate Compound',
-      description: 'A generational asset occupying a prime 2000 Sq Yd corner parcel in KDA Scheme 1. Includes lush manicured lawn grounds, private guest villa, 8-car portico, separate guard house, and complete solar backup system.',
-      price: 750000000.00, // PKR 75 Crore
-      priceType: 'TOTAL',
-      status: PropertyStatus.EXCLUSIVE,
-      propertyType: PropertyType.ESTATE,
-      bedrooms: 8,
-      bathrooms: 9,
-      areaSize: 2000.00,
-      areaUnit: AreaUnit.SQYD,
-      address: 'Main Tipu Sultan Road, KDA Scheme 1, Karachi',
-      areaId: kdaScheme1.id,
+      address: 'Main Boulevard, Block 4, Gulshan-e-Iqbal, Karachi',
+      areaId: gulshan.id,
       agentId: kamran.id,
       isFeatured: true,
       images: {
         create: [
           {
-            url: 'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1200&q=80',
-            alt: 'Expansive Lawn & Classical Modern Facade',
+            url: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80',
+            alt: 'Front Facade of 400 Gaz House in Gulshan',
             isHero: true,
             displayOrder: 1,
-          },
-          {
-            url: 'https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=80',
-            alt: 'Grand Entrance Foyer & Spiral Floating Staircase',
-            isHero: false,
-            displayOrder: 2,
           },
         ],
       },
     },
   });
 
-  // Property 5: 500 Sq Yd Phase 5 Brand New Bungalow
-  const prop5 = await prisma.property.create({
+  await prisma.property.create({
     data: {
-      slug: '500-sqyd-brand-new-modern-house-dha-phase-5',
-      title: '500 Sq Yd Brand New Minimalist Bungalow',
-      description: 'Brand new completion featuring architectural exposed concrete accents, double-glazed soundproof glass, Spanish porcelain tile flooring, and fully integrated smart home automation in prime Phase 5.',
-      price: 180000000.00, // PKR 18 Crore
+      slug: '240-sq-yd-modern-villa-federal-b-area-block-14',
+      title: '240 Gaz Brand New Double-Story House',
+      description: 'Newly built 240 Gaz double-unit property in F.B Area Block 14 with separate entrances, 2 separate K-Electric meters, 2 full modern kitchens, and immaculate tile flooring.',
+      price: 68000000.00, // PKR 6.80 Crore
       priceType: 'TOTAL',
       status: PropertyStatus.FOR_SALE,
-      propertyType: PropertyType.HOUSE,
-      bedrooms: 5,
+      propertyType: PropertyType.TOWNHOUSE,
+      bedrooms: 6,
       bathrooms: 6,
-      areaSize: 500.00,
+      areaSize: 240.00,
       areaUnit: AreaUnit.SQYD,
-      address: 'Khayaban-e-Shamsheer, Phase 5, DHA, Karachi',
-      areaId: dhaPhase6.id,
+      address: 'Street 7, Block 14, Federal B Area, Karachi',
+      areaId: fbArea.id,
+      agentId: kamran.id,
+      isFeatured: true,
+      images: {
+        create: [
+          {
+            url: 'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1200&q=80',
+            alt: '240 Gaz Double Unit House in FB Area',
+            isHero: true,
+            displayOrder: 1,
+          },
+        ],
+      },
+    },
+  });
+
+  await prisma.property.create({
+    data: {
+      slug: '200-sq-yd-turnkey-house-scheme-33-saadi-town',
+      title: '200 Gaz Modern Turnkey Villa',
+      description: 'Contemporary 200 Gaz residential villa in the secure gated community of Saadi Town / Scheme 33. Boasts modern elevation, open roof garden, and high-end false ceilings.',
+      price: 38500000.00, // PKR 3.85 Crore
+      priceType: 'TOTAL',
+      status: PropertyStatus.FOR_SALE,
+      propertyType: PropertyType.VILLA,
+      bedrooms: 4,
+      bathrooms: 5,
+      areaSize: 200.00,
+      areaUnit: AreaUnit.SQYD,
+      address: 'Block 4, Saadi Town, Scheme 33, Karachi',
+      areaId: scheme33.id,
+      agentId: tariq.id,
+      isFeatured: true,
+      images: {
+        create: [
+          {
+            url: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80',
+            alt: 'Turnkey Modern Villa in Saadi Town Scheme 33',
+            isHero: true,
+            displayOrder: 1,
+          },
+        ],
+      },
+    },
+  });
+
+  await prisma.property.create({
+    data: {
+      slug: '240-sq-yd-corner-house-buffer-zone-sector-15a',
+      title: '240 Gaz Renovated Corner House',
+      description: 'Completely modernized double-story bungalow in Buffer Zone Sector 15-A with new plumbing, chemical roof waterproofing, and spacious car porch.',
+      price: 52000000.00, // PKR 5.20 Crore
+      priceType: 'TOTAL',
+      status: PropertyStatus.FOR_SALE,
+      propertyType: PropertyType.VILLA,
+      bedrooms: 5,
+      bathrooms: 5,
+      areaSize: 240.00,
+      areaUnit: AreaUnit.SQYD,
+      address: 'Street 12, Sector 15-A, Buffer Zone, Karachi',
+      areaId: bufferZone.id,
+      agentId: kamran.id,
+      isFeatured: false,
+      images: {
+        create: [
+          {
+            url: 'https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=80',
+            alt: '240 Gaz Corner House in Buffer Zone',
+            isHero: true,
+            displayOrder: 1,
+          },
+        ],
+      },
+    },
+  });
+
+  await prisma.property.create({
+    data: {
+      slug: '120-sq-yd-residential-plot-scheme-45-taiser-town',
+      title: '120 Gaz Prime Residential Plot',
+      description: 'MDA Scheme 45 (Taiser Town) Sector 2 open residential plot with cleared dues, possession status, and rapid appreciation potential along the Northern Bypass.',
+      price: 3200000.00, // PKR 32 Lakh
+      priceType: 'TOTAL',
+      status: PropertyStatus.FOR_SALE,
+      propertyType: PropertyType.PLOT,
+      bedrooms: 0,
+      bathrooms: 0,
+      areaSize: 120.00,
+      areaUnit: AreaUnit.SQYD,
+      address: 'Sector 2, Scheme 45 (Taiser Town), Karachi',
+      areaId: scheme45.id,
       agentId: tariq.id,
       isFeatured: false,
       images: {
         create: [
           {
-            url: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80',
-            alt: 'Phase 5 Modern Bungalow Exterior',
+            url: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1200&q=80',
+            alt: 'Residential Plot in Scheme 45 Taiser Town',
             isHero: true,
             displayOrder: 1,
           },
@@ -287,14 +343,13 @@ async function main() {
     },
   });
 
-  console.log('✅ Created 5 Landmark Karachi Luxury Listings with Full Media Galleries.');
-
-  console.log('🎉 Database seeding successfully finished!');
+  console.log('✅ Created Karachi Properties with Galleries.');
+  console.log('🎉 Seeding successfully completed for Amber Property Corner!');
 }
 
 main()
   .catch((e) => {
-    console.error('❌ Seeding error:', e);
+    console.error('❌ Error during seeding:', e);
     process.exit(1);
   })
   .finally(async () => {

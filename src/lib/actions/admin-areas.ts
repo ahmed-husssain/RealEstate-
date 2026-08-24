@@ -3,7 +3,7 @@
 import prisma from '@/lib/prisma';
 import { z } from 'zod';
 import { requireAuthUser } from '@/lib/auth/admin';
-import { revalidatePath, revalidateTag } from 'next/cache';
+import { revalidatePath } from 'next/cache';
 
 const areaSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),

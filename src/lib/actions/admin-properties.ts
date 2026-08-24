@@ -4,7 +4,7 @@ import prisma from '@/lib/prisma';
 import { z } from 'zod';
 import { requireAuthUser } from '@/lib/auth/admin';
 import { PropertyStatus, PropertyType, AreaUnit, PropertyCondition } from '@prisma/client';
-import { revalidatePath, revalidateTag } from 'next/cache';
+import { revalidatePath, updateTag } from 'next/cache';
 
 const propertyInputSchema = z.object({
   title: z.string().min(5, 'Title must be at least 5 characters'),
@@ -125,6 +125,7 @@ export async function createPropertyAction(rawData: any) {
     revalidatePath('/');
     revalidatePath('/admin/properties');
     revalidatePath('/neighborhoods');
+    updateTag('properties');
 
     return {
       success: true,
@@ -222,6 +223,7 @@ export async function updatePropertyAction(propertyId: string, rawData: any) {
     revalidatePath(`/properties/${slug}`);
     revalidatePath('/');
     revalidatePath('/admin/properties');
+    updateTag('properties');
 
     return {
       success: true,
@@ -258,6 +260,7 @@ export async function deletePropertyAction(propertyId: string) {
     revalidatePath(`/properties/${property.slug}`);
     revalidatePath('/');
     revalidatePath('/admin/properties');
+    updateTag('properties');
 
     return { success: true, message: `Property "${property.title}" deleted successfully` };
   } catch (error: any) {

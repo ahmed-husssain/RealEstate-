@@ -28,9 +28,9 @@ const loginSchema = z.object({
 
 const updatePasswordSchema = z
   .object({
-    currentPassword: z.string().min(1, 'Current password is required').max(128),
-    newPassword: z.string().min(8, 'New password must be at least 8 characters').max(128),
-    confirmPassword: z.string().min(8, 'Please confirm your new password').max(128),
+    currentPassword: z.string().min(6, 'Current password is required').max(62),
+    newPassword: z.string().min(6, 'New password must be at least 6 characters').max(62),
+    confirmPassword: z.string().min(6, 'Please confirm your new password').max(62),
   })
   .refine((data) => data.newPassword === data.confirmPassword, {
     message: 'New passwords do not match',

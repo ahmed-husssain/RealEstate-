@@ -17,7 +17,7 @@ export interface SiteSettingsMap {
   announcement_active?: string;
 }
 
-export async function getSiteSettingsAction(): Promise<{ success: boolean; data: SiteSettingsMap }> {
+export async function getSiteSettingsAction(): Promise<{ success: boolean; data: SiteSettingsMap; error?: string }> {
   try {
     const settings = await prisma.siteSetting.findMany();
     const map: SiteSettingsMap = {};
@@ -26,32 +26,73 @@ export async function getSiteSettingsAction(): Promise<{ success: boolean; data:
     }
     return { success: true, data: map };
   } catch (error: any) {
-    return { success: false, data: {} };
+    console.error('Error in getSiteSettingsAction:', error);
+    return { success: false, data: {}, error: error.message || 'Database query error' };
   }
 }
 
-export async function updateSiteSettingsAction(settings: Record<string, string>) {
+export async function updateSiteSettingsAction(settings: Record<string, string>): Promise<{
+  success: boolean;
+  message?: string;
+  error?: string;
+  updatedCount?: number;
+  data?: SiteSettingsMap;
+}> {
   try {
-    await requireAuthUser();
+    // 1. Authenticate user
+    const user = await requireAuthUser();
+    if (!user) {
+      return { success: false, error: 'Unauthorized. Please log in to update website content.' };
+    }
 
-    for (const [key, value] of Object.entries(settings)) {
-      if (value !== undefined) {
+    if (!settings || typeof settings !== 'object' || Object.keys(settings).length === 0) {
+      return { success: false, error: 'No configuration data provided to update.' };
+    }
+
+    let updatedCount = 0;
+
+    // 2. Perform verified atomic database updates
+    for (const [key, rawValue] of Object.entries(settings)) {
+      if (rawValue !== undefined && rawValue !== null) {
+        const cleanValue = String(rawValue).trim();
         await prisma.siteSetting.upsert({
           where: { key },
-          update: { value: String(value) },
-          create: { key, value: String(value), category: 'general' },
+          update: { value: cleanValue },
+          create: { key, value: cleanValue, category: 'general' },
         });
+        updatedCount++;
       }
     }
 
+    // 3. Re-query from database to double-verify persistence
+    const verifiedSettings = await prisma.siteSetting.findMany();
+    const verifiedMap: SiteSettingsMap = {};
+    for (const item of verifiedSettings) {
+      (verifiedMap as any)[item.key] = item.value;
+    }
+
+    // 4. Invalidate cache across all website routes including Root Layout (Navbar & Footer)
+    revalidatePath('/', 'layout');
     revalidatePath('/');
+    revalidatePath('/properties');
+    revalidatePath('/neighborhoods');
     revalidatePath('/contact');
     revalidatePath('/about');
     revalidatePath('/services');
+    revalidatePath('/valuation');
     revalidatePath('/admin/content');
 
-    return { success: true, message: 'Website text & settings updated successfully' };
+    return {
+      success: true,
+      message: `Successfully saved ${updatedCount} settings to database and updated live website.`,
+      updatedCount,
+      data: verifiedMap,
+    };
   } catch (error: any) {
-    return { success: false, error: error.message || 'Failed to update website content' };
+    console.error('Exception in updateSiteSettingsAction:', error);
+    return {
+      success: false,
+      error: error.message || 'An unexpected database error occurred while saving settings.',
+    };
   }
 }

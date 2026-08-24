@@ -52,11 +52,15 @@ export const viewport = {
   initialScale: 1,
 };
 
-export default function RootLayout({
+import { getPublicSiteSettings } from '@/lib/db/settings';
+
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const siteSettings = await getPublicSiteSettings();
+
   return (
     <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable}`}>
       <body className="font-sans bg-[#f5efe6] text-[#1F1B16] antialiased selection:bg-[#5c3822] selection:text-[#F8F4ED]">
@@ -72,7 +76,7 @@ export default function RootLayout({
         <GuideRails />
 
         {/* Floating Stratified Navigation */}
-        <HeaderNavbar />
+        <HeaderNavbar siteSettings={siteSettings} />
 
         {/* Main Application Container */}
         <main className="relative z-10 pt-24 sm:pt-28 min-h-screen">
@@ -80,10 +84,10 @@ export default function RootLayout({
         </main>
 
         {/* Floating WhatsApp Concierge */}
-        <WhatsAppFloatingButton />
+        <WhatsAppFloatingButton phoneNumber={siteSettings.whatsapp_clean} />
 
         {/* Grounded Ground-Tone Dark Footer */}
-        <Footer />
+        <Footer siteSettings={siteSettings} />
       </body>
     </html>
   );

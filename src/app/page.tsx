@@ -19,11 +19,16 @@ import {
   CheckCircle2,
 } from 'lucide-react';
 
+import { getPublicSiteSettings } from '@/lib/db/settings';
+
 export const revalidate = 60;
 
 export default async function HomePage() {
-  const dbProperties = await getProperties({ limit: 6 });
-  const dbAreas = await getAreas();
+  const [dbProperties, dbAreas, siteSettings] = await Promise.all([
+    getProperties({ limit: 6 }),
+    getAreas(),
+    getPublicSiteSettings(),
+  ]);
 
   const properties = dbProperties.length > 0
     ? dbProperties.map(mapDbPropertyToProperty)
@@ -38,8 +43,18 @@ export default async function HomePage() {
 
   return (
     <div className="space-y-20 sm:space-y-28">
+      {/* Announcement Banner (if active) */}
+      {siteSettings.announcement_active && siteSettings.announcement_banner && (
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-2 mb-2">
+          <div className="bg-[#5c3822]/10 border border-[#5c3822]/20 rounded-full py-2 px-4 text-center text-xs font-medium text-[#5c3822] flex items-center justify-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-[#5c3822] animate-pulse shrink-0" />
+            <span>{siteSettings.announcement_banner}</span>
+          </div>
+        </div>
+      )}
+
       {/* 1. Hero Section */}
-      <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-10">
+      <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-8">
         <div className="text-center max-w-3xl mx-auto space-y-5">
           {/* Label Chip */}
           <div className="flex items-center justify-center gap-2">
@@ -51,15 +66,14 @@ export default async function HomePage() {
             </Badge>
           </div>
 
-          {/* Simple Direct Headline */}
+          {/* Dynamic Direct Headline */}
           <h1 className="font-display font-medium text-3xl sm:text-5xl lg:text-6xl leading-tight text-[#1F1B16] tracking-tight">
-            Find Luxury Homes & Penthouses in{' '}
-            <span className="italic font-serif text-[#5c3822]">Karachi</span>
+            {siteSettings.hero_headline}
           </h1>
 
-          {/* Clean Subtitle */}
+          {/* Dynamic Subtitle */}
           <p className="text-sm sm:text-base text-[#7e7365] max-w-2xl mx-auto font-sans leading-relaxed">
-            Buy, sell, build, and renovate verified bangalows, houses, and plots across North Nazimabad, Gulshan-e-Iqbal, Federal B Area, Scheme 33, Buffer Zone, North Karachi, Gulberg, Scheme 45, and Clifton.
+            {siteSettings.hero_subtitle}
           </p>
 
           {/* Search Filter Bar Component */}

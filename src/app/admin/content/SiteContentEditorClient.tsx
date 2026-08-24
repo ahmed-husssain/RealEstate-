@@ -5,7 +5,7 @@ import { GlassCard } from '@/ui/GlassCard';
 import { Button } from '@/ui/Button';
 import { Input } from '@/ui/Input';
 import { updateSiteSettingsAction, SiteSettingsMap } from '@/lib/actions/admin-content';
-import { CheckCircle2, AlertCircle, Save, Sparkles, Phone, MapPin, Megaphone } from 'lucide-react';
+import { CheckCircle2, AlertCircle, Save, Sparkles, Phone, MapPin, Megaphone, Loader2, Check, RefreshCw } from 'lucide-react';
 
 export function SiteContentEditorClient({ initialSettings }: { initialSettings: SiteSettingsMap }) {
   const [heroHeadline, setHeroHeadline] = useState(
@@ -23,17 +23,18 @@ export function SiteContentEditorClient({ initialSettings }: { initialSettings: 
     initialSettings.office_address || 'B 693, Block 13 Gulberg Town, Karachi, Pakistan'
   );
   const [officeTimings, setOfficeTimings] = useState(
-    initialSettings.office_timings || 'Mon – Sat: 10:00 AM – 9:00 PM | Sun: By Appointment'
+    initialSettings.office_timings || 'Mon – Sat (10:30 AM to 8:00 PM)'
   );
   const [announcementBanner, setAnnouncementBanner] = useState(
     initialSettings.announcement_banner || 'New North Nazimabad and Gulshan luxury listings now open for private viewings.'
   );
   const [announcementActive, setAnnouncementActive] = useState(
-    initialSettings.announcement_active === 'true'
+    initialSettings.announcement_active !== undefined ? initialSettings.announcement_active === 'true' : true
   );
 
   const [loading, setLoading] = useState(false);
-  const [statusMsg, setStatusMsg] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+  const [lastSavedAt, setLastSavedAt] = useState<string | null>(null);
+  const [statusMsg, setStatusMsg] = useState<{ type: 'success' | 'error'; text: string; details?: string[] } | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -41,7 +42,7 @@ export function SiteContentEditorClient({ initialSettings }: { initialSettings: 
     setStatusMsg(null);
 
     try {
-      const res = await updateSiteSettingsAction({
+      const payload: Record<string, string> = {
         hero_headline: heroHeadline,
         hero_subtitle: heroSubtitle,
         phone_primary: phonePrimary,
@@ -52,15 +53,49 @@ export function SiteContentEditorClient({ initialSettings }: { initialSettings: 
         office_timings: officeTimings,
         announcement_banner: announcementBanner,
         announcement_active: announcementActive ? 'true' : 'false',
-      });
+      };
+
+      const res = await updateSiteSettingsAction(payload);
 
       if (res.success) {
-        setStatusMsg({ type: 'success', text: res.message || 'Website text updated successfully!' });
+        const timeString = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        setLastSavedAt(timeString);
+        setStatusMsg({
+          type: 'success',
+          text: `Verified & Saved to Database at ${timeString}!`,
+          details: [
+            `WhatsApp Concierge: ${whatsappNumber}`,
+            `Primary Phone: ${phonePrimary}`,
+            `Office Address: ${officeAddress}`,
+            `Official Email: ${contactEmail}`,
+            `All public pages, navbar, and footer cache updated in real time.`,
+          ],
+        });
+
+        // Sync with verified database return data
+        if (res.data) {
+          if (res.data.hero_headline) setHeroHeadline(res.data.hero_headline);
+          if (res.data.hero_subtitle) setHeroSubtitle(res.data.hero_subtitle);
+          if (res.data.phone_primary) setPhonePrimary(res.data.phone_primary);
+          if (res.data.phone_landline) setPhoneLandline(res.data.phone_landline);
+          if (res.data.whatsapp_number) setWhatsappNumber(res.data.whatsapp_number);
+          if (res.data.contact_email) setContactEmail(res.data.contact_email);
+          if (res.data.office_address) setOfficeAddress(res.data.office_address);
+          if (res.data.office_timings) setOfficeTimings(res.data.office_timings);
+          if (res.data.announcement_banner) setAnnouncementBanner(res.data.announcement_banner);
+          if (res.data.announcement_active !== undefined) setAnnouncementActive(res.data.announcement_active === 'true');
+        }
       } else {
-        setStatusMsg({ type: 'error', text: res.error || 'Failed to update settings' });
+        setStatusMsg({
+          type: 'error',
+          text: res.error || 'Failed to update website content in database.',
+        });
       }
     } catch (err: any) {
-      setStatusMsg({ type: 'error', text: err.message || 'Error occurred' });
+      setStatusMsg({
+        type: 'error',
+        text: err.message || 'An unexpected client-server exception occurred.',
+      });
     } finally {
       setLoading(false);
     }
@@ -68,20 +103,41 @@ export function SiteContentEditorClient({ initialSettings }: { initialSettings: 
 
   return (
     <form onSubmit={handleSubmit} className="space-y-8 max-w-4xl pb-12">
-      {statusMsg && (
+      {/* Dynamic Status / Feedback Alert */}
+      {loading && (
+        <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-[#1F1B16] text-xs flex items-center gap-3 animate-pulse">
+          <Loader2 className="w-5 h-5 text-[#5c3822] animate-spin shrink-0" />
+          <div>
+            <span className="font-bold text-[#5c3822]">Saving to Database...</span>
+            <p className="text-[11px] text-[#7e7365]">Updating SiteSetting records and revalidating public cache.</p>
+          </div>
+        </div>
+      )}
+
+      {statusMsg && !loading && (
         <div
-          className={`p-4 rounded-2xl border text-xs flex items-center gap-2 ${
+          className={`p-5 rounded-2xl border text-xs space-y-2 shadow-sm animate-in fade-in zoom-in-95 duration-200 ${
             statusMsg.type === 'success'
-              ? 'bg-green-50 border-green-200 text-green-800'
-              : 'bg-red-50 border-red-200 text-red-800'
+              ? 'bg-emerald-50 border-emerald-300 text-emerald-950'
+              : 'bg-rose-50 border-rose-300 text-rose-950'
           }`}
         >
-          {statusMsg.type === 'success' ? (
-            <CheckCircle2 className="w-4 h-4 shrink-0" />
-          ) : (
-            <AlertCircle className="w-4 h-4 shrink-0" />
+          <div className="flex items-center gap-2.5 font-bold text-sm">
+            {statusMsg.type === 'success' ? (
+              <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0" />
+            ) : (
+              <AlertCircle className="w-5 h-5 text-rose-600 shrink-0" />
+            )}
+            <span>{statusMsg.text}</span>
+          </div>
+
+          {statusMsg.details && statusMsg.details.length > 0 && (
+            <ul className="pl-7 space-y-1 text-xs text-emerald-800 list-disc">
+              {statusMsg.details.map((detail, idx) => (
+                <li key={idx}>{detail}</li>
+              ))}
+            </ul>
           )}
-          <span>{statusMsg.text}</span>
         </div>
       )}
 
@@ -210,10 +266,22 @@ export function SiteContentEditorClient({ initialSettings }: { initialSettings: 
       </GlassCard>
 
       {/* Save Button */}
-      <div className="flex justify-end pt-4 border-t border-[#d8cebe]/60">
-        <Button type="submit" variant="primary" size="lg" isLoading={loading}>
-          <Save className="w-4 h-4" />
-          <span>Save Website Content</span>
+      <div className="flex items-center justify-between pt-4 border-t border-[#d8cebe]/60">
+        <div className="text-xs text-[#7e7365]">
+          {lastSavedAt ? `Last verified & saved at ${lastSavedAt}` : 'Ready to save changes'}
+        </div>
+        <Button type="submit" variant="primary" size="lg" isLoading={loading} disabled={loading}>
+          {loading ? (
+            <>
+              <Loader2 className="w-4 h-4 animate-spin" />
+              <span>Saving to Database...</span>
+            </>
+          ) : (
+            <>
+              <Save className="w-4 h-4" />
+              <span>Save & Update Website</span>
+            </>
+          )}
         </Button>
       </div>
     </form>

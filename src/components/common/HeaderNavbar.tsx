@@ -21,9 +21,14 @@ import {
   Phone,
   MessageCircle,
 } from 'lucide-react';
+import { PublicSiteSettings, DEFAULT_SITE_SETTINGS } from '@/lib/db/settings';
 import { cn } from '@/lib/utils';
 
-export function HeaderNavbar() {
+export interface HeaderNavbarProps {
+  siteSettings?: PublicSiteSettings;
+}
+
+export function HeaderNavbar({ siteSettings = DEFAULT_SITE_SETTINGS }: HeaderNavbarProps) {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -314,7 +319,9 @@ export function HeaderNavbar() {
           <div className="flex items-center gap-2 sm:gap-3">
             {/* Quick WhatsApp Pill (Visible on Mobile & Desktop) */}
             <a
-              href="https://wa.me/923008224110?text=Assalam%20o%20Alaikum%20Amber%20Property%20Corner,%20I%20would%20like%20to%20inquire%20about%20your%20services."
+              href={`https://wa.me/${siteSettings.whatsapp_clean}?text=${encodeURIComponent(
+                'Assalam o Alaikum Amber Property Corner, I would like to inquire about your prime properties and construction services.'
+              )}`}
               target="_blank"
               rel="noopener noreferrer"
               className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#22c55e]/15 border border-[#22c55e]/30 text-[#1F1B16] text-xs font-medium hover:bg-[#22c55e]/25 transition-colors cursor-pointer"
@@ -476,23 +483,25 @@ export function HeaderNavbar() {
             {/* Quick 1-Tap Mobile Action Cards */}
             <div className="pt-3 grid grid-cols-2 gap-2.5 border-t border-[#d8cebe] mt-2">
               <a
-                href="https://wa.me/923008224110?text=Assalam%20o%20Alaikum%20Amber%20Property%20Corner,%20I%20need%20assistance."
+                href={`https://wa.me/${siteSettings.whatsapp_clean}?text=${encodeURIComponent(
+                  'Assalam o Alaikum Amber Property Corner, I need assistance.'
+                )}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex flex-col items-center justify-center p-3 rounded-2xl bg-[#22c55e]/15 border border-[#22c55e]/40 text-[#1F1B16] text-center gap-1 cursor-pointer"
               >
                 <MessageCircle className="w-5 h-5 text-[#16a34a]" />
                 <span className="text-xs font-bold text-[#16a34a]">WhatsApp</span>
-                <span className="text-[10px] text-[#7e7365]">Chat Direct</span>
+                <span className="text-[10px] text-[#7e7365] truncate max-w-[120px]">{siteSettings.whatsapp_number}</span>
               </a>
 
               <a
-                href="tel:+923008224110"
+                href={`tel:${siteSettings.whatsapp_clean}`}
                 className="flex flex-col items-center justify-center p-3 rounded-2xl bg-[#5c3822]/10 border border-[#5c3822]/30 text-[#1F1B16] text-center gap-1 cursor-pointer"
               >
                 <Phone className="w-5 h-5 text-[#5c3822]" />
                 <span className="text-xs font-bold text-[#5c3822]">Call Office</span>
-                <span className="text-[10px] text-[#7e7365]">0300 822 4110</span>
+                <span className="text-[10px] text-[#7e7365] truncate max-w-[120px]">{siteSettings.phone_primary}</span>
               </a>
             </div>
 
@@ -500,7 +509,7 @@ export function HeaderNavbar() {
             <div className="pt-1">
               <Link href="/contact" onClick={() => setMobileMenuOpen(false)}>
                 <Button variant="primary" size="md" className="w-full text-xs cursor-pointer">
-                  Visit Head Office in Gulberg Town &rarr;
+                  Visit Head Office &rarr;
                 </Button>
               </Link>
             </div>

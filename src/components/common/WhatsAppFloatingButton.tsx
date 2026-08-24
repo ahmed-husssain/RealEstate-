@@ -11,7 +11,7 @@ interface WhatsAppFloatingButtonProps {
 
 export function WhatsAppFloatingButton({
   // Note: Phone number is a placeholder requiring official business credential input in production phase
-  phoneNumber = '923001234567',
+  phoneNumber = '923008224110',
   defaultMessage = 'Hello Amber Property Corner, I would like to inquire about your prime real estate portfolio.',
 }: WhatsAppFloatingButtonProps) {
   const [isHovered, setIsHovered] = useState(false);

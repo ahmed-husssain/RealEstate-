@@ -3,8 +3,13 @@ import Link from 'next/link';
 import { ArrowUpRight } from 'lucide-react';
 import { Badge } from '@/ui/Badge';
 import { BrandLogo } from '@/components/common/BrandLogo';
+import { PublicSiteSettings, DEFAULT_SITE_SETTINGS } from '@/lib/db/settings';
 
-export function Footer() {
+export interface FooterProps {
+  siteSettings?: PublicSiteSettings;
+}
+
+export function Footer({ siteSettings = DEFAULT_SITE_SETTINGS }: FooterProps) {
   return (
     <footer className="relative z-30 bg-[#1F1B16] text-[#F8F4ED] pt-16 pb-16 mt-24 border-t border-[#6E7A67]/30 overflow-hidden pointer-events-auto">
       {/* Subtle top ambient glow */}
@@ -109,10 +114,19 @@ export function Footer() {
             </h4>
             <div className="text-xs text-[#D7CBBB] space-y-1.5">
               <p className="font-medium text-[#F8F4ED]">Amber Property Corner</p>
-              <p>B 693, Block 13 Gulberg Town, Karachi, Pakistan</p>
-              <p className="text-[11px] text-[#DDD2C2] pt-1">Mobile: +92 300 822 4110</p>
-              <p className="text-[11px] text-[#847666]">Tel: +92 21 3634 1100</p>
-              <p className="pt-1">Email: <a href="mailto:info@amberproperty.com" className="underline hover:text-white cursor-pointer">info@amberproperty.com</a></p>
+              <p>{siteSettings.office_address}</p>
+              <p className="text-[11px] text-[#DDD2C2] pt-1">
+                Mobile: <a href={`tel:${siteSettings.whatsapp_clean}`} className="hover:underline">{siteSettings.phone_primary}</a>
+              </p>
+              <p className="text-[11px] text-[#847666]">
+                Tel: <a href={`tel:${siteSettings.phone_landline.replace(/[^0-9]/g, '')}`} className="hover:underline">{siteSettings.phone_landline}</a>
+              </p>
+              <p className="text-[11px] text-[#DDD2C2]">
+                WhatsApp: <a href={`https://wa.me/${siteSettings.whatsapp_clean}`} target="_blank" rel="noopener noreferrer" className="hover:underline text-[#22c55e] font-semibold">{siteSettings.whatsapp_number}</a>
+              </p>
+              <p className="pt-1">
+                Email: <a href={`mailto:${siteSettings.contact_email}`} className="underline hover:text-white cursor-pointer">{siteSettings.contact_email}</a>
+              </p>
             </div>
 
             {/* Direct Contact Button */}

@@ -7,7 +7,9 @@ import { Button } from '@/ui/Button';
 import { BrandLogo } from '@/components/common/BrandLogo';
 import { Input } from '@/ui/Input';
 import { Select } from '@/ui/Select';
-import { Phone, Mail, MapPin, CheckCircle2, ShieldCheck } from 'lucide-react';
+import { Phone, Mail, MapPin, CheckCircle2, ShieldCheck, AlertCircle } from 'lucide-react';
+import { submitInquiryAction } from '@/lib/actions/inquiry';
+import { InquiryType } from '@prisma/client';
 import confetti from 'canvas-confetti';
 
 export default function ContactPage() {
@@ -19,21 +21,44 @@ export default function ContactPage() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setTimeout(() => {
+    setErrorMessage('');
+
+    try {
+      let type: InquiryType = InquiryType.GENERAL;
+      if (inquiryType === 'valuation') type = InquiryType.VALUATION;
+      if (inquiryType === 'off-market' || inquiryType === 'acquisition') type = InquiryType.GENERAL;
+
+      const res = await submitInquiryAction({
+        name,
+        email,
+        phone,
+        type,
+        message: `Nature of Inquiry: ${inquiryType}. Details: ${message}`,
+      });
+
+      if (res.success) {
+        setIsSubmitted(true);
+        try {
+          confetti({
+            particleCount: 80,
+            spread: 60,
+            origin: { y: 0.6 },
+            colors: ['#5c3822', '#2e3a2f', '#D8CEBE', '#847666'],
+          });
+        } catch (e) {}
+      } else {
+        setErrorMessage(res.error || 'Failed to submit inquiry');
+      }
+    } catch (err: any) {
+      setErrorMessage(err.message || 'An unexpected error occurred.');
+    } finally {
       setLoading(false);
-      setIsSubmitted(true);
-      try {
-        confetti({
-          particleCount: 80,
-          spread: 60,
-          origin: { y: 0.6 },
-          colors: ['#5c3822', '#2e3a2f', '#D8CEBE', '#847666'],
-        });
-      } catch (e) {}
-    }, 600);
+    }
   };
 
   return (
@@ -132,6 +157,13 @@ export default function ContactPage() {
                   <ShieldCheck className="w-4 h-4 text-[#2e3a2f] shrink-0" />
                   <span>All communications protected under standard international NDA protocol.</span>
                 </div>
+
+                {errorMessage && (
+                  <div className="p-3 rounded-xl bg-red-50 border border-red-200 text-xs text-red-700 flex items-center gap-2">
+                    <AlertCircle className="w-4 h-4 shrink-0" />
+                    <span>{errorMessage}</span>
+                  </div>
+                )}
 
                 <div className="pt-2">
                   <Button type="submit" variant="primary" size="lg" className="w-full" isLoading={loading}>

@@ -6,7 +6,9 @@ import { Button } from '@/ui/Button';
 import { Input } from '@/ui/Input';
 import { Badge } from '@/ui/Badge';
 import { Property } from '@/types';
-import { Calendar, Clock, CheckCircle2, Video, UserCheck } from 'lucide-react';
+import { Calendar, Clock, CheckCircle2, Video, UserCheck, AlertCircle } from 'lucide-react';
+import { submitInquiryAction } from '@/lib/actions/inquiry';
+import { InquiryType } from '@prisma/client';
 import confetti from 'canvas-confetti';
 
 export interface ScheduleViewingModalProps {
@@ -30,22 +32,43 @@ export function ScheduleViewingModal({
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    setErrorMessage('');
 
-    setTimeout(() => {
+    try {
+      const res = await submitInquiryAction({
+        propertyId: property.id,
+        name,
+        email,
+        phone,
+        type: InquiryType.VIEWING,
+        preferredDate: date,
+        timeSlot,
+        message: `Format: ${viewingType === 'in-person' ? 'Private In-Person Tour' : 'Live 4K Virtual Tour'}. Property: ${property.title}`,
+      });
+
+      if (res.success) {
+        setIsSubmitted(true);
+        try {
+          confetti({
+            particleCount: 80,
+            spread: 60,
+            origin: { y: 0.6 },
+            colors: ['#5c3822', '#2e3a2f', '#D8CEBE', '#847666'],
+          });
+        } catch (err) {}
+      } else {
+        setErrorMessage(res.error || 'Failed to submit viewing request');
+      }
+    } catch (err: any) {
+      setErrorMessage(err.message || 'An unexpected error occurred.');
+    } finally {
       setLoading(false);
-      setIsSubmitted(true);
-      try {
-        confetti({
-          particleCount: 80,
-          spread: 60,
-          origin: { y: 0.6 },
-          colors: ['#5c3822', '#2e3a2f', '#D8CEBE', '#847666'],
-        });
-      } catch (e) {}
-    }, 600);
+    }
   };
 
   const handleResetAndClose = () => {
@@ -179,6 +202,13 @@ export function ScheduleViewingModal({
           <div className="bg-[#f5efe6] border border-[#d8cebe]/70 rounded-xl p-3 text-[11px] text-[#7e7365] leading-relaxed">
             All private viewings adhere to strict client confidentiality and non-disclosure standards.
           </div>
+
+          {errorMessage && (
+            <div className="p-3 rounded-xl bg-red-50 border border-red-200 text-xs text-red-700 flex items-center gap-2">
+              <AlertCircle className="w-4 h-4 shrink-0" />
+              <span>{errorMessage}</span>
+            </div>
+          )}
 
           <div className="flex justify-end gap-3 pt-2">
             <Button type="button" variant="ghost" onClick={handleResetAndClose}>

@@ -9,6 +9,9 @@ import { TextReveal } from '@/ui/TextReveal';
 import { Button } from '@/ui/Button';
 import { Badge } from '@/ui/Badge';
 import { GlassCard } from '@/ui/GlassCard';
+import { getProperties } from '@/lib/db/properties';
+import { getAreas } from '@/lib/db/areas';
+import { mapDbPropertyToProperty, mapDbAreaToNeighborhood } from '@/lib/db/mappers';
 import {
   ArrowUpRight,
   Shield,
@@ -20,9 +23,20 @@ import {
   ChevronRight,
 } from 'lucide-react';
 
-export default function HomePage() {
-  const featuredProperties = mockProperties.filter((p) => p.isFeatured).slice(0, 3);
-  const secondaryProperties = mockProperties.filter((p) => !p.isFeatured).slice(0, 3);
+export default async function HomePage() {
+  const dbProperties = await getProperties({ limit: 6 });
+  const dbAreas = await getAreas();
+
+  const properties = dbProperties.length > 0
+    ? dbProperties.map(mapDbPropertyToProperty)
+    : mockProperties;
+
+  const neighborhoods = dbAreas.length > 0
+    ? dbAreas.map(mapDbAreaToNeighborhood)
+    : mockNeighborhoods;
+
+  const featuredProperties = properties.filter((p) => p.isFeatured).slice(0, 3);
+  const secondaryProperties = properties.filter((p) => !p.isFeatured).slice(0, 3);
 
   return (
     <div className="space-y-24 sm:space-y-32">
@@ -209,7 +223,7 @@ export default function HomePage() {
 
         {/* 4 Neighborhood Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {mockNeighborhoods.map((neighborhood) => (
+          {neighborhoods.slice(0, 4).map((neighborhood) => (
             <Link
               key={neighborhood.id}
               href={`/neighborhoods/${neighborhood.slug}`}

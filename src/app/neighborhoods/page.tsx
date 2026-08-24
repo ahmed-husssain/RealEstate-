@@ -2,12 +2,19 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { mockNeighborhoods } from '@/data/neighborhoods';
+import { getAreas } from '@/lib/db/areas';
+import { mapDbAreaToNeighborhood } from '@/lib/db/mappers';
 import { GlassCard } from '@/ui/GlassCard';
 import { Badge } from '@/ui/Badge';
 import { Button } from '@/ui/Button';
 import { MapPin, TrendingUp, ShieldCheck, Footprints, ArrowUpRight } from 'lucide-react';
 
-export default function NeighborhoodsPage() {
+export default async function NeighborhoodsPage() {
+  const dbAreas = await getAreas();
+  const neighborhoods = dbAreas.length > 0
+    ? dbAreas.map(mapDbAreaToNeighborhood)
+    : mockNeighborhoods;
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10 space-y-12">
       {/* Header */}
@@ -26,7 +33,7 @@ export default function NeighborhoodsPage() {
 
       {/* Grid of Neighborhoods */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {mockNeighborhoods.map((neighborhood) => (
+        {neighborhoods.map((neighborhood) => (
           <GlassCard
             key={neighborhood.id}
             variant="interactive"

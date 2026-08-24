@@ -7,7 +7,9 @@ import { Button } from '@/ui/Button';
 import { Input } from '@/ui/Input';
 import { Select } from '@/ui/Select';
 import { formatCurrency, formatNumber } from '@/lib/utils';
-import { Sparkles, CheckCircle2, ShieldCheck, ArrowRight, ArrowLeft } from 'lucide-react';
+import { Sparkles, CheckCircle2, ShieldCheck, ArrowRight, ArrowLeft, AlertCircle } from 'lucide-react';
+import { submitValuationAction } from '@/lib/actions/valuation';
+import { PropertyType, AreaUnit, PropertyCondition } from '@prisma/client';
 import confetti from 'canvas-confetti';
 
 export default function ValuationPage() {
@@ -49,17 +51,62 @@ export default function ValuationPage() {
     return { low, high, mid, avgSqFt: Math.round(mid / areaSqFt) };
   };
 
-  const handleFinalSubmit = (e: React.FormEvent) => {
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const handleFinalSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsCalculated(true);
+    setLoading(true);
+    setErrorMessage('');
+
+    const est = calculateEstimate();
+
     try {
-      confetti({
-        particleCount: 100,
-        spread: 70,
-        origin: { y: 0.6 },
-        colors: ['#5c3822', '#2e3a2f', '#D8CEBE', '#847666'],
+      let pType: PropertyType = PropertyType.HOUSE;
+      if (propertyType === 'luxury-villa') pType = PropertyType.VILLA;
+      if (propertyType === 'penthouse') pType = PropertyType.PENTHOUSE;
+      if (propertyType === 'estate') pType = PropertyType.ESTATE;
+      if (propertyType === 'townhouse') pType = PropertyType.TOWNHOUSE;
+      if (propertyType === 'modern-apartment') pType = PropertyType.APARTMENT;
+
+      let cond: PropertyCondition = PropertyCondition.GOOD;
+      if (condition === 'museum') cond = PropertyCondition.EXCELLENT;
+      if (condition === 'turnkey') cond = PropertyCondition.BRAND_NEW;
+      if (condition === 'renovation') cond = PropertyCondition.NEEDS_RENOVATION;
+
+      const res = await submitValuationAction({
+        propertyType: pType,
+        areaName: `${address ? address + ', ' : ''}${city}`,
+        areaSize: areaSqFt,
+        areaUnit: AreaUnit.SQFT,
+        bedrooms,
+        bathrooms,
+        condition: cond,
+        ownerName: contactName,
+        ownerPhone: contactPhone,
+        ownerEmail: contactEmail,
+        estimatedMin: est.low,
+        estimatedMax: est.high,
       });
-    } catch (e) {}
+
+      if (res.success) {
+        setIsCalculated(true);
+        try {
+          confetti({
+            particleCount: 100,
+            spread: 70,
+            origin: { y: 0.6 },
+            colors: ['#5c3822', '#2e3a2f', '#D8CEBE', '#847666'],
+          });
+        } catch (err) {}
+      } else {
+        setErrorMessage(res.error || 'Failed to generate valuation');
+      }
+    } catch (err: any) {
+      setErrorMessage(err.message || 'An unexpected error occurred.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const estimate = calculateEstimate();
@@ -396,6 +443,12 @@ export default function ValuationPage() {
                       Your asset information is never public. Results are calculated in encrypted memory.
                     </p>
                   </div>
+                  {errorMessage && (
+                    <div className="p-3 rounded-xl bg-red-50 border border-red-200 text-xs text-red-700 flex items-center gap-2">
+                      <AlertCircle className="w-4 h-4 shrink-0" />
+                      <span>{errorMessage}</span>
+                    </div>
+                  )}
                 </div>
 
                 <div className="flex justify-between pt-4">
@@ -403,7 +456,7 @@ export default function ValuationPage() {
                     <ArrowLeft className="w-4 h-4" />
                     <span>Back</span>
                   </Button>
-                  <Button type="submit" variant="primary" size="lg">
+                  <Button type="submit" variant="primary" size="lg" isLoading={loading}>
                     <span>Generate Valuation Dossier</span>
                     <Sparkles className="w-4 h-4" />
                   </Button>

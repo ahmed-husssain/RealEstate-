@@ -6,7 +6,7 @@ import { BrandLogo } from '@/components/common/BrandLogo';
 
 export function Footer() {
   return (
-    <footer className="relative bg-[#1F1B16] text-[#F8F4ED] pt-16 pb-12 mt-24 border-t border-[#6E7A67]/30 overflow-hidden">
+    <footer className="relative z-30 bg-[#1F1B16] text-[#F8F4ED] pt-16 pb-12 mt-24 border-t border-[#6E7A67]/30 overflow-hidden pointer-events-auto">
       {/* Subtle top ambient glow */}
       <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#d8cebe]/40 to-transparent" />
       
@@ -31,22 +31,22 @@ export function Footer() {
             </h4>
             <ul className="space-y-2 text-xs text-[#D7CBBB]">
               <li>
-                <Link href="/properties?type=luxury-villa" className="hover:text-[#F8F4ED] transition-colors flex items-center gap-1">
+                <Link href="/properties?type=luxury-villa" className="hover:text-[#F8F4ED] transition-colors flex items-center gap-1 cursor-pointer">
                   Luxury Houses & Villas <ArrowUpRight className="w-3 h-3 opacity-60" />
                 </Link>
               </li>
               <li>
-                <Link href="/properties?type=penthouse" className="hover:text-[#F8F4ED] transition-colors flex items-center gap-1">
+                <Link href="/properties?type=penthouse" className="hover:text-[#F8F4ED] transition-colors flex items-center gap-1 cursor-pointer">
                   Penthouses & Apartments <ArrowUpRight className="w-3 h-3 opacity-60" />
                 </Link>
               </li>
               <li>
-                <Link href="/properties?type=estate" className="hover:text-[#F8F4ED] transition-colors flex items-center gap-1">
+                <Link href="/properties?type=estate" className="hover:text-[#F8F4ED] transition-colors flex items-center gap-1 cursor-pointer">
                   Residential Plots <ArrowUpRight className="w-3 h-3 opacity-60" />
                 </Link>
               </li>
               <li>
-                <Link href="/properties" className="hover:text-[#F8F4ED] transition-colors flex items-center gap-1">
+                <Link href="/properties" className="hover:text-[#F8F4ED] transition-colors flex items-center gap-1 cursor-pointer">
                   All Active Listings <ArrowUpRight className="w-3 h-3 opacity-60" />
                 </Link>
               </li>
@@ -60,37 +60,37 @@ export function Footer() {
             </h4>
             <ul className="space-y-2 text-xs text-[#D7CBBB]">
               <li>
-                <Link href="/neighborhoods/north-nazimabad" className="hover:text-[#F8F4ED] transition-colors">
+                <Link href="/neighborhoods/north-nazimabad" className="hover:text-[#F8F4ED] transition-colors cursor-pointer">
                   North Nazimabad
                 </Link>
               </li>
               <li>
-                <Link href="/neighborhoods/gulshan-e-iqbal" className="hover:text-[#F8F4ED] transition-colors">
+                <Link href="/neighborhoods/gulshan-e-iqbal" className="hover:text-[#F8F4ED] transition-colors cursor-pointer">
                   Gulshan-e-Iqbal
                 </Link>
               </li>
               <li>
-                <Link href="/neighborhoods/federal-b-area" className="hover:text-[#F8F4ED] transition-colors">
+                <Link href="/neighborhoods/federal-b-area" className="hover:text-[#F8F4ED] transition-colors cursor-pointer">
                   Federal B Area (F.B Area)
                 </Link>
               </li>
               <li>
-                <Link href="/neighborhoods/scheme-33" className="hover:text-[#F8F4ED] transition-colors">
+                <Link href="/neighborhoods/scheme-33" className="hover:text-[#F8F4ED] transition-colors cursor-pointer">
                   Scheme 33 (Gulzar-e-Hijri)
                 </Link>
               </li>
               <li>
-                <Link href="/neighborhoods/buffer-zone" className="hover:text-[#F8F4ED] transition-colors">
+                <Link href="/neighborhoods/buffer-zone" className="hover:text-[#F8F4ED] transition-colors cursor-pointer">
                   Buffer Zone & North Karachi
                 </Link>
               </li>
               <li>
-                <Link href="/neighborhoods/scheme-45-taiser-town" className="hover:text-[#F8F4ED] transition-colors">
+                <Link href="/neighborhoods/scheme-45-taiser-town" className="hover:text-[#F8F4ED] transition-colors cursor-pointer">
                   Scheme 45 (Taiser Town)
                 </Link>
               </li>
               <li>
-                <Link href="/neighborhoods" className="hover:text-[#F8F4ED] transition-colors text-[#DDD2C2] font-semibold">
+                <Link href="/neighborhoods" className="hover:text-[#F8F4ED] transition-colors text-[#DDD2C2] font-semibold cursor-pointer">
                   Explore All Areas &rarr;
                 </Link>
               </li>
@@ -109,7 +109,7 @@ export function Footer() {
               <p className="text-[11px] text-[#847666]">Tel: +92 21 3634 1100</p>
             </div>
             <div className="pt-2 text-xs text-[#D7CBBB]">
-              <p>Email: <a href="mailto:info@amberproperty.com" className="underline hover:text-white">info@amberproperty.com</a></p>
+              <p>Email: <a href="mailto:info@amberproperty.com" className="underline hover:text-white cursor-pointer">info@amberproperty.com</a></p>
             </div>
           </div>
         </div>
@@ -117,11 +117,17 @@ export function Footer() {
         {/* Bottom Bar */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] font-mono text-[#847666]">
           <p>© {new Date().getFullYear()} Amber Property Corner. All rights reserved.</p>
-          <div className="flex items-center gap-5">
-            <Link href="/about" className="hover:text-[#D7CBBB] transition-colors">About Us</Link>
-            <Link href="/services" className="hover:text-[#D7CBBB] transition-colors">Construction Services</Link>
-            <Link href="/contact" className="hover:text-[#D7CBBB] transition-colors">Contact Office</Link>
-            <Link href="/admin/login" className="hover:text-[#D7CBBB] text-[#D8CEBE] font-semibold transition-colors flex items-center gap-1">
+          <div className="flex flex-wrap items-center gap-6">
+            <Link href="/about" className="hover:text-[#F8F4ED] transition-colors py-1 cursor-pointer">
+              About Us
+            </Link>
+            <Link href="/services" className="hover:text-[#F8F4ED] transition-colors py-1 cursor-pointer">
+              Construction Services
+            </Link>
+            <Link href="/contact" className="hover:text-[#F8F4ED] transition-colors py-1 cursor-pointer">
+              Contact Office
+            </Link>
+            <Link href="/admin/login" className="hover:text-[#F8F4ED] text-[#DDD2C2] font-semibold transition-colors flex items-center gap-1.5 py-1 px-2.5 rounded-lg bg-white/5 border border-white/10 hover:border-white/20 cursor-pointer">
               <span>Admin Login</span>
               <ArrowUpRight className="w-3 h-3" />
             </Link>

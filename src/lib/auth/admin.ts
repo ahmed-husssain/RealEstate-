@@ -5,7 +5,21 @@ import crypto from 'crypto';
 import { AdminRole } from '@prisma/client';
 
 const COOKIE_NAME = 'amber_admin_session';
-const SESSION_SECRET = process.env.ADMIN_SESSION_SECRET || 'amber-property-corner-secret-key-2026-secure-session';
+
+function getSessionSecret(): string {
+  const secret = process.env.ADMIN_SESSION_SECRET;
+  if (!secret) {
+    throw new Error(
+      'CRITICAL SECURITY CONFIGURATION ERROR: ADMIN_SESSION_SECRET environment variable is not defined. Set a secure secret of at least 32 characters in your server environment.'
+    );
+  }
+  if (secret.length < 32) {
+    throw new Error(
+      'CRITICAL SECURITY CONFIGURATION ERROR: ADMIN_SESSION_SECRET must be at least 32 characters in length for secure HMAC-SHA256 session signing.'
+    );
+  }
+  return secret;
+}
 
 export interface AdminSessionPayload {
   userId: string;
@@ -26,9 +40,10 @@ export async function verifyPassword(password: string, hash: string): Promise<bo
 
 // Sign payload with HMAC SHA-256
 export function signSessionPayload(payload: AdminSessionPayload): string {
+  const secret = getSessionSecret();
   const base64Data = Buffer.from(JSON.stringify(payload)).toString('base64url');
   const signature = crypto
-    .createHmac('sha256', SESSION_SECRET)
+    .createHmac('sha256', secret)
     .update(base64Data)
     .digest('base64url');
   return `${base64Data}.${signature}`;
@@ -37,11 +52,12 @@ export function signSessionPayload(payload: AdminSessionPayload): string {
 // Verify and decode payload
 export function verifySessionToken(token: string): AdminSessionPayload | null {
   try {
+    const secret = getSessionSecret();
     const [base64Data, signature] = token.split('.');
     if (!base64Data || !signature) return null;
 
     const expectedSignature = crypto
-      .createHmac('sha256', SESSION_SECRET)
+      .createHmac('sha256', secret)
       .update(base64Data)
       .digest('base64url');
 

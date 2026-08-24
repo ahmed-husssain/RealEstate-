@@ -4,39 +4,48 @@ import bcrypt from 'bcryptjs';
 const prisma = new PrismaClient();
 
 async function main() {
-  console.log('🔒 Initializing Super Admin Account for Amber Property Corner...');
+  const email = process.env.ADMIN_INITIAL_EMAIL?.trim().toLowerCase();
+  const password = process.env.ADMIN_INITIAL_PASSWORD;
+  const name = process.env.ADMIN_INITIAL_NAME?.trim() || 'Managing Director | Amber Property Corner';
+
+  if (!email || !password) {
+    throw new Error(
+      'Missing required environment variables: ADMIN_INITIAL_EMAIL and ADMIN_INITIAL_PASSWORD must be configured before running seed-admin.'
+    );
+  }
+
+  if (password.length < 8) {
+    throw new Error('ADMIN_INITIAL_PASSWORD must be at least 8 characters in length.');
+  }
 
   const existingAdmin = await prisma.adminUser.findUnique({
-    where: { email: 'admin@amberproperty.com' },
+    where: { email },
   });
 
   if (existingAdmin) {
-    console.log('ℹ️ Super Admin account already exists (admin@amberproperty.com).');
+    console.log('ℹ️ Admin account already exists for the specified email. Existing credentials left unchanged.');
     return;
   }
 
   const salt = await bcrypt.genSalt(10);
-  const passwordHash = await bcrypt.hash('AmberProperty2026!', salt);
+  const passwordHash = await bcrypt.hash(password, salt);
 
-  const admin = await prisma.adminUser.create({
+  await prisma.adminUser.create({
     data: {
-      email: 'admin@amberproperty.com',
-      name: 'Managing Director | Amber Property',
+      email,
+      name,
       passwordHash,
       role: AdminRole.ADMIN,
       isActive: true,
     },
   });
 
-  console.log('✅ Created Super Admin Account:');
-  console.log(`   Email: ${admin.email}`);
-  console.log(`   Role: ${admin.role}`);
-  console.log('   Password: AmberProperty2026!');
+  console.log('✅ Admin seed completed successfully.');
 }
 
 main()
   .catch((e) => {
-    console.error('❌ Error seeding admin user:', e);
+    console.error('❌ Error during admin initialization:', e.message || e);
     process.exit(1);
   })
   .finally(async () => {

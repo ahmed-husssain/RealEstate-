@@ -11,6 +11,11 @@ generator client {
 // Enums
 // --------------------------------------------------------
 
+enum AdminRole {
+  ADMIN
+  USER
+}
+
 enum PropertyStatus {
   FOR_SALE
   FOR_LEASE
@@ -72,59 +77,84 @@ enum ValuationStatus {
 // Models
 // --------------------------------------------------------
 
+model AdminUser {
+  id           String    @id @default(cuid())
+  email        String    @unique
+  passwordHash String
+  name         String
+  role         AdminRole @default(USER)
+  isActive     Boolean   @default(true)
+  lastLoginAt  DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  @@index([email])
+  @@index([role])
+  @@index([isActive])
+  @@map("admin_users")
+}
+
+model SiteSetting {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     String   @db.Text
+  category  String   @default("general") // general, hero, contact, announcements
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([key])
+  @@index([category])
+  @@map("site_settings")
+}
+
 model Property {
-  id           String         @id @default(cuid())
-  slug         String         @unique
-  title        String
-  description  String         @db.Text
-  price        Decimal        @db.Decimal(14, 2)
-  priceType    String         @default("TOTAL")
-  status       PropertyStatus @default(FOR_SALE)
-  propertyType PropertyType
-  bedrooms     Int            @default(0)
-  bathrooms    Int            @default(0)
-  areaSize     Decimal        @db.Decimal(10, 2)
-  areaUnit     AreaUnit       @default(SQYD)
-  address      String
-  areaId       String
-  agentId      String?
-  isFeatured   Boolean        @default(false)
-  createdAt    DateTime       @default(now())
-  updatedAt    DateTime       @updatedAt
+  id            String         @id @default(cuid())
+  slug          String         @unique
+  title         String
+  tagline       String?
+  description   String         @db.Text
+  price         Decimal        @db.Decimal(14, 2)
+  priceFormatted String?
+  priceSuffix   String?
+  priceType     String         @default("TOTAL")
+  status        PropertyStatus @default(FOR_SALE)
+  isFeatured    Boolean        @default(false)
+  propertyType  PropertyType   @default(HOUSE)
+  bedrooms      Int            @default(0)
+  bathrooms     Int            @default(0)
+  areaSize      Decimal        @db.Decimal(10, 2)
+  areaUnit      AreaUnit       @default(SQYD)
+  lotSize       Decimal?       @db.Decimal(10, 2)
+  lotSizeUnit   AreaUnit?      @default(SQYD)
+  yearBuilt     Int?
+  parkingSpaces Int            @default(0)
+  energyRating  String?
+  floorLevel    String?
+  condition     PropertyCondition @default(GOOD)
+  address       String
+  postalCode    String?
+  latitude      Decimal?       @db.Decimal(10, 7)
+  longitude     Decimal?       @db.Decimal(10, 7)
+  amenities     String[]       @default([])
+  virtualTourUrl String?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
 
   // Relationships
-  area      Area            @relation(fields: [areaId], references: [id], onDelete: Restrict)
-  agent     Agent?          @relation(fields: [agentId], references: [id], onDelete: SetNull)
-  images    PropertyImage[]
-  inquiries Inquiry[]
+  areaId        String
+  area          Area           @relation(fields: [areaId], references: [id], onDelete: Cascade)
+  agentId       String?
+  agent         Agent?         @relation(fields: [agentId], references: [id], onDelete: SetNull)
+  images        PropertyImage[]
+  inquiries     Inquiry[]
 
-  // Indexes
-  @@index([slug])
+  // Indexes for high-performance filtering
   @@index([areaId])
-  @@index([agentId])
   @@index([status])
   @@index([propertyType])
   @@index([isFeatured])
-}
-
-model Area {
-  id          String   @id @default(cuid())
-  slug        String   @unique
-  name        String
-  city        String   @default("Karachi")
-  description String?  @db.Text
-  heroImage   String?
-  isPopular   Boolean  @default(false)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  // Relationships
-  properties Property[]
-
-  // Indexes
-  @@index([slug])
-  @@index([city])
-  @@index([isPopular])
+  @@index([price])
+  @@index([createdAt])
 }
 
 model PropertyImage {
@@ -134,25 +164,50 @@ model PropertyImage {
   alt          String?
   isHero       Boolean  @default(false)
   displayOrder Int      @default(0)
+  createdAt    DateTime @default(now())
 
   // Relationships
   property Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
 
   // Indexes
   @@index([propertyId])
+  @@index([displayOrder])
+}
+
+model Area {
+  id           String     @id @default(cuid())
+  slug         String     @unique
+  name         String
+  city         String     @default("Karachi")
+  tagline      String?
+  description  String     @db.Text
+  heroImage    String
+  avgPriceSqYd String?    @default("PKR 150,000 / Sq Yd")
+  annualGrowth String?    @default("+12.5%")
+  isPopular    Boolean    @default(true)
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  // Relationships
+  properties Property[]
+
+  // Indexes
+  @@index([slug])
+  @@index([city])
 }
 
 model Agent {
-  id        String   @id @default(cuid())
-  name      String
-  phone     String
-  email     String   @unique
-  whatsapp  String?
-  avatarUrl String?
-  role      String   @default("Consultant")
-  isActive  Boolean  @default(true)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id              String     @id @default(cuid())
+  name            String
+  role            String?
+  phone           String
+  email           String     @unique
+  whatsapp        String?
+  avatarUrl       String
+  experienceYears Int        @default(5)
+  isActive        Boolean    @default(true)
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
 
   // Relationships
   properties Property[]

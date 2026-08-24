@@ -1,7 +1,8 @@
 import React from 'react';
 import Link from 'next/link';
-import { Building2, ArrowUpRight, ShieldCheck, Award, Compass, Sparkles } from 'lucide-react';
+import { ArrowUpRight, ShieldCheck, Award, Compass, Sparkles } from 'lucide-react';
 import { Badge } from '@/ui/Badge';
+import { BrandLogo } from '@/components/common/BrandLogo';
 
 export function Footer() {
   return (
@@ -13,14 +14,7 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12 border-b border-[#6E7A67]/20">
           {/* Brand Column */}
           <div className="lg:col-span-2 space-y-4">
-            <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#5c3822] to-[#2e3a2f] flex items-center justify-center text-[#F8F4ED] shadow-inset-highlight">
-                <Building2 className="w-4 h-4" />
-              </div>
-              <span className="font-display font-medium text-lg tracking-tight text-[#F8F4ED]">
-                Amber Property Corner
-              </span>
-            </div>
+            <BrandLogo variant="on-dark" />
             <p className="text-xs text-[#D7CBBB] leading-relaxed max-w-sm">
               An architectural real estate advisory dedicated to prime luxury estates, private penthouses, and landmark residences. Curating environments of enduring proportion and quiet luxury.
             </p>

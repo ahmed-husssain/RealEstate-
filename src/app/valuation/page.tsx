@@ -7,7 +7,7 @@ import { Button } from '@/ui/Button';
 import { Input } from '@/ui/Input';
 import { Select } from '@/ui/Select';
 import { formatCurrency, formatNumber } from '@/lib/utils';
-import { Building2, Sparkles, CheckCircle2, Calculator, ShieldCheck, ArrowRight, ArrowLeft } from 'lucide-react';
+import { Sparkles, CheckCircle2, ShieldCheck, ArrowRight, ArrowLeft } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
 export default function ValuationPage() {

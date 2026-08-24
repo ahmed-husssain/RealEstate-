@@ -296,6 +296,25 @@ export default function PropertyDetailPage() {
 
               <div className="space-y-2.5 pt-2 text-xs">
                 <a
+                  href={`https://wa.me/923001234567?text=${encodeURIComponent(`Hello, I would like to inquire regarding ${property.title} (${property.location.address}).`)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 p-3 rounded-xl bg-[#22c55e]/10 border border-[#22c55e]/30 hover:bg-[#22c55e]/20 text-[#1F1B16] transition-colors group cursor-pointer"
+                  aria-label="Chat with Listing Advisor on WhatsApp"
+                >
+                  <div className="relative w-5 h-5 rounded-full overflow-hidden shrink-0">
+                    <Image
+                      src="/amber-property-corner-whatsapp.png"
+                      alt="WhatsApp Concierge"
+                      fill
+                      className="object-contain"
+                    />
+                  </div>
+                  <span className="font-sans font-medium text-xs text-[#1F1B16]">
+                    Direct WhatsApp Inquiry
+                  </span>
+                </a>
+                <a
                   href={`tel:${property.agent.phone}`}
                   className="flex items-center gap-3 p-3 rounded-xl bg-[#f5efe6] border border-[#d8cebe] hover:bg-white text-[#1F1B16] transition-colors"
                 >

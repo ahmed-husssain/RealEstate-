@@ -9,7 +9,8 @@ import { Property, PropertyFilterState } from '@/types';
 import { Badge } from '@/ui/Badge';
 import { Button } from '@/ui/Button';
 import { GlassCard } from '@/ui/GlassCard';
-import { Building2, SlidersHorizontal, ArrowUpDown, Grid3X3, ListFilter, RotateCcw } from 'lucide-react';
+import { BrandLogo } from '@/components/common/BrandLogo';
+import { SlidersHorizontal, ArrowUpDown, Grid3X3, ListFilter, RotateCcw } from 'lucide-react';
 
 function PropertiesContent() {
   const searchParams = useSearchParams();
@@ -136,7 +137,7 @@ function PropertiesContent() {
         </div>
       ) : (
         <GlassCard variant="card" rounded="2rem" className="p-12 text-center space-y-4">
-          <Building2 className="w-12 h-12 mx-auto text-[#7e7365]" />
+          <BrandLogo href="" imageClassName="h-10 mx-auto" />
           <div className="space-y-1">
             <h3 className="font-display font-medium text-xl text-[#1F1B16]">
               No matching properties found

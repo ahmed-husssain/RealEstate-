@@ -5,7 +5,8 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Button } from '@/ui/Button';
 import { Badge } from '@/ui/Badge';
-import { Menu, X, Heart, Building2, PhoneCall } from 'lucide-react';
+import { BrandLogo } from '@/components/common/BrandLogo';
+import { Menu, X, Heart, PhoneCall } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 export function HeaderNavbar() {
@@ -60,22 +61,7 @@ export function HeaderNavbar() {
           )}
         >
           {/* Brand Logo */}
-          <Link
-            href="/"
-            className="flex items-center gap-2.5 group cursor-pointer"
-          >
-            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#5c3822] to-[#2e3a2f] flex items-center justify-center text-[#F8F4ED] shadow-inset-highlight group-hover:scale-105 transition-transform">
-              <Building2 className="w-4 h-4" />
-            </div>
-            <div className="flex flex-col">
-              <span className="font-display font-medium text-sm sm:text-base tracking-tight text-[#1F1B16]">
-                Amber Property Corner
-              </span>
-              <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-[#7e7365] -mt-1 hidden sm:inline">
-                Estates & Architecture
-              </span>
-            </div>
-          </Link>
+          <BrandLogo priority={true} />
 
           {/* Desktop Navigation Links */}
           <nav className="hidden md:flex items-center gap-1 lg:gap-2">

@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { GlassCard } from '@/ui/GlassCard';
 import { Badge } from '@/ui/Badge';
 import { Button } from '@/ui/Button';
+import { BrandLogo } from '@/components/common/BrandLogo';
 import { Input } from '@/ui/Input';
 import { Select } from '@/ui/Select';
 import { Phone, Mail, MapPin, CheckCircle2, ShieldCheck } from 'lucide-react';
@@ -39,7 +40,10 @@ export default function ContactPage() {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-12 space-y-12">
       {/* Header */}
       <div className="text-center max-w-2xl mx-auto space-y-3">
-        <Badge variant="exclusive" size="sm">Private Concierge</Badge>
+        <div className="flex items-center justify-center gap-3">
+          <BrandLogo href="" imageClassName="h-10" />
+          <Badge variant="exclusive" size="sm">Private Concierge</Badge>
+        </div>
         <h1 className="font-display font-medium text-3xl sm:text-5xl text-[#1F1B16] tracking-tight">
           Initiate Confidential Dialogue
         </h1>

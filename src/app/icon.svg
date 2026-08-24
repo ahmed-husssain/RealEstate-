@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <!-- Gold Gradient for Outer Pyramid Structure -->
+    <linearGradient id="amberGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#D4AF37" />
+      <stop offset="50%" stop-color="#C5A059" />
+      <stop offset="100%" stop-color="#9E782F" />
+    </linearGradient>
+    <!-- Secondary Gold Shading -->
+    <linearGradient id="amberGoldDark" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#8F6B28" />
+      <stop offset="100%" stop-color="#BA9448" />
+    </linearGradient>
+    <!-- Dark Architectural Silhouette -->
+    <linearGradient id="charcoalTower" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2D2822" />
+      <stop offset="100%" stop-color="#161310" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background is transparent -->
+
+  <g transform="translate(256, 256) scale(0.92) translate(-256, -256)">
+    <!-- Outer Golden Triangle Structure -->
+    <!-- Top Apex & Main Triangle Frame -->
+    <path
+      d="M256 60 L440 380 L395 380 L256 135 L117 380 L72 380 Z"
+      fill="url(#amberGold)"
+    />
+
+    <!-- Inner Golden Chevron / Sub-Triangle Frame -->
+    <path
+      d="M256 142 L392 380 L354 380 L256 208 L158 380 L120 380 Z"
+      fill="url(#amberGoldDark)"
+      opacity="0.9"
+    />
+
+    <!-- Bottom Horizontal Ground Platform -->
+    <path
+      d="M48 402 L464 402 L464 422 L48 422 Z"
+      fill="url(#amberGold)"
+    />
+
+    <!-- Left Small Accent Baseline -->
+    <path
+      d="M100 428 L140 428 L126 444 L86 444 Z"
+      fill="url(#amberGoldDark)"
+    />
+
+    <!-- Inner Architectural Silhouette (Dark Buildings) -->
+    <!-- Left Tower -->
+    <path
+      d="M168 380 L168 290 L196 268 L196 380 Z"
+      fill="url(#charcoalTower)"
+    />
+    <!-- Center-Left Tower -->
+    <path
+      d="M204 380 L204 250 L236 218 L236 380 Z"
+      fill="url(#charcoalTower)"
+    />
+    <!-- Center High Tower with Peak -->
+    <path
+      d="M242 380 L242 195 L256 182 L270 195 L270 380 Z"
+      fill="url(#charcoalTower)"
+    />
+    <!-- Center-Right Tower -->
+    <path
+      d="M276 380 L276 226 L308 256 L308 380 Z"
+      fill="url(#charcoalTower)"
+    />
+    <!-- Right Tower -->
+    <path
+      d="M316 380 L316 280 L344 300 L344 380 Z"
+      fill="url(#charcoalTower)"
+    />
+
+    <!-- Golden Window / Facet Insets on Central Tower -->
+    <path
+      d="M248 215 L256 206 L264 215 L264 380 L248 380 Z"
+      fill="url(#amberGold)"
+      opacity="0.85"
+    />
+    <!-- Golden Fluting on Side Tower -->
+    <path
+      d="M284 246 L298 260 L298 380 L284 380 Z"
+      fill="url(#amberGold)"
+      opacity="0.85"
+    />
+  </g>
+</svg>

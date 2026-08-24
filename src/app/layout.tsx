@@ -5,6 +5,7 @@ import { HeaderNavbar } from '@/components/common/HeaderNavbar';
 import { Footer } from '@/components/common/Footer';
 import { GuideRails } from '@/components/common/GuideRails';
 import { BackgroundCanvas } from '@/components/common/BackgroundCanvas';
+import { WhatsAppFloatingButton } from '@/components/common/WhatsAppFloatingButton';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -26,11 +27,22 @@ export const metadata: Metadata = {
     'luxury real estate',
     'architectural homes',
     'penthouses',
-    'bel air estates',
-    'manhattan luxury apartments',
     'amber property corner',
+    'karachi luxury estates',
+    'prime property advisory',
   ],
   authors: [{ name: 'Amber Property Corner Advisory' }],
+  icons: {
+    icon: [
+      { url: '/icon.svg', type: 'image/svg+xml' },
+      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+    ],
+    apple: [
+      { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
+    ],
+    shortcut: ['/favicon.ico'],
+  },
 };
 
 export const viewport = {
@@ -59,6 +71,9 @@ export default function RootLayout({
         <main className="relative z-10 pt-24 sm:pt-28 min-h-screen">
           {children}
         </main>
+
+        {/* Floating WhatsApp Concierge */}
+        <WhatsAppFloatingButton />
 
         {/* Grounded Ground-Tone Dark Footer */}
         <Footer />

@@ -18,7 +18,6 @@ import {
   TrendingUp,
   Award,
   ChevronRight,
-  Building2,
 } from 'lucide-react';
 
 export default function HomePage() {

@@ -4,7 +4,8 @@ import Link from 'next/link';
 import { GlassCard } from '@/ui/GlassCard';
 import { Badge } from '@/ui/Badge';
 import { Button } from '@/ui/Button';
-import { Award, Compass, ShieldCheck, Sparkles, Building2, ArrowUpRight } from 'lucide-react';
+import { BrandLogo } from '@/components/common/BrandLogo';
+import { Award, Compass, ShieldCheck, Sparkles, ArrowUpRight } from 'lucide-react';
 
 export default function AboutPage() {
   const partners = [
@@ -32,7 +33,10 @@ export default function AboutPage() {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-12 space-y-16">
       {/* Hero Header */}
       <div className="max-w-3xl space-y-4">
-        <Badge variant="exclusive" size="sm">Brand Philosophy</Badge>
+        <div className="flex items-center gap-3">
+          <BrandLogo href="" imageClassName="h-10" />
+          <Badge variant="exclusive" size="sm">Brand Philosophy</Badge>
+        </div>
         <h1 className="font-display font-medium text-3xl sm:text-5xl text-[#1F1B16] tracking-tight">
           Where Architectural Rigor Meets Private Wealth Advisory
         </h1>

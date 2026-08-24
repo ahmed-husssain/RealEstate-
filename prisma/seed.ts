@@ -47,7 +47,7 @@ async function main() {
       email: 'zainab.farooq@amberproperty.com',
       whatsapp: '+923219456670',
       avatarUrl: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=600&q=80',
-      role: 'Director | DHA, Clifton & High-Yield Commercial',
+      role: 'Director | Gulshan, North Nazimabad & High-Yield Commercial',
       isActive: true,
     },
   });
@@ -60,7 +60,7 @@ async function main() {
       slug: 'north-nazimabad',
       name: 'North Nazimabad',
       city: 'Karachi',
-      description: 'Planned residential sectors (Blocks A to W) celebrated for wide boulevards, luxury 240 to 600 Gaz bangalows, top schools, and vibrant commercial centers.',
+      description: 'Prime master-planned residential enclave known for spacious 240 to 1000 Gaz bangalows, wide boulevards, excellent schools, and top healthcare centers.',
       heroImage: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80',
       isPopular: true,
     },
@@ -71,8 +71,8 @@ async function main() {
       slug: 'gulshan-e-iqbal',
       name: 'Gulshan-e-Iqbal',
       city: 'Karachi',
-      description: 'Educational and commercial epicenter along University Road featuring gated blocks, multi-family residences, and premium family villas.',
-      heroImage: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80',
+      description: 'Vibrant central residential hub featuring prime blocks, university campuses, shopping avenues, and premium multi-unit residential houses.',
+      heroImage: 'https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1200&q=80',
       isPopular: true,
     },
   });
@@ -82,8 +82,8 @@ async function main() {
       slug: 'federal-b-area',
       name: 'Federal B Area (F.B Area)',
       city: 'Karachi',
-      description: 'Central planned grid development across Blocks 1 to 21 with high rental yields, 120/240 Gaz houses, and immediate access to Shahrah-e-Pakistan.',
-      heroImage: 'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1200&q=80',
+      description: 'One of Karachi’s most established residential zones with 21 well-planned blocks, bustling commercial centers, and solid property appreciation.',
+      heroImage: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=1200&q=80',
       isPopular: true,
     },
   });
@@ -93,8 +93,8 @@ async function main() {
       slug: 'scheme-33',
       name: 'Scheme 33 (Gulzar-e-Hijri)',
       city: 'Karachi',
-      description: 'Rapidly expanding residential corridor with over 100+ approved gated societies, brand new modern turnkey construction, and high investment ROI.',
-      heroImage: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80',
+      description: 'Fastest-growing corridor in Karachi featuring over 100 gated housing societies, modern infrastructure, and tremendous investment potential.',
+      heroImage: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80',
       isPopular: true,
     },
   });
@@ -104,8 +104,8 @@ async function main() {
       slug: 'buffer-zone',
       name: 'Buffer Zone',
       city: 'Karachi',
-      description: 'Quiet family sectors 15-A & 15-B adjacent to North Nazimabad with established parks, sports complexes, and excellent renovation potential.',
-      heroImage: 'https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=80',
+      description: 'Peaceful central residential sector adjacent to North Nazimabad with high rental yield and renovated double-storey family houses.',
+      heroImage: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80',
       isPopular: true,
     },
   });
@@ -115,26 +115,26 @@ async function main() {
       slug: 'north-karachi',
       name: 'North Karachi',
       city: 'Karachi',
-      description: 'Vibrant metropolitan zone across Sectors 1 to 11 featuring affordable 80 to 240 Gaz houses, Green Line Metrobus connectivity, and bustling markets.',
-      heroImage: 'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1200&q=80',
+      description: 'Thriving northern hub offering diverse residential plot options, commercial centers, and prime connectivity via Green Line BRT and Nagan Chowrangi.',
+      heroImage: 'https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=1200&q=80',
       isPopular: true,
     },
   });
 
   const gulberg = await prisma.area.create({
     data: {
-      slug: 'gulberg',
+      slug: 'gulberg-karachi',
       name: 'Gulberg Karachi',
       city: 'Karachi',
-      description: 'Established central residential town connecting North Nazimabad and Federal B Area with quiet avenues and strong civic amenities.',
-      heroImage: 'https://images.unsplash.com/photo-1600573472550-8090b5e0745e?auto=format&fit=crop&w=1200&q=80',
+      description: 'Prestigious central town comprising Samanabad, Aisha Manzil, and Water Pump with high demand for turnkey houses and commercial assets.',
+      heroImage: 'https://images.unsplash.com/photo-1600573472591-ee6b68d14c68?auto=format&fit=crop&w=1200&q=80',
       isPopular: true,
     },
   });
 
   const scheme45 = await prisma.area.create({
     data: {
-      slug: 'scheme-45',
+      slug: 'scheme-45-taiser-town',
       name: 'Scheme 45 (Taiser Town)',
       city: 'Karachi',
       description: 'MDA master-planned low-cost investment scheme offering 80, 120 & 240 Gaz residential plots with immense long-term appreciation potential.',
@@ -143,18 +143,7 @@ async function main() {
     },
   });
 
-  const dhaKarachi = await prisma.area.create({
-    data: {
-      slug: 'dha-karachi',
-      name: 'DHA Karachi',
-      city: 'Karachi',
-      description: 'Elite coastal development across Phases 1 to 8 renowned for luxury seafront mansions, high security, and premier commercial boulevards.',
-      heroImage: 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&w=1200&q=80',
-      isPopular: true,
-    },
-  });
-
-  console.log('✅ Created 9 Target Karachi Areas.');
+  console.log('✅ Created 8 Target Karachi Areas.');
 
   // 4. Create Properties
   await prisma.property.create({

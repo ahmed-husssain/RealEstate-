@@ -60,27 +60,37 @@ export function Footer() {
             </h4>
             <ul className="space-y-2 text-xs text-[#D7CBBB]">
               <li>
-                <Link href="/neighborhoods/dha-phase-8" className="hover:text-[#F8F4ED] transition-colors">
-                  DHA Phase 8 & Seafront
+                <Link href="/neighborhoods/north-nazimabad" className="hover:text-[#F8F4ED] transition-colors">
+                  North Nazimabad
                 </Link>
               </li>
               <li>
-                <Link href="/neighborhoods/dha-phase-6" className="hover:text-[#F8F4ED] transition-colors">
-                  DHA Phase 5 & 6
+                <Link href="/neighborhoods/gulshan-e-iqbal" className="hover:text-[#F8F4ED] transition-colors">
+                  Gulshan-e-Iqbal
                 </Link>
               </li>
               <li>
-                <Link href="/neighborhoods/clifton" className="hover:text-[#F8F4ED] transition-colors">
-                  Clifton & Sea View
+                <Link href="/neighborhoods/federal-b-area" className="hover:text-[#F8F4ED] transition-colors">
+                  Federal B Area (F.B Area)
                 </Link>
               </li>
               <li>
-                <Link href="/neighborhoods/kda-scheme-1" className="hover:text-[#F8F4ED] transition-colors">
-                  KDA Scheme 1
+                <Link href="/neighborhoods/scheme-33" className="hover:text-[#F8F4ED] transition-colors">
+                  Scheme 33 (Gulzar-e-Hijri)
                 </Link>
               </li>
               <li>
-                <Link href="/neighborhoods" className="hover:text-[#F8F4ED] transition-colors text-[#DDD2C2]">
+                <Link href="/neighborhoods/buffer-zone" className="hover:text-[#F8F4ED] transition-colors">
+                  Buffer Zone & North Karachi
+                </Link>
+              </li>
+              <li>
+                <Link href="/neighborhoods/scheme-45-taiser-town" className="hover:text-[#F8F4ED] transition-colors">
+                  Scheme 45 (Taiser Town)
+                </Link>
+              </li>
+              <li>
+                <Link href="/neighborhoods" className="hover:text-[#F8F4ED] transition-colors text-[#DDD2C2] font-semibold">
                   Explore All Areas &rarr;
                 </Link>
               </li>
@@ -93,10 +103,10 @@ export function Footer() {
               Office & Contact
             </h4>
             <div className="text-xs text-[#D7CBBB] space-y-1">
-              <p className="font-medium text-[#F8F4ED]">DHA Phase 6 Office</p>
-              <p>Main Khayaban-e-Bukhari, Phase 6, DHA, Karachi</p>
-              <p className="text-[11px] text-[#DDD2C2] pt-1">Direct: +92 300 822 4110</p>
-              <p className="text-[11px] text-[#847666]">Tel: +92 21 3584 1100</p>
+              <p className="font-medium text-[#F8F4ED]">Amber Property Corner</p>
+              <p>B 693, Block 13 Gulberg Town, Karachi, Pakistan</p>
+              <p className="text-[11px] text-[#DDD2C2] pt-1">Mobile: +92 300 822 4110</p>
+              <p className="text-[11px] text-[#847666]">Tel: +92 21 3634 1100</p>
             </div>
             <div className="pt-2 text-xs text-[#D7CBBB]">
               <p>Email: <a href="mailto:info@amberproperty.com" className="underline hover:text-white">info@amberproperty.com</a></p>
@@ -107,10 +117,14 @@ export function Footer() {
         {/* Bottom Bar */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] font-mono text-[#847666]">
           <p>© {new Date().getFullYear()} Amber Property Corner. All rights reserved.</p>
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-5">
             <Link href="/about" className="hover:text-[#D7CBBB] transition-colors">About Us</Link>
             <Link href="/services" className="hover:text-[#D7CBBB] transition-colors">Construction Services</Link>
             <Link href="/contact" className="hover:text-[#D7CBBB] transition-colors">Contact Office</Link>
+            <Link href="/admin/login" className="hover:text-[#D7CBBB] text-[#D8CEBE] font-semibold transition-colors flex items-center gap-1">
+              <span>Admin Login</span>
+              <ArrowUpRight className="w-3 h-3" />
+            </Link>
           </div>
         </div>
       </div>

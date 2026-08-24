@@ -335,41 +335,41 @@ export const mockProperties: Property[] = [
   },
   {
     id: 'prop-07',
-    slug: '500-sq-yd-architectural-villa-dha-phase-6',
-    title: '500 Gaz Contemporary Architectural Villa',
-    tagline: 'Brand New Turnkey Residence in DHA Phase 6, Karachi',
-    description: 'Designed for executive living in DHA Phase 6. Features Italian travertine stone elevation, imported German Poggenpohl kitchen, basement home theater, heated plunge pool, and lush courtyard.',
-    price: 320000000,
-    priceFormatted: 'PKR 32.00 Crore',
+    slug: '500-sq-yd-architectural-villa-north-nazimabad-block-b',
+    title: '500 Gaz Executive Architectural Villa',
+    tagline: 'Brand New Turnkey Residence in Block B, North Nazimabad',
+    description: 'Designed for luxury multi-generational living in prime Block B, North Nazimabad. Features Italian porcelain elevation, dual imported German acrylic kitchens, basement lounge, covered car porch, and 15kW solar setup.',
+    price: 165000000,
+    priceFormatted: 'PKR 16.50 Crore',
     status: 'for-sale',
     isFeatured: true,
     location: {
-      address: 'Street 22, Phase 6, DHA',
-      neighborhood: 'DHA Karachi',
+      address: 'Street 9, Block B',
+      neighborhood: 'North Nazimabad',
       city: 'Karachi',
-      postalCode: '75500',
-      coordinates: { lat: 24.7900, lng: 67.0600 }
+      postalCode: '74700',
+      coordinates: { lat: 24.9350, lng: 67.0380 }
     },
     specs: {
-      bedrooms: 5,
-      bathrooms: 6,
+      bedrooms: 6,
+      bathrooms: 7,
       areaSqFt: 4500,
       lotSizeSqFt: 4500,
       yearBuilt: 2024,
       parkingSpaces: 4,
       propertyType: 'luxury-villa',
-      energyRating: '20kW Solar System',
-      floorLevel: 'Basement + Ground + 1'
+      energyRating: '15kW Solar Hybrid',
+      floorLevel: 'Ground + 1'
     },
     amenities: [
-      'Italian Travertine & Thermal Glazed Facade',
-      'Private Heated Plunge Pool & Jacuzzi',
-      'Basement Private Screening Room',
-      '20kW Solar Hybrid Energy System',
-      'Servant & Driver Quarters with Bath'
+      'Italian Porcelain & Textured Facade',
+      'Dual German Modular Kitchens',
+      'Basement Entertainment Lounge',
+      '15kW Solar Hybrid Net-Metering Setup',
+      'Dedicated Guard & Driver Quarters'
     ],
     features: [
-      { title: 'Prime DHA Address', desc: 'Immediate access to Khayaban-e-Bukhari dining and commercial district.' }
+      { title: 'Prime Central Address', desc: 'Minutes from Allama Iqbal Open University, Hyderi Market, and Ziauddin Hospital.' }
     ],
     images: {
       hero: 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&w=1800&q=85',

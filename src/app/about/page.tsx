@@ -12,7 +12,7 @@ export default function AboutPage() {
     {
       name: 'Tariq Mehmood Siddiqui',
       role: 'Senior Real Estate Advisor',
-      bio: 'Over 16 years of experience in DHA Karachi property transactions, file transfers, and luxury bungalow acquisitions.',
+      bio: 'Over 16 years of experience in North Nazimabad and central Karachi property transactions, registry verification, and bungalow acquisitions.',
       image: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=600&q=80',
     },
     {
@@ -24,7 +24,7 @@ export default function AboutPage() {
     {
       name: 'Zainab Alvi',
       role: 'Luxury Residential Consultant',
-      bio: 'Specializing in Clifton and DHA sea-view penthouses, corporate leases, and overseas client property portfolios.',
+      bio: 'Specializing in Gulshan and North Nazimabad luxury penthouses, commercial assets, and overseas client property portfolios.',
       image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=600&q=80',
     },
   ];
@@ -62,12 +62,12 @@ export default function AboutPage() {
             Built on Integrity, Local Experience & Craftsmanship
           </h2>
           <p className="text-xs sm:text-sm text-[#7e7365] leading-relaxed">
-            Whether you are purchasing a plot in DHA Phase 8, constructing a multi-generational home, or renovating an apartment in Clifton, we provide transparent guidance without hidden surprises.
+            Whether you are purchasing a plot in Scheme 33, constructing a turnkey house in North Nazimabad, or renovating an apartment in Gulshan, we provide transparent guidance without hidden surprises.
           </p>
           <div className="space-y-2.5 text-xs text-[#1F1B16]">
             <div className="flex items-start gap-2.5">
               <CheckCircle2 className="w-4 h-4 text-[#2e3a2f] shrink-0 mt-0.5" />
-              <p><strong>Verified Ownership:</strong> Thorough inspection of all title documents and DHA transfer paperwork.</p>
+              <p><strong>Verified Ownership:</strong> Thorough inspection of all Sub-Registrar records, KDA, and MDA transfer paperwork.</p>
             </div>
             <div className="flex items-start gap-2.5">
               <CheckCircle2 className="w-4 h-4 text-[#2e3a2f] shrink-0 mt-0.5" />

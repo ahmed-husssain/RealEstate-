@@ -34,8 +34,7 @@ export default function ValuationPage() {
     // Area-specific base rate per Sq Yd (PKR)
     let areaMultiplier = 280000; // Default North Nazimabad built rate
 
-    if (city.includes('DHA')) areaMultiplier = 550000;
-    else if (city.includes('Clifton')) areaMultiplier = 500000;
+    if (city.includes('Clifton')) areaMultiplier = 350000;
     else if (city.includes('North Nazimabad')) areaMultiplier = 280000;
     else if (city.includes('Gulshan')) areaMultiplier = 260000;
     else if (city.includes('Federal B Area') || city.includes('F.B Area')) areaMultiplier = 220000;
@@ -137,7 +136,7 @@ export default function ValuationPage() {
           Property Price Calculator
         </h1>
         <p className="text-xs sm:text-sm text-[#7e7365] max-w-lg mx-auto">
-          Get an instant estimated market value for your house, flat, or plot in DHA, Clifton, or KDA.
+          Get an instant estimated market value for your house, flat, or plot in North Nazimabad, Gulshan, FB Area, Scheme 33, and Karachi prime sectors.
         </p>
       </div>
 
@@ -181,7 +180,7 @@ export default function ValuationPage() {
               <div className="p-3.5 rounded-xl bg-white border border-[#d8cebe]/60 space-y-1">
                 <span className="text-[#7e7365] block font-mono">Location Demand</span>
                 <span className="font-semibold text-[#1F1B16]">High Buyer Interest</span>
-                <p className="text-[11px] text-[#7e7365]">Strong demand in DHA & Clifton sectors.</p>
+                <p className="text-[11px] text-[#7e7365]">Strong demand in North Nazimabad & Gulshan sectors.</p>
               </div>
               <div className="p-3.5 rounded-xl bg-white border border-[#d8cebe]/60 space-y-1">
                 <span className="text-[#7e7365] block font-mono">Estimate Accuracy</span>
@@ -189,16 +188,20 @@ export default function ValuationPage() {
                 <p className="text-[11px] text-[#7e7365]">Compared with verified deals in your area.</p>
               </div>
               <div className="p-3.5 rounded-xl bg-white border border-[#d8cebe]/60 space-y-1">
-                <span className="text-[#7e7365] block font-mono">Next Step</span>
-                <span className="font-semibold text-[#1F1B16]">On-Site Visit</span>
-                <p className="text-[11px] text-[#7e7365]">Our agent can visit for exact appraisal.</p>
+                <span className="text-[#7e7365] block font-mono">Market Trend</span>
+                <span className="font-semibold text-[#1F1B16]">Appreciating Steady</span>
+                <p className="text-[11px] text-[#7e7365]">Annual capital growth across central Karachi.</p>
               </div>
             </div>
 
-            {/* Action Buttons */}
-            <div className="flex flex-col sm:flex-row gap-3 pt-3">
+            {/* CTA Buttons */}
+            <div className="pt-4 flex flex-col sm:flex-row gap-3 border-t border-[#d8cebe]/60">
               <a
-                href={`https://wa.me/923008224110?text=${encodeURIComponent(`Hello, I used your Property Price Calculator for my ${areaSqYd} Sq Yd property in ${city}. The estimate was ${formatCurrency(estimate.mid)}. I would like to schedule an in-person assessment.`)}`}
+                href={`https://wa.me/923008224110?text=${encodeURIComponent(
+                  `Assalam o Alaikum, I used the price calculator for my ${areaSqYd} Sq Yd property in ${city}. Estimated value: ${formatCurrency(
+                    estimate.mid
+                  )}. I would like a formal evaluation and site visit.`
+                )}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex-1"
@@ -262,10 +265,10 @@ export default function ValuationPage() {
                           key={type.id}
                           type="button"
                           onClick={() => setPropertyType(type.id)}
-                          className={`p-3 rounded-xl text-xs text-left border transition-all cursor-pointer ${
+                          className={`p-2.5 rounded-xl border text-xs font-medium transition-all text-left ${
                             propertyType === type.id
-                              ? 'bg-[#5c3822] text-[#F8F4ED] border-[#5c3822] font-medium'
-                              : 'bg-white text-[#1F1B16] border-[#d8cebe] hover:bg-[#f5efe6]'
+                              ? 'bg-[#5c3822] text-[#F8F4ED] border-[#5c3822] shadow-sm'
+                              : 'bg-white text-[#1F1B16] border-[#d8cebe] hover:border-[#5c3822]'
                           }`}
                         >
                           {type.label}
@@ -298,7 +301,6 @@ export default function ValuationPage() {
                       <option value="North Karachi">North Karachi (Sectors 1–11)</option>
                       <option value="Gulberg">Gulberg Karachi</option>
                       <option value="Scheme 45">Scheme 45 (Taiser Town)</option>
-                      <option value="DHA Karachi">DHA Karachi (Phases 1–8)</option>
                       <option value="Clifton">Clifton & Sea View</option>
                     </select>
                   </div>

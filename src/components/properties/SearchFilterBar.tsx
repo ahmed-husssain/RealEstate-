@@ -81,7 +81,7 @@ export function SearchFilterBar({
               <MapPin className="absolute left-3.5 w-4 h-4 text-[#5c3822] pointer-events-none" />
               <input
                 type="text"
-                placeholder="DHA Phase 6, Phase 8, Clifton..."
+                placeholder="North Nazimabad, Gulshan, FB Area, Scheme 33..."
                 value={filters.searchQuery}
                 onChange={(e) => {
                   const updated = { ...filters, searchQuery: e.target.value };
@@ -211,7 +211,6 @@ export function SearchFilterBar({
                 <option value="North Karachi">North Karachi (Sectors 1–11)</option>
                 <option value="Gulberg">Gulberg Karachi</option>
                 <option value="Scheme 45">Scheme 45 (Taiser Town)</option>
-                <option value="DHA Karachi">DHA Karachi (Phases 1–8)</option>
                 <option value="Clifton">Clifton & Sea View</option>
               </select>
             </div>

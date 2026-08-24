@@ -179,28 +179,6 @@ export const mockNeighborhoods: Neighborhood[] = [
   },
   {
     id: 'neigh-09',
-    slug: 'dha-karachi',
-    name: 'DHA Karachi (Phases 1–8)',
-    city: 'Karachi',
-    tagline: 'Premier Coastal Enclaves & Ultra-Luxury Mansions',
-    description: 'Karachi’s flagship elite development along the Arabian Sea. Renowned for wide boulevards, security, golf courses, beachfront promenades, and world-class architectural homes.',
-    heroImage: 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&w=1200&q=80',
-    lifestyleTags: ['Coastal Living', 'Phases 5, 6 & 8', 'Ultra-Luxury', 'Golf & Marina'],
-    stats: {
-      avgPriceSqFt: 'PKR 320,000 / Sq Yd',
-      annualGrowth: '+15.0%',
-      walkScore: 80,
-      transitScore: 75,
-      safetyRating: 'Elite Security'
-    },
-    highlights: [
-      'Phases 5, 6, 7 & 8 Creek Marina & Beachfront living',
-      'Khayaban-e-Bukhari & Shahbaz premium commercial avenues',
-      'Direct DHA head office title verification'
-    ]
-  },
-  {
-    id: 'neigh-10',
     slug: 'clifton-karachi',
     name: 'Clifton (Blocks 1–9)',
     city: 'Karachi',

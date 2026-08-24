@@ -96,7 +96,7 @@ export function PropertiesCatalogClient({ initialProperties }: PropertiesCatalog
           Properties for Sale in Karachi
         </h1>
         <p className="text-xs sm:text-sm text-[#7e7365] max-w-xl">
-          Browse luxury houses, penthouses, and plots in DHA, Clifton, and KDA with verified details and direct agent contact.
+          Browse luxury houses, penthouses, and plots in North Nazimabad, Gulshan, FB Area, Scheme 33, and prime Karachi enclaves with verified details and direct agent contact.
         </p>
       </div>
 

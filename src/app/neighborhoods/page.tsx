@@ -29,7 +29,7 @@ export default async function NeighborhoodsPage() {
           Prime Areas & Neighborhoods in Karachi
         </h1>
         <p className="text-xs sm:text-sm text-[#7e7365] max-w-xl leading-relaxed">
-          Explore neighborhood profiles, average rates per square yard, and active luxury listings in DHA, Clifton, and KDA.
+          Explore neighborhood profiles, average rates per square yard, and active luxury listings in North Nazimabad, Gulshan, FB Area, Scheme 33, Buffer Zone, and central Karachi.
         </p>
       </div>
 

@@ -59,7 +59,7 @@ export default async function HomePage() {
 
           {/* Clean Subtitle */}
           <p className="text-sm sm:text-base text-[#7e7365] max-w-2xl mx-auto font-sans leading-relaxed">
-            Buy, sell, build, and renovate verified bangalows, houses, and plots across North Nazimabad, Gulshan-e-Iqbal, Federal B Area, Scheme 33, Buffer Zone, North Karachi, Gulberg, Scheme 45, and DHA.
+            Buy, sell, build, and renovate verified bangalows, houses, and plots across North Nazimabad, Gulshan-e-Iqbal, Federal B Area, Scheme 33, Buffer Zone, North Karachi, Gulberg, Scheme 45, and Clifton.
           </p>
 
           {/* Search Filter Bar Component */}
@@ -79,10 +79,10 @@ export default async function HomePage() {
             </div>
             <div className="bg-[#fbf6f0]/90 border border-[#d8cebe] rounded-2xl py-3 px-4 shadow-sm">
               <span className="font-display font-medium text-lg sm:text-xl text-[#1F1B16]">
-                DHA & Clifton
+                North & Central
               </span>
               <p className="text-[11px] font-mono text-[#7e7365] mt-0.5">
-                Prime Locations
+                Prime Sectors
               </p>
             </div>
             <div className="bg-[#fbf6f0]/90 border border-[#d8cebe] rounded-2xl py-3 px-4 shadow-sm">

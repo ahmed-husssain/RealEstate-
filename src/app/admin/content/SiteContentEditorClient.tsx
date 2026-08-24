@@ -13,20 +13,20 @@ export function SiteContentEditorClient({ initialSettings }: { initialSettings: 
   );
   const [heroSubtitle, setHeroSubtitle] = useState(
     initialSettings.hero_subtitle ||
-      'Buy, sell, build, and renovate verified bangalows, houses, and plots across North Nazimabad, Gulshan-e-Iqbal, Federal B Area, Scheme 33, Buffer Zone, North Karachi, Gulberg, Scheme 45, and DHA.'
+      'Buy, sell, build, and renovate verified bangalows, houses, and plots across North Nazimabad, Gulshan-e-Iqbal, Federal B Area, Scheme 33, Buffer Zone, North Karachi, Gulberg, Scheme 45, and Clifton.'
   );
-  const [phonePrimary, setPhonePrimary] = useState(initialSettings.phone_primary || '+92 300 1234567');
-  const [phoneLandline, setPhoneLandline] = useState(initialSettings.phone_landline || '+92 21 3587 0000');
-  const [whatsappNumber, setWhatsappNumber] = useState(initialSettings.whatsapp_number || '+92 300 1234567');
-  const [contactEmail, setContactEmail] = useState(initialSettings.contact_email || 'info@amberpropertycorner.com');
+  const [phonePrimary, setPhonePrimary] = useState(initialSettings.phone_primary || '+92 300 822 4110');
+  const [phoneLandline, setPhoneLandline] = useState(initialSettings.phone_landline || '+92 21 3634 1100');
+  const [whatsappNumber, setWhatsappNumber] = useState(initialSettings.whatsapp_number || '+92 300 822 4110');
+  const [contactEmail, setContactEmail] = useState(initialSettings.contact_email || 'info@amberproperty.com');
   const [officeAddress, setOfficeAddress] = useState(
-    initialSettings.office_address || 'Amber Property Corner, Main Commercial Boulevard, Karachi, Pakistan'
+    initialSettings.office_address || 'B 693, Block 13 Gulberg Town, Karachi, Pakistan'
   );
   const [officeTimings, setOfficeTimings] = useState(
     initialSettings.office_timings || 'Mon – Sat: 10:00 AM – 9:00 PM | Sun: By Appointment'
   );
   const [announcementBanner, setAnnouncementBanner] = useState(
-    initialSettings.announcement_banner || 'New Phase 6 & North Nazimabad luxury listings now open for private viewings.'
+    initialSettings.announcement_banner || 'New North Nazimabad and Gulshan luxury listings now open for private viewings.'
   );
   const [announcementActive, setAnnouncementActive] = useState(
     initialSettings.announcement_active === 'true'

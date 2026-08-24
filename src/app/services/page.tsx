@@ -26,11 +26,11 @@ export default function ServicesPage() {
       icon: <Building2 className="w-5 h-5 text-[#5c3822]" />,
       tagline: 'Prime residential, commercial, and high-yield investment properties across Karachi',
       description:
-        'Whether you are looking to acquire a luxury bungalow in DHA, invest in commercial assets, or book installment projects, our advisory ensures verified files, transparent dealings, and maximum capital growth.',
+        'Whether you are looking to acquire a luxury bungalow in North Nazimabad or Gulshan, invest in commercial assets, or book installment projects, our advisory ensures verified files, transparent dealings, and maximum capital growth.',
       services: [
         {
           name: 'Residential Bangalows & Houses',
-          details: '80, 120, 240, 400, 500 & 1000 Gaz houses across DHA (Phases 1–8), Clifton, KDA Scheme 1, and prime enclaves.',
+          details: '80, 120, 240, 400, 500 & 1000 Gaz houses across North Nazimabad, Gulshan-e-Iqbal, FB Area, Scheme 33, and prime enclaves.',
         },
         {
           name: 'Residential & Commercial Plots',

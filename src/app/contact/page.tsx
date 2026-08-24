@@ -72,7 +72,7 @@ export default function ContactPage() {
           Contact Our Karachi Office
         </h1>
         <p className="text-xs sm:text-sm text-[#7e7365]">
-          Have a question about buying, selling, constructing, or renovating property? Send us a message or visit our office in DHA Phase 6.
+          Have a question about buying, selling, constructing, or renovating property? Send us a message or visit our office in Gulberg Town, Karachi.
         </p>
       </div>
 
@@ -150,7 +150,7 @@ export default function ContactPage() {
                     rows={4}
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
-                    placeholder="Tell us about your requirements, preferred location (e.g. DHA Phase 6, Clifton), budget, or plot size..."
+                    placeholder="Tell us about your requirements, preferred location (e.g. North Nazimabad, Gulshan, FB Area, Scheme 33), budget, or plot size..."
                     className="w-full bg-white text-[#1F1B16] border border-[#d8cebe] rounded-2xl p-3.5 text-xs sm:text-sm outline-none focus:border-[#5c3822] shadow-inner"
                   />
                 </div>
@@ -185,9 +185,9 @@ export default function ContactPage() {
             <div className="space-y-3.5 text-xs">
               <div className="p-4 rounded-2xl bg-white border border-[#d8cebe]/70 space-y-1.5 shadow-sm">
                 <div className="flex items-center gap-2 font-display font-medium text-base text-[#1F1B16]">
-                  <MapPin className="w-4 h-4 text-[#5c3822]" /> DHA Phase 6 Office
+                  <MapPin className="w-4 h-4 text-[#5c3822]" /> Amber Property Corner
                 </div>
-                <p className="text-[#7e7365]">Main Khayaban-e-Bukhari, Phase 6, DHA, Karachi, Pakistan</p>
+                <p className="text-[#7e7365]">B 693, Block 13 Gulberg Town, Karachi, Pakistan</p>
                 <p className="text-[#1F1B16] pt-1">Timing: Mon – Sat (10:30 AM to 8:00 PM)</p>
               </div>
 

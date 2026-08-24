@@ -135,61 +135,118 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 3. Three Core Pillars (Simple & Honest) */}
+      {/* 3. Five Core Service Departments */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <GlassCard
           variant="container"
           rounded="2rem"
           className="p-6 sm:p-10 space-y-8 bg-[#fbf6f0]"
         >
-          <div className="max-w-2xl space-y-2">
-            <Badge variant="exclusive" size="sm">
-              Why Choose Amber Property Corner
-            </Badge>
-            <h2 className="font-display font-medium text-2xl sm:text-3xl text-[#1F1B16]">
-              Everything you need to buy, sell, or build in Karachi
-            </h2>
-            <p className="text-xs sm:text-sm text-[#7e7365]">
-              From finding the right plot in DHA to complete architectural design and turnkey construction.
-            </p>
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+            <div className="max-w-2xl space-y-2">
+              <Badge variant="exclusive" size="sm">
+                Amber Property Corner
+              </Badge>
+              <h2 className="font-display font-medium text-2xl sm:text-3xl text-[#1F1B16]">
+                5 Complete Real Estate & Construction Wings
+              </h2>
+              <p className="text-xs sm:text-sm text-[#7e7365]">
+                From verified land acquisition and SBCA map approvals to turnkey construction and permanent seepage solutions.
+              </p>
+            </div>
+            <Link href="/services">
+              <Button variant="secondary" size="md">
+                <span>View Full Service Scope</span>
+                <ArrowUpRight className="w-4 h-4" />
+              </Button>
+            </Link>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4 border-t border-[#d8cebe]/60">
-            <div className="bg-white/80 border border-[#d8cebe] rounded-2xl p-5 space-y-2 shadow-sm">
-              <div className="w-9 h-9 rounded-full bg-[#5c3822]/10 text-[#5c3822] flex items-center justify-center font-mono font-bold text-xs">
-                01
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 pt-4 border-t border-[#d8cebe]/60">
+            <Link href="/services" className="group">
+              <div className="bg-white/80 hover:bg-white border border-[#d8cebe] group-hover:border-[#5c3822] rounded-2xl p-5 space-y-2 shadow-sm transition-all h-full flex flex-col justify-between">
+                <div className="space-y-2">
+                  <div className="w-8 h-8 rounded-xl bg-[#5c3822]/10 text-[#5c3822] flex items-center justify-center font-mono font-bold text-xs">
+                    01
+                  </div>
+                  <h3 className="font-display font-medium text-base text-[#1F1B16] group-hover:text-[#5c3822] transition-colors">
+                    Sales & Commercial Investments
+                  </h3>
+                  <p className="text-xs text-[#7e7365] leading-relaxed">
+                    Houses (80–1000 Gaz), residential/commercial plots, apartments, and high-yield commercial assets in Karachi.
+                  </p>
+                </div>
+                <span className="text-[11px] font-mono text-[#5c3822] pt-2 block">Learn more &rarr;</span>
               </div>
-              <h3 className="font-display font-medium text-base text-[#1F1B16]">
-                Prime Karachi Locations
-              </h3>
-              <p className="text-xs text-[#7e7365] leading-relaxed">
-                Direct access to luxury properties in DHA Phases 5 to 8, Clifton Blocks 2 to 9, and KDA Scheme 1.
-              </p>
-            </div>
+            </Link>
 
-            <div className="bg-white/80 border border-[#d8cebe] rounded-2xl p-5 space-y-2 shadow-sm">
-              <div className="w-9 h-9 rounded-full bg-[#2e3a2f]/10 text-[#2e3a2f] flex items-center justify-center font-mono font-bold text-xs">
-                02
+            <Link href="/services" className="group">
+              <div className="bg-white/80 hover:bg-white border border-[#d8cebe] group-hover:border-[#2e3a2f] rounded-2xl p-5 space-y-2 shadow-sm transition-all h-full flex flex-col justify-between">
+                <div className="space-y-2">
+                  <div className="w-8 h-8 rounded-xl bg-[#2e3a2f]/10 text-[#2e3a2f] flex items-center justify-center font-mono font-bold text-xs">
+                    02
+                  </div>
+                  <h3 className="font-display font-medium text-base text-[#1F1B16] group-hover:text-[#2e3a2f] transition-colors">
+                    Legal Vetting & Map Approvals
+                  </h3>
+                  <p className="text-xs text-[#7e7365] leading-relaxed">
+                    Title check (Registry, Mutation), SBCA layout sanctioning, demolition NOCs, and Cantonment Board clearances.
+                  </p>
+                </div>
+                <span className="text-[11px] font-mono text-[#2e3a2f] pt-2 block">Learn more &rarr;</span>
               </div>
-              <h3 className="font-display font-medium text-base text-[#1F1B16]">
-                Construction & Renovation
-              </h3>
-              <p className="text-xs text-[#7e7365] leading-relaxed">
-                Turnkey residential construction, modern interior remodeling, and high-quality structural engineering.
-              </p>
-            </div>
+            </Link>
 
-            <div className="bg-white/80 border border-[#d8cebe] rounded-2xl p-5 space-y-2 shadow-sm">
-              <div className="w-9 h-9 rounded-full bg-[#847666]/15 text-[#1F1B16] flex items-center justify-center font-mono font-bold text-xs">
-                03
+            <Link href="/services" className="group">
+              <div className="bg-white/80 hover:bg-white border border-[#d8cebe] group-hover:border-[#5c3822] rounded-2xl p-5 space-y-2 shadow-sm transition-all h-full flex flex-col justify-between">
+                <div className="space-y-2">
+                  <div className="w-8 h-8 rounded-xl bg-[#5c3822]/10 text-[#5c3822] flex items-center justify-center font-mono font-bold text-xs">
+                    03
+                  </div>
+                  <h3 className="font-display font-medium text-base text-[#1F1B16] group-hover:text-[#5c3822] transition-colors">
+                    Turnkey House Construction
+                  </h3>
+                  <p className="text-xs text-[#7e7365] leading-relaxed">
+                    Turnkey bungalow rebuilds (80 to 1000 Gaz), gray structure, controlled demolition, and modern facade redesign.
+                  </p>
+                </div>
+                <span className="text-[11px] font-mono text-[#5c3822] pt-2 block">Learn more &rarr;</span>
               </div>
-              <h3 className="font-display font-medium text-base text-[#1F1B16]">
-                Safe & Verified Deals
-              </h3>
-              <p className="text-xs text-[#7e7365] leading-relaxed">
-                Full documentation verification, clear title checks, and transparent guidance from start to finish.
-              </p>
-            </div>
+            </Link>
+
+            <Link href="/services" className="group">
+              <div className="bg-white/80 hover:bg-white border border-[#d8cebe] group-hover:border-[#847666] rounded-2xl p-5 space-y-2 shadow-sm transition-all h-full flex flex-col justify-between">
+                <div className="space-y-2">
+                  <div className="w-8 h-8 rounded-xl bg-[#847666]/15 text-[#1F1B16] flex items-center justify-center font-mono font-bold text-xs">
+                    04
+                  </div>
+                  <h3 className="font-display font-medium text-base text-[#1F1B16] group-hover:text-[#5c3822] transition-colors">
+                    Room-by-Room Interior Remodel
+                  </h3>
+                  <p className="text-xs text-[#7e7365] leading-relaxed">
+                    Modular German-style kitchens, executive Italian-tiled bathrooms, false ceiling lighting, and media walls.
+                  </p>
+                </div>
+                <span className="text-[11px] font-mono text-[#847666] pt-2 block">Learn more &rarr;</span>
+              </div>
+            </Link>
+
+            <Link href="/services" className="group sm:col-span-2 lg:col-span-2">
+              <div className="bg-white/80 hover:bg-white border border-[#d8cebe] group-hover:border-[#2e3a2f] rounded-2xl p-5 space-y-2 shadow-sm transition-all h-full flex flex-col justify-between">
+                <div className="space-y-2">
+                  <div className="w-8 h-8 rounded-xl bg-[#2e3a2f]/10 text-[#2e3a2f] flex items-center justify-center font-mono font-bold text-xs">
+                    05
+                  </div>
+                  <h3 className="font-display font-medium text-base text-[#1F1B16] group-hover:text-[#2e3a2f] transition-colors">
+                    Specialized Remedial & Infrastructure Solutions
+                  </h3>
+                  <p className="text-xs text-[#7e7365] leading-relaxed">
+                    Roof and wall seepage (*seem*) chemical waterproofing, RCC underground water tank relining, solar wiring, PPRC plumbing replacement, and termite (*deemak*) barriers.
+                  </p>
+                </div>
+                <span className="text-[11px] font-mono text-[#2e3a2f] pt-2 block">Learn more &rarr;</span>
+              </div>
+            </Link>
           </div>
         </GlassCard>
       </section>

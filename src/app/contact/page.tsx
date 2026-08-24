@@ -127,14 +127,16 @@ export default function ContactPage() {
                 </div>
 
                 <Select
-                  label="I am interested in"
+                  label="Select Service / Department"
                   options={[
-                    { value: 'buying', label: 'Buying a Property (House, Plot, Flat)' },
-                    { value: 'selling', label: 'Selling My Property' },
-                    { value: 'construction', label: 'New Construction Services' },
-                    { value: 'renovation', label: 'House Renovation & Remodeling' },
-                    { value: 'valuation', label: 'Property Valuation & Evaluation' },
-                    { value: 'general', label: 'General Inquiry' },
+                    { value: 'sales-buying', label: '1. Property Buying (Bungalows, Plots, Flats)' },
+                    { value: 'sales-selling', label: '1. Property Selling & Investment Booking' },
+                    { value: 'legal-approvals', label: '2. Legal Due Diligence & SBCA Map Approvals' },
+                    { value: 'construction', label: '3. Turnkey Construction & Gray Structure Rebuild' },
+                    { value: 'interior-remodel', label: '4. Room-by-Room Interior Remodeling (Kitchen, Bath)' },
+                    { value: 'remedial-seepage', label: '5. Seepage Waterproofing, Tank Repair & Remedial' },
+                    { value: 'valuation', label: 'Property Valuation & Price Estimation' },
+                    { value: 'general', label: 'General Inquiry / Consultation' },
                   ]}
                   value={inquiryType}
                   onChange={(e) => setInquiryType(e.target.value)}

@@ -4,16 +4,14 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Button } from '@/ui/Button';
-import { Badge } from '@/ui/Badge';
 import { BrandLogo } from '@/components/common/BrandLogo';
-import { Menu, X, Heart, PhoneCall } from 'lucide-react';
+import { Menu, X, PhoneCall } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 export function HeaderNavbar() {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [savedCount, setSavedCount] = useState(0);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -21,21 +19,8 @@ export function HeaderNavbar() {
     };
     window.addEventListener('scroll', handleScroll);
 
-    // Update saved count from localStorage
-    const updateSavedCount = () => {
-      try {
-        const saved = JSON.parse(localStorage.getItem('amber_saved_properties') || '[]');
-        setSavedCount(saved.length);
-      } catch (e) {
-        setSavedCount(0);
-      }
-    };
-    updateSavedCount();
-    window.addEventListener('storage', updateSavedCount);
-
     return () => {
       window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('storage', updateSavedCount);
     };
   }, []);
 
@@ -84,22 +69,8 @@ export function HeaderNavbar() {
             })}
           </nav>
 
-          {/* Right Action Icons & CTA */}
+          {/* Right Action CTA & Mobile Menu */}
           <div className="flex items-center gap-2 sm:gap-3">
-            {/* Saved Shortlist */}
-            <Link
-              href="/saved"
-              className="relative p-2 rounded-full text-[#1F1B16] hover:bg-[#d8cebe]/30 transition-colors cursor-pointer"
-              title="Saved Properties"
-            >
-              <Heart className="w-4 h-4 text-[#5c3822]" />
-              {savedCount > 0 && (
-                <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-[#5c3822] text-[#F8F4ED] rounded-full text-[9px] font-mono font-bold flex items-center justify-center">
-                  {savedCount}
-                </span>
-              )}
-            </Link>
-
             {/* Consultation CTA */}
             <Link href="/contact" className="hidden sm:inline-flex">
               <Button variant="primary" size="sm" className="text-xs">
@@ -139,17 +110,7 @@ export function HeaderNavbar() {
                 {link.name}
               </Link>
             ))}
-            <div className="pt-3 border-t border-[#d8cebe]/50 mt-1 flex flex-col gap-2">
-              <Link
-                href="/saved"
-                onClick={() => setMobileMenuOpen(false)}
-                className="flex items-center justify-between px-4 py-2.5 rounded-xl text-sm text-[#1F1B16] hover:bg-[#d8cebe]/20"
-              >
-                <span className="flex items-center gap-2">
-                  <Heart className="w-4 h-4 text-[#5c3822]" /> Saved Properties
-                </span>
-                <Badge variant="stone" size="sm">{savedCount}</Badge>
-              </Link>
+            <div className="pt-3 border-t border-[#d8cebe]/50 mt-1">
               <Link href="/contact" onClick={() => setMobileMenuOpen(false)}>
                 <Button variant="primary" size="md" className="w-full">
                   Contact Our Team

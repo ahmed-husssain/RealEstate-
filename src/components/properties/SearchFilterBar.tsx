@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/ui/Button';
 import { GlassCard } from '@/ui/GlassCard';
-import { Search, SlidersHorizontal, MapPin, Building, DollarSign, BedDouble, RotateCcw } from 'lucide-react';
+import { Search, SlidersHorizontal, MapPin, Building, BedDouble, RotateCcw } from 'lucide-react';
 import { PropertyFilterState } from '@/types';
 
 export interface SearchFilterBarProps {
@@ -24,7 +24,7 @@ export function SearchFilterBar({
     searchQuery: initialValues?.searchQuery || '',
     neighborhood: initialValues?.neighborhood || 'all',
     propertyType: initialValues?.propertyType || 'all',
-    priceRange: initialValues?.priceRange || [0, 30000000],
+    priceRange: initialValues?.priceRange || [0, 1000000000],
     bedrooms: initialValues?.bedrooms || 'all',
     bathrooms: initialValues?.bathrooms || 'all',
     status: initialValues?.status || 'all',
@@ -53,7 +53,7 @@ export function SearchFilterBar({
       searchQuery: '',
       neighborhood: 'all',
       propertyType: 'all',
-      priceRange: [0, 30000000],
+      priceRange: [0, 1000000000],
       bedrooms: 'all',
       bathrooms: 'all',
       status: 'all',
@@ -67,36 +67,36 @@ export function SearchFilterBar({
     <GlassCard
       variant="container"
       rounded="2rem"
-      className="p-4 sm:p-5 shadow-stratified w-full"
+      className="p-3.5 sm:p-4 shadow-xl w-full bg-[#fbf6f0]"
     >
-      <form onSubmit={handleSearch} className="space-y-4">
+      <form onSubmit={handleSearch} className="space-y-3">
         {/* Main Search Row */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-          {/* Keyword / Location Search */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
+          {/* Location Search */}
           <div className="relative">
-            <label className="block text-[11px] font-mono font-semibold uppercase tracking-[0.18em] text-[#7e7365] mb-1">
-              Search Location / Estate
+            <label className="block text-[11px] font-mono text-[#7e7365] mb-1">
+              Search Location or Property
             </label>
             <div className="relative flex items-center">
               <MapPin className="absolute left-3.5 w-4 h-4 text-[#5c3822] pointer-events-none" />
               <input
                 type="text"
-                placeholder="Bel Air, Tribeca, Malibu..."
+                placeholder="DHA Phase 6, Phase 8, Clifton..."
                 value={filters.searchQuery}
                 onChange={(e) => {
                   const updated = { ...filters, searchQuery: e.target.value };
                   setFilters(updated);
                   if (onFilterChange) onFilterChange(updated);
                 }}
-                className="w-full bg-[#fbf6f0] text-[#1F1B16] placeholder-[#7e7365]/70 border border-[#d8cebe] rounded-full pl-10 pr-4 py-2.5 text-xs sm:text-sm outline-none focus:border-[#5c3822] shadow-inner"
+                className="w-full bg-white text-[#1F1B16] placeholder-[#7e7365]/70 border border-[#d8cebe] rounded-full pl-9 pr-3.5 py-2 text-xs outline-none focus:border-[#5c3822] shadow-inner"
               />
             </div>
           </div>
 
           {/* Property Category */}
           <div>
-            <label className="block text-[11px] font-mono font-semibold uppercase tracking-[0.18em] text-[#7e7365] mb-1">
-              Architecture Style
+            <label className="block text-[11px] font-mono text-[#7e7365] mb-1">
+              Property Type
             </label>
             <div className="relative flex items-center">
               <Building className="absolute left-3.5 w-4 h-4 text-[#5c3822] pointer-events-none" />
@@ -107,21 +107,21 @@ export function SearchFilterBar({
                   setFilters(updated);
                   if (onFilterChange) onFilterChange(updated);
                 }}
-                className="w-full bg-[#fbf6f0] text-[#1F1B16] border border-[#d8cebe] rounded-full pl-10 pr-8 py-2.5 text-xs sm:text-sm outline-none focus:border-[#5c3822] shadow-inner appearance-none cursor-pointer"
+                className="w-full bg-white text-[#1F1B16] border border-[#d8cebe] rounded-full pl-9 pr-8 py-2 text-xs outline-none focus:border-[#5c3822] shadow-inner appearance-none cursor-pointer"
               >
-                <option value="all">All Architectural Types</option>
-                <option value="luxury-villa">Architectural Villas</option>
-                <option value="penthouse">Sky Penthouses</option>
-                <option value="estate">Country & Modern Estates</option>
-                <option value="townhouse">Historic Townhouses</option>
-                <option value="modern-apartment">Gallery Lofts & Condos</option>
+                <option value="all">All Types</option>
+                <option value="luxury-villa">Houses & Bungalows</option>
+                <option value="penthouse">Penthouses</option>
+                <option value="estate">Plots & Land</option>
+                <option value="townhouse">Portions & Duplexes</option>
+                <option value="modern-apartment">Apartments & Flats</option>
               </select>
             </div>
           </div>
 
           {/* Bedrooms Selector */}
           <div>
-            <label className="block text-[11px] font-mono font-semibold uppercase tracking-[0.18em] text-[#7e7365] mb-1">
+            <label className="block text-[11px] font-mono text-[#7e7365] mb-1">
               Bedrooms
             </label>
             <div className="relative flex items-center">
@@ -133,13 +133,13 @@ export function SearchFilterBar({
                   setFilters(updated);
                   if (onFilterChange) onFilterChange(updated);
                 }}
-                className="w-full bg-[#fbf6f0] text-[#1F1B16] border border-[#d8cebe] rounded-full pl-10 pr-8 py-2.5 text-xs sm:text-sm outline-none focus:border-[#5c3822] shadow-inner appearance-none cursor-pointer"
+                className="w-full bg-white text-[#1F1B16] border border-[#d8cebe] rounded-full pl-9 pr-8 py-2 text-xs outline-none focus:border-[#5c3822] shadow-inner appearance-none cursor-pointer"
               >
                 <option value="all">Any Bedrooms</option>
-                <option value="3">3+ Bedrooms</option>
-                <option value="4">4+ Bedrooms</option>
-                <option value="5">5+ Bedrooms</option>
-                <option value="6">6+ Bedrooms</option>
+                <option value="3">3+ Beds</option>
+                <option value="4">4+ Beds</option>
+                <option value="5">5+ Beds</option>
+                <option value="6">6+ Beds</option>
               </select>
             </div>
           </div>
@@ -151,13 +151,13 @@ export function SearchFilterBar({
               variant="secondary"
               size="md"
               onClick={() => setIsExpanded(!isExpanded)}
-              className="flex-1 text-xs py-2.5"
+              className="flex-1 text-xs py-2"
             >
               <SlidersHorizontal className="w-3.5 h-3.5" />
-              <span>{isExpanded ? 'Fewer Filters' : 'More Filters'}</span>
+              <span>{isExpanded ? 'Less' : 'More'}</span>
             </Button>
 
-            <Button type="submit" variant="primary" size="md" className="flex-1 text-xs py-2.5">
+            <Button type="submit" variant="primary" size="md" className="flex-1 text-xs py-2">
               <Search className="w-3.5 h-3.5" />
               <span>Search</span>
             </Button>
@@ -166,11 +166,11 @@ export function SearchFilterBar({
 
         {/* Expanded Filters Drawer */}
         {isExpanded && (
-          <div className="pt-4 border-t border-[#d8cebe]/60 grid grid-cols-1 sm:grid-cols-3 gap-4 animate-in fade-in duration-200">
+          <div className="pt-3 border-t border-[#d8cebe]/60 grid grid-cols-1 sm:grid-cols-3 gap-3 animate-in fade-in duration-200">
             {/* Status Filter */}
             <div>
-              <label className="block text-[11px] font-mono font-semibold uppercase tracking-[0.18em] text-[#7e7365] mb-1">
-                Portfolio Status
+              <label className="block text-[11px] font-mono text-[#7e7365] mb-1">
+                Listing Status
               </label>
               <select
                 value={filters.status}
@@ -179,19 +179,19 @@ export function SearchFilterBar({
                   setFilters(updated);
                   if (onFilterChange) onFilterChange(updated);
                 }}
-                className="w-full bg-[#fbf6f0] text-[#1F1B16] border border-[#d8cebe] rounded-full px-4 py-2 text-xs outline-none focus:border-[#5c3822]"
+                className="w-full bg-white text-[#1F1B16] border border-[#d8cebe] rounded-full px-3.5 py-1.5 text-xs outline-none focus:border-[#5c3822]"
               >
-                <option value="all">All Listings (Sale & Lease)</option>
-                <option value="for-sale">For Sale Only</option>
-                <option value="exclusive">Exclusive Off-Market Only</option>
-                <option value="for-lease">Luxury Lease Only</option>
+                <option value="all">All Listings (Sale & Rent)</option>
+                <option value="for-sale">For Sale</option>
+                <option value="exclusive">Exclusive / Off-Market</option>
+                <option value="for-lease">For Rent</option>
               </select>
             </div>
 
             {/* Neighborhood Filter */}
             <div>
-              <label className="block text-[11px] font-mono font-semibold uppercase tracking-[0.18em] text-[#7e7365] mb-1">
-                Enclave / District
+              <label className="block text-[11px] font-mono text-[#7e7365] mb-1">
+                Select Area
               </label>
               <select
                 value={filters.neighborhood}
@@ -200,15 +200,14 @@ export function SearchFilterBar({
                   setFilters(updated);
                   if (onFilterChange) onFilterChange(updated);
                 }}
-                className="w-full bg-[#fbf6f0] text-[#1F1B16] border border-[#d8cebe] rounded-full px-4 py-2 text-xs outline-none focus:border-[#5c3822]"
+                className="w-full bg-white text-[#1F1B16] border border-[#d8cebe] rounded-full px-3.5 py-1.5 text-xs outline-none focus:border-[#5c3822]"
               >
-                <option value="all">All Enclaves</option>
-                <option value="Bel Air">Bel Air, CA</option>
-                <option value="Central Park South">Central Park South, NY</option>
-                <option value="Point Dume">Point Dume / Malibu, CA</option>
-                <option value="Chelsea">Chelsea, NY</option>
-                <option value="Backcountry">Backcountry Greenwich, CT</option>
-                <option value="Tribeca">Tribeca, NY</option>
+                <option value="all">All Karachi Areas</option>
+                <option value="DHA Phase 8">DHA Phase 8 & Seafront</option>
+                <option value="DHA Phase 6">DHA Phase 5 & 6</option>
+                <option value="Clifton">Clifton & Sea View</option>
+                <option value="KDA Scheme 1">KDA Scheme 1</option>
+                <option value="Bath Island">Bath Island</option>
               </select>
             </div>
 
@@ -222,7 +221,7 @@ export function SearchFilterBar({
                 className="text-xs text-[#7e7365] hover:text-[#1F1B16]"
               >
                 <RotateCcw className="w-3.5 h-3.5 mr-1" />
-                Reset All Filters
+                Reset Filters
               </Button>
             </div>
           </div>

@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { ArrowUpRight, ShieldCheck, Award, Compass, Sparkles } from 'lucide-react';
+import { ArrowUpRight } from 'lucide-react';
 import { Badge } from '@/ui/Badge';
 import { BrandLogo } from '@/components/common/BrandLogo';
 
@@ -16,107 +16,101 @@ export function Footer() {
           <div className="lg:col-span-2 space-y-4">
             <BrandLogo variant="on-dark" />
             <p className="text-xs text-[#D7CBBB] leading-relaxed max-w-sm">
-              An architectural real estate advisory dedicated to prime luxury estates, private penthouses, and landmark residences. Curating environments of enduring proportion and quiet luxury.
+              Your trusted partner for buying, selling, constructing, and renovating luxury properties across Karachi’s premier residential enclaves.
             </p>
             <div className="flex flex-wrap gap-2 pt-2">
-              <Badge variant="moss" size="sm">Global Luxury Certified</Badge>
-              <Badge variant="stone" size="sm" className="bg-[#24201a] text-[#D7CBBB] border-[#6E7A67]/30">Private Advisory</Badge>
+              <Badge variant="moss" size="sm">Verified Karachi Listings</Badge>
+              <Badge variant="stone" size="sm" className="bg-[#24201a] text-[#D7CBBB] border-[#6E7A67]/30">Construction & Renovation</Badge>
             </div>
           </div>
 
           {/* Quick Links */}
           <div className="space-y-3">
             <h4 className="text-xs font-mono font-semibold uppercase tracking-[0.18em] text-[#D8CEBE]">
-              Portfolios
+              Properties
             </h4>
             <ul className="space-y-2 text-xs text-[#D7CBBB]">
               <li>
                 <Link href="/properties?type=luxury-villa" className="hover:text-[#F8F4ED] transition-colors flex items-center gap-1">
-                  Architectural Villas <ArrowUpRight className="w-3 h-3 opacity-60" />
+                  Luxury Houses & Villas <ArrowUpRight className="w-3 h-3 opacity-60" />
                 </Link>
               </li>
               <li>
                 <Link href="/properties?type=penthouse" className="hover:text-[#F8F4ED] transition-colors flex items-center gap-1">
-                  Sky Penthouses <ArrowUpRight className="w-3 h-3 opacity-60" />
+                  Penthouses & Apartments <ArrowUpRight className="w-3 h-3 opacity-60" />
                 </Link>
               </li>
               <li>
                 <Link href="/properties?type=estate" className="hover:text-[#F8F4ED] transition-colors flex items-center gap-1">
-                  Country Estates <ArrowUpRight className="w-3 h-3 opacity-60" />
+                  Residential Plots <ArrowUpRight className="w-3 h-3 opacity-60" />
                 </Link>
               </li>
               <li>
-                <Link href="/properties?type=historic-manor" className="hover:text-[#F8F4ED] transition-colors flex items-center gap-1">
-                  Historic Landmarks <ArrowUpRight className="w-3 h-3 opacity-60" />
-                </Link>
-              </li>
-              <li>
-                <Link href="/properties?status=exclusive" className="hover:text-[#F8F4ED] transition-colors flex items-center gap-1">
-                  Private Off-Market <ArrowUpRight className="w-3 h-3 opacity-60" />
+                <Link href="/properties" className="hover:text-[#F8F4ED] transition-colors flex items-center gap-1">
+                  All Active Listings <ArrowUpRight className="w-3 h-3 opacity-60" />
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* Districts */}
+          {/* Areas */}
           <div className="space-y-3">
             <h4 className="text-xs font-mono font-semibold uppercase tracking-[0.18em] text-[#D8CEBE]">
-              Districts
+              Karachi Areas
             </h4>
             <ul className="space-y-2 text-xs text-[#D7CBBB]">
               <li>
-                <Link href="/neighborhoods/bel-air" className="hover:text-[#F8F4ED] transition-colors">
-                  Bel Air & Beverly Hills
+                <Link href="/neighborhoods/dha-phase-8" className="hover:text-[#F8F4ED] transition-colors">
+                  DHA Phase 8 & Seafront
                 </Link>
               </li>
               <li>
-                <Link href="/neighborhoods/tribeca" className="hover:text-[#F8F4ED] transition-colors">
-                  Tribeca & SoHo
+                <Link href="/neighborhoods/dha-phase-6" className="hover:text-[#F8F4ED] transition-colors">
+                  DHA Phase 5 & 6
                 </Link>
               </li>
               <li>
-                <Link href="/neighborhoods/malibu" className="hover:text-[#F8F4ED] transition-colors">
-                  Point Dume & Malibu
+                <Link href="/neighborhoods/clifton" className="hover:text-[#F8F4ED] transition-colors">
+                  Clifton & Sea View
                 </Link>
               </li>
               <li>
-                <Link href="/neighborhoods/greenwich" className="hover:text-[#F8F4ED] transition-colors">
-                  Backcountry Greenwich
+                <Link href="/neighborhoods/kda-scheme-1" className="hover:text-[#F8F4ED] transition-colors">
+                  KDA Scheme 1
                 </Link>
               </li>
               <li>
                 <Link href="/neighborhoods" className="hover:text-[#F8F4ED] transition-colors text-[#DDD2C2]">
-                  Explore All Guides &rarr;
+                  Explore All Areas &rarr;
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* Advisory & Offices */}
+          {/* Karachi Office */}
           <div className="space-y-3">
             <h4 className="text-xs font-mono font-semibold uppercase tracking-[0.18em] text-[#D8CEBE]">
-              Private Office
+              Office & Contact
             </h4>
             <div className="text-xs text-[#D7CBBB] space-y-1">
-              <p className="font-medium text-[#F8F4ED]">New York</p>
-              <p>575 Madison Avenue, 18th Floor</p>
-              <p className="text-[11px] text-[#847666]">+1 (212) 640-8800</p>
+              <p className="font-medium text-[#F8F4ED]">DHA Phase 6 Office</p>
+              <p>Main Khayaban-e-Bukhari, Phase 6, DHA, Karachi</p>
+              <p className="text-[11px] text-[#DDD2C2] pt-1">Direct: +92 300 822 4110</p>
+              <p className="text-[11px] text-[#847666]">Tel: +92 21 3584 1100</p>
             </div>
-            <div className="text-xs text-[#D7CBBB] space-y-1 pt-2">
-              <p className="font-medium text-[#F8F4ED]">Los Angeles</p>
-              <p>9460 Wilshire Boulevard</p>
-              <p className="text-[11px] text-[#847666]">+1 (310) 892-4400</p>
+            <div className="pt-2 text-xs text-[#D7CBBB]">
+              <p>Email: <a href="mailto:info@amberproperty.com" className="underline hover:text-white">info@amberproperty.com</a></p>
             </div>
           </div>
         </div>
 
         {/* Bottom Bar */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] font-mono text-[#847666]">
-          <p>© {new Date().getFullYear()} Amber Property Corner. All rights reserved. Equal Housing Opportunity.</p>
+          <p>© {new Date().getFullYear()} Amber Property Corner. All rights reserved.</p>
           <div className="flex items-center gap-6">
-            <Link href="/about" className="hover:text-[#D7CBBB] transition-colors">Architectural Code</Link>
-            <Link href="/services" className="hover:text-[#D7CBBB] transition-colors">Discretion Protocol</Link>
-            <Link href="/contact" className="hover:text-[#D7CBBB] transition-colors">Client Concierge</Link>
+            <Link href="/about" className="hover:text-[#D7CBBB] transition-colors">About Us</Link>
+            <Link href="/services" className="hover:text-[#D7CBBB] transition-colors">Construction Services</Link>
+            <Link href="/contact" className="hover:text-[#D7CBBB] transition-colors">Contact Office</Link>
           </div>
         </div>
       </div>

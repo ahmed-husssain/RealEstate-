@@ -5,111 +5,111 @@ import { GlassCard } from '@/ui/GlassCard';
 import { Badge } from '@/ui/Badge';
 import { Button } from '@/ui/Button';
 import { BrandLogo } from '@/components/common/BrandLogo';
-import { Award, Compass, ShieldCheck, Sparkles, ArrowUpRight } from 'lucide-react';
+import { ShieldCheck, CheckCircle2, Hammer, KeyRound } from 'lucide-react';
 
 export default function AboutPage() {
-  const partners = [
+  const advisors = [
     {
-      name: 'Eleanor Vance-Sterling',
-      role: 'Founding Partner | West Coast & Coastal Estates',
-      bio: 'Over 18 years specializing in landmark Bel Air and Malibu transactions with a background in architectural history.',
+      name: 'Tariq Mehmood Siddiqui',
+      role: 'Senior Real Estate Advisor',
+      bio: 'Over 16 years of experience in DHA Karachi property transactions, file transfers, and luxury bungalow acquisitions.',
+      image: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=600&q=80',
+    },
+    {
+      name: 'Engr. Farhan Raza',
+      role: 'Head of Construction & Engineering',
+      bio: 'Civil engineer with 14+ years managing turnkey residential builds, gray structure works, and modern architectural finishing in Karachi.',
+      image: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=600&q=80',
+    },
+    {
+      name: 'Zainab Alvi',
+      role: 'Luxury Residential Consultant',
+      bio: 'Specializing in Clifton and DHA sea-view penthouses, corporate leases, and overseas client property portfolios.',
       image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=600&q=80',
-    },
-    {
-      name: 'Julian Montgomery',
-      role: 'Managing Partner | Metropolitan Penthouses',
-      bio: 'Leading Manhattan and Brooklyn trophy loft transactions with extensive experience in historic landmark properties.',
-      image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80',
-    },
-    {
-      name: 'Victoria Thorne',
-      role: 'Partner | Country & Equestrian Estates',
-      bio: 'Dedicated to significant acreage, historic manors, and equestrian parcels across Greenwich and Westchester.',
-      image: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=600&q=80',
     },
   ];
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-12 space-y-16">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-12 space-y-14">
       {/* Hero Header */}
-      <div className="max-w-3xl space-y-4">
-        <div className="flex items-center gap-3">
-          <BrandLogo href="" imageClassName="h-10" />
-          <Badge variant="exclusive" size="sm">Brand Philosophy</Badge>
+      <div className="max-w-2xl space-y-3">
+        <div className="flex items-center gap-2">
+          <BrandLogo href="" imageClassName="h-8" />
+          <Badge variant="exclusive" size="sm">Our Story</Badge>
         </div>
         <h1 className="font-display font-medium text-3xl sm:text-5xl text-[#1F1B16] tracking-tight">
-          Where Architectural Rigor Meets Private Wealth Advisory
+          About Amber Property Corner
         </h1>
         <p className="text-xs sm:text-base text-[#7e7365] leading-relaxed">
-          Founded on the conviction that extraordinary residences are not mere real estate assets, but livable works of art shaped by proportion, materiality, and light.
+          A dedicated real estate and construction agency based in Karachi, helping clients buy verified properties, build dream homes, and complete modern renovations.
         </p>
       </div>
 
       {/* Story & Vision */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-        <div className="relative aspect-[4/3] rounded-[2rem] overflow-hidden border border-[#d8cebe] shadow-2xl bg-[#e5decb]">
+        <div className="relative aspect-[4/3] rounded-[2rem] overflow-hidden border border-[#d8cebe] shadow-xl bg-[#e5decb]">
           <Image
             src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80"
-            alt="Amber Property Corner Architectural Vision"
+            alt="Amber Property Corner Karachi"
             fill
             className="object-cover"
           />
         </div>
 
-        <div className="space-y-6">
-          <Badge variant="moss" size="sm">The Amber Standard</Badge>
+        <div className="space-y-4">
+          <Badge variant="moss" size="sm">Our Values</Badge>
           <h2 className="font-display font-medium text-2xl sm:text-3xl text-[#1F1B16]">
-            A Curation Philosophy Driven by Architectural Integrity
+            Built on Integrity, Local Experience & Craftsmanship
           </h2>
           <p className="text-xs sm:text-sm text-[#7e7365] leading-relaxed">
-            Conventional brokerages aggregate inventory; Amber Property Corner curates. We examine every property through the lens of architectural provenance, construction craft, and enduring lifestyle resonance.
+            Whether you are purchasing a plot in DHA Phase 8, constructing a multi-generational home, or renovating an apartment in Clifton, we provide transparent guidance without hidden surprises.
           </p>
-          <div className="space-y-3 text-xs font-sans">
+          <div className="space-y-2.5 text-xs text-[#1F1B16]">
             <div className="flex items-start gap-2.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#5c3822] mt-1.5 shrink-0" />
-              <p><strong>Material Honesty:</strong> Prioritizing authentic stone, timber, and glass over transient cosmetic trends.</p>
+              <CheckCircle2 className="w-4 h-4 text-[#2e3a2f] shrink-0 mt-0.5" />
+              <p><strong>Verified Ownership:</strong> Thorough inspection of all title documents and DHA transfer paperwork.</p>
             </div>
             <div className="flex items-start gap-2.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#5c3822] mt-1.5 shrink-0" />
-              <p><strong>Unmatched Discretion:</strong> Conducting the majority of high-value transactions off-market under strict NDAs.</p>
+              <CheckCircle2 className="w-4 h-4 text-[#2e3a2f] shrink-0 mt-0.5" />
+              <p><strong>Quality Construction:</strong> High-grade materials, structural safety, and timely project delivery.</p>
             </div>
             <div className="flex items-start gap-2.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#5c3822] mt-1.5 shrink-0" />
-              <p><strong>Global Reach:</strong> Direct relationships with family offices, architects, and private collectors across the globe.</p>
+              <CheckCircle2 className="w-4 h-4 text-[#2e3a2f] shrink-0 mt-0.5" />
+              <p><strong>Dedicated Support:</strong> Direct contact with our advisors throughout the buying or building process.</p>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Leadership Team */}
-      <div className="space-y-8 pt-8 border-t border-[#d8cebe]/60">
-        <div className="space-y-2">
-          <Badge variant="stone" size="sm">Leadership</Badge>
+      {/* Advisors Team */}
+      <div className="space-y-6 pt-6 border-t border-[#d8cebe]/60">
+        <div className="space-y-1">
+          <Badge variant="stone" size="sm">Our Team</Badge>
           <h2 className="font-display font-medium text-2xl sm:text-3xl text-[#1F1B16]">
-            Senior Managing Partners
+            Experienced Advisors & Engineers
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {partners.map((partner, idx) => (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {advisors.map((advisor, idx) => (
             <GlassCard key={idx} variant="card" rounded="2rem" className="p-6 space-y-4 bg-[#fbf6f0]">
               <div className="relative aspect-square w-full rounded-2xl overflow-hidden bg-[#e5decb] border border-[#d8cebe]">
                 <Image
-                  src={partner.image}
-                  alt={partner.name}
+                  src={advisor.image}
+                  alt={advisor.name}
                   fill
                   className="object-cover"
                 />
               </div>
-              <div>
+              <div className="space-y-1">
                 <h3 className="font-display font-medium text-lg text-[#1F1B16]">
-                  {partner.name}
+                  {advisor.name}
                 </h3>
-                <p className="text-xs font-mono text-[#5c3822] mt-0.5">
-                  {partner.role}
+                <p className="text-xs font-mono text-[#5c3822]">
+                  {advisor.role}
                 </p>
-                <p className="text-xs text-[#7e7365] mt-2 leading-relaxed">
-                  {partner.bio}
+                <p className="text-xs text-[#7e7365] pt-1 leading-relaxed">
+                  {advisor.bio}
                 </p>
               </div>
             </GlassCard>

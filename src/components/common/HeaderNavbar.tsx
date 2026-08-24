@@ -41,8 +41,8 @@ export function HeaderNavbar() {
 
   const navLinks = [
     { name: 'Properties', href: '/properties' },
-    { name: 'Neighborhoods', href: '/neighborhoods' },
-    { name: 'Valuation', href: '/valuation' },
+    { name: 'Areas', href: '/neighborhoods' },
+    { name: 'Price Calculator', href: '/valuation' },
     { name: 'Services', href: '/services' },
     { name: 'About', href: '/about' },
     { name: 'Contact', href: '/contact' },
@@ -104,7 +104,7 @@ export function HeaderNavbar() {
             <Link href="/contact" className="hidden sm:inline-flex">
               <Button variant="primary" size="sm" className="text-xs">
                 <PhoneCall className="w-3.5 h-3.5" />
-                <span>Advisory</span>
+                <span>Contact Us</span>
               </Button>
             </Link>
 
@@ -152,7 +152,7 @@ export function HeaderNavbar() {
               </Link>
               <Link href="/contact" onClick={() => setMobileMenuOpen(false)}>
                 <Button variant="primary" size="md" className="w-full">
-                  Schedule Private Advisory
+                  Contact Our Team
                 </Button>
               </Link>
             </div>

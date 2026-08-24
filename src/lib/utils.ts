@@ -6,15 +6,26 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function formatCurrency(amount: number): string {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    maximumFractionDigits: 0,
-  }).format(amount);
+  if (!amount || isNaN(amount)) return 'PKR 0';
+  
+  if (amount >= 10000000) {
+    const crore = amount / 10000000;
+    const formattedCrore = crore % 1 === 0 ? crore.toString() : crore.toFixed(2).replace(/\.?0+$/, '');
+    return `PKR ${formattedCrore} Crore`;
+  }
+  
+  if (amount >= 100000) {
+    const lakh = amount / 100000;
+    const formattedLakh = lakh % 1 === 0 ? lakh.toString() : lakh.toFixed(2).replace(/\.?0+$/, '');
+    return `PKR ${formattedLakh} Lakh`;
+  }
+  
+  return `PKR ${new Intl.NumberFormat('en-PK').format(amount)}`;
 }
 
 export function formatNumber(num: number): string {
-  return new Intl.NumberFormat('en-US').format(num);
+  if (!num || isNaN(num)) return '0';
+  return new Intl.NumberFormat('en-PK').format(num);
 }
 
 export function calculateMonthlyMortgage(
@@ -22,8 +33,8 @@ export function calculateMonthlyMortgage(
   downPaymentPercent: number,
   interestRateAnnual: number,
   loanTermYears: number,
-  propertyTaxAnnual: number = 0.012, // 1.2%
-  homeInsuranceAnnual: number = 2400
+  propertyTaxAnnual: number = 0.005, // 0.5%
+  homeInsuranceAnnual: number = 50000 // PKR 50,000 / year
 ): {
   principalAndInterest: number;
   propertyTax: number;

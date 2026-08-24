@@ -87,16 +87,16 @@ export function PropertiesCatalogClient({ initialProperties }: PropertiesCatalog
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10 space-y-8">
       {/* Header Banner */}
-      <div className="space-y-3">
+      <div className="space-y-2">
         <div className="flex items-center gap-2">
-          <Badge variant="exclusive" size="sm">Portfolio Collection</Badge>
+          <Badge variant="exclusive" size="sm">Active Listings</Badge>
           <Badge variant="stone" size="sm">{filteredProperties.length} Properties Available</Badge>
         </div>
-        <h1 className="font-display font-medium text-3xl sm:text-5xl text-[#1F1B16] tracking-tight">
-          Prime Architectural Residences
+        <h1 className="font-display font-medium text-2xl sm:text-4xl text-[#1F1B16] tracking-tight">
+          Properties for Sale in Karachi
         </h1>
-        <p className="text-xs sm:text-sm text-[#7e7365] max-w-2xl">
-          Explore curated penthouses, modern estates, and historic landmark properties with comprehensive architectural data and confidential acquisition support.
+        <p className="text-xs sm:text-sm text-[#7e7365] max-w-xl">
+          Browse luxury houses, penthouses, and plots in DHA, Clifton, and KDA with verified details and direct agent contact.
         </p>
       </div>
 
@@ -109,23 +109,23 @@ export function PropertiesCatalogClient({ initialProperties }: PropertiesCatalog
       {/* Control Bar: Active Filters Count & Sort */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-2 border-b border-[#d8cebe]/60 pb-4">
         <div className="flex items-center gap-2 text-xs font-mono text-[#7e7365]">
-          <span>Showing <strong className="text-[#1F1B16]">{filteredProperties.length}</strong> of {initialProperties.length} residences</span>
+          <span>Showing <strong className="text-[#1F1B16]">{filteredProperties.length}</strong> of {initialProperties.length} properties</span>
         </div>
 
         {/* Sort Controls */}
-        <div className="flex items-center gap-3">
-          <span className="text-xs font-mono uppercase tracking-[0.14em] text-[#7e7365] flex items-center gap-1">
+        <div className="flex items-center gap-2">
+          <span className="text-xs font-mono uppercase text-[#7e7365] flex items-center gap-1">
             <ArrowUpDown className="w-3.5 h-3.5" /> Sort:
           </span>
           <select
             value={filters.sortBy}
             onChange={(e) => setFilters({ ...filters, sortBy: e.target.value as any })}
-            className="bg-[#fbf6f0] text-[#1F1B16] border border-[#d8cebe] rounded-full px-4 py-1.5 text-xs outline-none focus:border-[#5c3822] cursor-pointer"
+            className="bg-[#fbf6f0] text-[#1F1B16] border border-[#d8cebe] rounded-full px-3.5 py-1.5 text-xs outline-none focus:border-[#5c3822] cursor-pointer"
           >
-            <option value="featured">Curated & Featured First</option>
+            <option value="featured">Featured First</option>
             <option value="price-desc">Price: High to Low</option>
             <option value="price-asc">Price: Low to High</option>
-            <option value="area-desc">Square Footage: Largest</option>
+            <option value="area-desc">Size: Largest</option>
             <option value="newest">Recently Listed</option>
           </select>
         </div>

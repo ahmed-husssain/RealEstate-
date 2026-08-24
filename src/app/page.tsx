@@ -5,7 +5,6 @@ import { mockProperties } from '@/data/mockProperties';
 import { mockNeighborhoods } from '@/data/neighborhoods';
 import { PropertyCard } from '@/components/properties/PropertyCard';
 import { SearchFilterBar } from '@/components/properties/SearchFilterBar';
-import { TextReveal } from '@/ui/TextReveal';
 import { Button } from '@/ui/Button';
 import { Badge } from '@/ui/Badge';
 import { GlassCard } from '@/ui/GlassCard';
@@ -14,13 +13,10 @@ import { getAreas } from '@/lib/db/areas';
 import { mapDbPropertyToProperty, mapDbAreaToNeighborhood } from '@/lib/db/mappers';
 import {
   ArrowUpRight,
-  Shield,
+  ShieldCheck,
   Compass,
-  Sparkles,
-  KeyRound,
-  TrendingUp,
-  Award,
-  ChevronRight,
+  Hammer,
+  CheckCircle2,
 } from 'lucide-react';
 
 export default async function HomePage() {
@@ -39,71 +35,68 @@ export default async function HomePage() {
   const secondaryProperties = properties.filter((p) => !p.isFeatured).slice(0, 3);
 
   return (
-    <div className="space-y-24 sm:space-y-32">
+    <div className="space-y-20 sm:space-y-28">
       {/* 1. Hero Section */}
-      <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-12">
-        <div className="text-center max-w-4xl mx-auto space-y-6">
+      <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-10">
+        <div className="text-center max-w-3xl mx-auto space-y-5">
           {/* Label Chip */}
           <div className="flex items-center justify-center gap-2">
             <Badge variant="exclusive" size="md">
-              The Amber Standard
+              Amber Property Corner
             </Badge>
-            <Badge variant="stone" size="md" className="hidden sm:inline-flex">
-              Estates & Architecture
+            <Badge variant="stone" size="md">
+              Real Estate & Construction
             </Badge>
           </div>
 
-          {/* Display-LG Headline with Word Reveal */}
-          <h1 className="font-display font-medium text-4xl sm:text-6xl lg:text-[68px] leading-[1.04] text-[#1F1B16] tracking-tight">
-            Architectural Precision. <br className="hidden sm:inline" />
-            <span className="italic font-serif font-normal text-[#5c3822]">
-              Timeless
-            </span>{' '}
-            Proportions.
+          {/* Simple Direct Headline */}
+          <h1 className="font-display font-medium text-3xl sm:text-5xl lg:text-6xl leading-tight text-[#1F1B16] tracking-tight">
+            Find Luxury Homes & Penthouses in{' '}
+            <span className="italic font-serif text-[#5c3822]">Karachi</span>
           </h1>
 
-          {/* Subtitle */}
-          <p className="text-sm sm:text-base text-[#7e7365] max-w-2xl mx-auto font-sans leading-relaxed">
-            Representing the world’s most distinguished private estates, sky penthouses, and bespoke coastal residences with uncompromised discretion.
+          {/* Clean Subtitle */}
+          <p className="text-sm sm:text-base text-[#7e7365] max-w-xl mx-auto font-sans leading-relaxed">
+            Buy, sell, build, and renovate verified luxury houses, penthouses, and residential plots across DHA, Clifton, and KDA.
           </p>
 
           {/* Search Filter Bar Component */}
-          <div className="pt-6 sm:pt-8 text-left">
+          <div className="pt-4 text-left">
             <SearchFilterBar />
           </div>
 
           {/* Trust Metrics Ribbon */}
-          <div className="pt-4 grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
-            <div className="bg-[#fbf6f0]/80 backdrop-blur-md border border-[#d8cebe] rounded-2xl py-3 px-4 shadow-sm">
-              <span className="font-display font-medium text-xl sm:text-2xl text-[#1F1B16]">
-                $1.4B+
+          <div className="pt-3 grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
+            <div className="bg-[#fbf6f0]/90 border border-[#d8cebe] rounded-2xl py-3 px-4 shadow-sm">
+              <span className="font-display font-medium text-lg sm:text-xl text-[#1F1B16]">
+                500+ Sq Yd
               </span>
-              <p className="text-[10px] font-mono uppercase tracking-[0.14em] text-[#7e7365] mt-0.5">
-                Curated Portfolio
+              <p className="text-[11px] font-mono text-[#7e7365] mt-0.5">
+                Luxury Houses
               </p>
             </div>
-            <div className="bg-[#fbf6f0]/80 backdrop-blur-md border border-[#d8cebe] rounded-2xl py-3 px-4 shadow-sm">
-              <span className="font-display font-medium text-xl sm:text-2xl text-[#1F1B16]">
-                45+
+            <div className="bg-[#fbf6f0]/90 border border-[#d8cebe] rounded-2xl py-3 px-4 shadow-sm">
+              <span className="font-display font-medium text-lg sm:text-xl text-[#1F1B16]">
+                DHA & Clifton
               </span>
-              <p className="text-[10px] font-mono uppercase tracking-[0.14em] text-[#7e7365] mt-0.5">
-                Off-Market Mandates
+              <p className="text-[11px] font-mono text-[#7e7365] mt-0.5">
+                Prime Locations
               </p>
             </div>
-            <div className="bg-[#fbf6f0]/80 backdrop-blur-md border border-[#d8cebe] rounded-2xl py-3 px-4 shadow-sm">
-              <span className="font-display font-medium text-xl sm:text-2xl text-[#1F1B16]">
-                18 Days
+            <div className="bg-[#fbf6f0]/90 border border-[#d8cebe] rounded-2xl py-3 px-4 shadow-sm">
+              <span className="font-display font-medium text-lg sm:text-xl text-[#2e3a2f]">
+                100% Verified
               </span>
-              <p className="text-[10px] font-mono uppercase tracking-[0.14em] text-[#7e7365] mt-0.5">
-                Avg Prime Contract
+              <p className="text-[11px] font-mono text-[#7e7365] mt-0.5">
+                Clean Title Deeds
               </p>
             </div>
-            <div className="bg-[#fbf6f0]/80 backdrop-blur-md border border-[#d8cebe] rounded-2xl py-3 px-4 shadow-sm">
-              <span className="font-display font-medium text-xl sm:text-2xl text-[#1F1B16]">
-                100%
+            <div className="bg-[#fbf6f0]/90 border border-[#d8cebe] rounded-2xl py-3 px-4 shadow-sm">
+              <span className="font-display font-medium text-lg sm:text-xl text-[#5c3822]">
+                Full Service
               </span>
-              <p className="text-[10px] font-mono uppercase tracking-[0.14em] text-[#7e7365] mt-0.5">
-                Discretion Index
+              <p className="text-[11px] font-mono text-[#7e7365] mt-0.5">
+                Build & Renovate
               </p>
             </div>
           </div>
@@ -111,118 +104,118 @@ export default async function HomePage() {
       </section>
 
       {/* 2. Featured Exclusive Residences */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-[#d8cebe]/60 pb-6">
-          <div className="space-y-1.5">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-[#d8cebe]/60 pb-5">
+          <div className="space-y-1">
             <Badge variant="moss" size="sm">
-              Curated Inventory
+              Featured Listings
             </Badge>
-            <h2 className="font-display font-medium text-2xl sm:text-4xl text-[#1F1B16] tracking-tight">
-              Featured Prime Residences
+            <h2 className="font-display font-medium text-2xl sm:text-3xl text-[#1F1B16]">
+              Featured Properties in Karachi
             </h2>
             <p className="text-xs sm:text-sm text-[#7e7365]">
-              Architectural masterpieces selected for exceptional material integrity and site prominence.
+              Handpicked luxury houses and apartments with complete details and verified documents.
             </p>
           </div>
           <Link href="/properties">
             <Button variant="secondary" size="md">
-              <span>View All Properties ({mockProperties.length})</span>
+              <span>View All Properties ({properties.length})</span>
               <ArrowUpRight className="w-4 h-4" />
             </Button>
           </Link>
         </div>
 
         {/* 3-Column Listing Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {featuredProperties.map((property, idx) => (
             <PropertyCard key={property.id} property={property} priority={idx === 0} />
           ))}
         </div>
       </section>
 
-      {/* 3. Architectural Philosophy & Stratified Showcase */}
+      {/* 3. Three Core Pillars (Simple & Honest) */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <GlassCard
           variant="container"
           rounded="2rem"
-          className="p-8 sm:p-12 lg:p-16 space-y-12"
+          className="p-6 sm:p-10 space-y-8 bg-[#fbf6f0]"
         >
-          <div className="max-w-3xl space-y-3">
+          <div className="max-w-2xl space-y-2">
             <Badge variant="exclusive" size="sm">
-              Architectural Philosophy
+              Why Choose Amber Property Corner
             </Badge>
-            <h2 className="font-display font-medium text-3xl sm:text-4xl text-[#1F1B16]">
-              Real estate evaluated not by square footage alone, but by architectural resonance.
+            <h2 className="font-display font-medium text-2xl sm:text-3xl text-[#1F1B16]">
+              Everything you need to buy, sell, or build in Karachi
             </h2>
-            <p className="text-sm text-[#7e7365] leading-relaxed">
-              Every residence represented by Amber Property Corner undergoes a rigorous evaluation of spatial volume, natural light trajectory, material honesty, and neighborhood context.
+            <p className="text-xs sm:text-sm text-[#7e7365]">
+              From finding the right plot in DHA to complete architectural design and turnkey construction.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4 border-t border-[#d8cebe]/60">
-            <div className="bg-[#fbf6f0] border border-[#d8cebe] rounded-2xl p-6 space-y-3 shadow-sm">
-              <div className="w-10 h-10 rounded-full bg-[#5c3822]/10 text-[#5c3822] flex items-center justify-center font-mono font-bold text-sm">
+            <div className="bg-white/80 border border-[#d8cebe] rounded-2xl p-5 space-y-2 shadow-sm">
+              <div className="w-9 h-9 rounded-full bg-[#5c3822]/10 text-[#5c3822] flex items-center justify-center font-mono font-bold text-xs">
                 01
               </div>
-              <h3 className="font-display font-medium text-lg text-[#1F1B16]">
-                Proportion & Light
+              <h3 className="font-display font-medium text-base text-[#1F1B16]">
+                Prime Karachi Locations
               </h3>
               <p className="text-xs text-[#7e7365] leading-relaxed">
-                Prioritizing double-height volumes, unobstructed orientation toward natural light paths, and seamless indoor-outdoor transitions.
+                Direct access to luxury properties in DHA Phases 5 to 8, Clifton Blocks 2 to 9, and KDA Scheme 1.
               </p>
             </div>
 
-            <div className="bg-[#fbf6f0] border border-[#d8cebe] rounded-2xl p-6 space-y-3 shadow-sm">
-              <div className="w-10 h-10 rounded-full bg-[#2e3a2f]/10 text-[#2e3a2f] flex items-center justify-center font-mono font-bold text-sm">
+            <div className="bg-white/80 border border-[#d8cebe] rounded-2xl p-5 space-y-2 shadow-sm">
+              <div className="w-9 h-9 rounded-full bg-[#2e3a2f]/10 text-[#2e3a2f] flex items-center justify-center font-mono font-bold text-xs">
                 02
               </div>
-              <h3 className="font-display font-medium text-lg text-[#1F1B16]">
-                Material Integrity
+              <h3 className="font-display font-medium text-base text-[#1F1B16]">
+                Construction & Renovation
               </h3>
               <p className="text-xs text-[#7e7365] leading-relaxed">
-                Celebrating authentic masonry, honed travertine, fluted architectural bronze, and sustainably harvested quarter-sawn hardwoods.
+                Turnkey residential construction, modern interior remodeling, and high-quality structural engineering.
               </p>
             </div>
 
-            <div className="bg-[#fbf6f0] border border-[#d8cebe] rounded-2xl p-6 space-y-3 shadow-sm">
-              <div className="w-10 h-10 rounded-full bg-[#847666]/15 text-[#1F1B16] flex items-center justify-center font-mono font-bold text-sm">
+            <div className="bg-white/80 border border-[#d8cebe] rounded-2xl p-5 space-y-2 shadow-sm">
+              <div className="w-9 h-9 rounded-full bg-[#847666]/15 text-[#1F1B16] flex items-center justify-center font-mono font-bold text-xs">
                 03
               </div>
-              <h3 className="font-display font-medium text-lg text-[#1F1B16]">
-                Private Discretion
+              <h3 className="font-display font-medium text-base text-[#1F1B16]">
+                Safe & Verified Deals
               </h3>
               <p className="text-xs text-[#7e7365] leading-relaxed">
-                White-glove advisory and strict non-disclosure protocols protecting the privacy of ultra-high-net-worth principals and family offices.
+                Full documentation verification, clear title checks, and transparent guidance from start to finish.
               </p>
             </div>
           </div>
         </GlassCard>
       </section>
 
-      {/* 4. Curated Enclaves & Neighborhood Guides */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-[#d8cebe]/60 pb-6">
-          <div className="space-y-1.5">
+      {/* 4. Popular Areas & Enclaves */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-[#d8cebe]/60 pb-5">
+          <div className="space-y-1">
             <Badge variant="stone" size="sm">
-              Geographic Intelligence
+              Neighborhoods
             </Badge>
-            <h2 className="font-display font-medium text-2xl sm:text-4xl text-[#1F1B16] tracking-tight">
-              Curated Metropolitan Enclaves
+            <h2 className="font-display font-medium text-2xl sm:text-3xl text-[#1F1B16]">
+              Popular Karachi Areas
             </h2>
             <p className="text-xs sm:text-sm text-[#7e7365]">
-              In-depth architectural neighborhood guides, market metrics, and lifestyle context.
+              Explore top neighborhoods, average market rates, and available homes.
             </p>
           </div>
           <Link href="/neighborhoods">
             <Button variant="secondary" size="md">
-              <span>View All Enclaves</span>
+              <span>View All Areas</span>
               <ArrowUpRight className="w-4 h-4" />
             </Button>
           </Link>
         </div>
 
         {/* 4 Neighborhood Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {neighborhoods.slice(0, 4).map((neighborhood) => (
             <Link
               key={neighborhood.id}
@@ -232,7 +225,7 @@ export default async function HomePage() {
               <GlassCard
                 variant="interactive"
                 rounded="1.75rem"
-                className="overflow-hidden flex flex-col h-full"
+                className="overflow-hidden flex flex-col h-full bg-[#fbf6f0]"
               >
                 <div className="relative aspect-[4/3] w-full overflow-hidden bg-[#e5decb]">
                   <Image
@@ -242,23 +235,23 @@ export default async function HomePage() {
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                     className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#1F1B16]/70 via-transparent to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#1F1B16]/80 via-transparent to-transparent" />
                   <div className="absolute bottom-3 inset-x-3">
-                    <span className="font-mono text-[10px] uppercase tracking-widest text-[#F8F4ED]/80">
+                    <span className="font-mono text-[10px] uppercase text-[#F8F4ED]/80">
                       {neighborhood.city}
                     </span>
-                    <h3 className="font-display font-medium text-xl text-[#F8F4ED]">
+                    <h3 className="font-display font-medium text-lg text-[#F8F4ED]">
                       {neighborhood.name}
                     </h3>
                   </div>
                 </div>
 
-                <div className="p-4 flex-1 flex flex-col justify-between space-y-3 bg-[#fbf6f0]">
-                  <p className="text-xs text-[#7e7365] line-clamp-2 leading-relaxed">
+                <div className="p-3.5 flex-1 flex flex-col justify-between space-y-2 bg-[#fbf6f0]">
+                  <p className="text-xs text-[#7e7365] line-clamp-2">
                     {neighborhood.tagline}
                   </p>
                   <div className="pt-2 border-t border-[#d8cebe]/60 flex items-center justify-between text-xs font-mono">
-                    <span className="text-[#7e7365]">Avg Sq Ft</span>
+                    <span className="text-[#7e7365]">Avg Rate</span>
                     <span className="font-semibold text-[#1F1B16]">
                       {neighborhood.stats.avgPriceSqFt}
                     </span>
@@ -270,60 +263,62 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 5. Additional Curated Portfolio Items */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
-        <div className="flex items-center justify-between border-b border-[#d8cebe]/60 pb-6">
-          <div>
-            <Badge variant="stone" size="sm">
-              Expanded Portfolio
-            </Badge>
-            <h2 className="font-display font-medium text-2xl sm:text-3xl text-[#1F1B16] mt-1 tracking-tight">
-              Metropolitan Lofts & Historic Manors
-            </h2>
+      {/* 5. More Listings */}
+      {secondaryProperties.length > 0 && (
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+          <div className="flex items-center justify-between border-b border-[#d8cebe]/60 pb-5">
+            <div>
+              <Badge variant="stone" size="sm">
+                More Listings
+              </Badge>
+              <h2 className="font-display font-medium text-2xl sm:text-3xl text-[#1F1B16] mt-1">
+                Recently Added Properties
+              </h2>
+            </div>
+            <Link href="/properties">
+              <span className="text-xs font-mono uppercase tracking-[0.14em] text-[#5c3822] hover:underline flex items-center gap-1">
+                Explore All <ArrowUpRight className="w-3.5 h-3.5" />
+              </span>
+            </Link>
           </div>
-          <Link href="/properties">
-            <span className="text-xs font-mono uppercase tracking-[0.14em] text-[#5c3822] hover:underline flex items-center gap-1">
-              Explore All <ArrowUpRight className="w-3.5 h-3.5" />
-            </span>
-          </Link>
-        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-          {secondaryProperties.map((property) => (
-            <PropertyCard key={property.id} property={property} />
-          ))}
-        </div>
-      </section>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {secondaryProperties.map((property) => (
+              <PropertyCard key={property.id} property={property} />
+            ))}
+          </div>
+        </section>
+      )}
 
-      {/* 6. Valuation & Private Advisory Banner */}
+      {/* 6. Valuation & Contact Banner */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <GlassCard
           variant="card"
           rounded="2rem"
-          className="relative overflow-hidden p-8 sm:p-14 bg-gradient-to-r from-[#fbf6f0] via-[#f5efe6] to-[#ece3d5] border border-[#d8cebe] shadow-2xl"
+          className="relative overflow-hidden p-6 sm:p-10 bg-[#fbf6f0] border border-[#d8cebe] shadow-xl"
         >
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-            <div className="lg:col-span-8 space-y-4">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+            <div className="lg:col-span-8 space-y-3">
               <Badge variant="exclusive" size="sm">
-                Private Advisory
+                Free Price Estimate
               </Badge>
-              <h2 className="font-display font-medium text-3xl sm:text-4xl text-[#1F1B16] tracking-tight">
-                Contemplating the acquisition or divestment of a landmark residence?
+              <h2 className="font-display font-medium text-2xl sm:text-3xl text-[#1F1B16]">
+                Want to know the current market value of your property?
               </h2>
-              <p className="text-xs sm:text-sm text-[#7e7365] max-w-2xl leading-relaxed">
-                Access our proprietary automated valuation model or request a bespoke confidential portfolio assessment from our Senior Partners.
+              <p className="text-xs sm:text-sm text-[#7e7365] max-w-xl leading-relaxed">
+                Use our quick online calculator or get in touch with our team for an on-site property evaluation.
               </p>
             </div>
 
-            <div className="lg:col-span-4 flex flex-col sm:flex-row lg:flex-col gap-3">
+            <div className="lg:col-span-4 flex flex-col sm:flex-row lg:flex-col gap-2.5">
               <Link href="/valuation" className="w-full">
-                <Button variant="primary" size="lg" className="w-full">
-                  Instant Valuation Tool
+                <Button variant="primary" size="lg" className="w-full text-xs sm:text-sm">
+                  Calculate Property Price
                 </Button>
               </Link>
               <Link href="/contact" className="w-full">
-                <Button variant="secondary" size="lg" className="w-full">
-                  Request Partner Meeting
+                <Button variant="secondary" size="lg" className="w-full text-xs sm:text-sm">
+                  Contact Our Office
                 </Button>
               </Link>
             </div>

@@ -3,41 +3,41 @@ import Link from 'next/link';
 import { GlassCard } from '@/ui/GlassCard';
 import { Badge } from '@/ui/Badge';
 import { Button } from '@/ui/Button';
-import { ShieldCheck, Compass, Award, KeyRound, Building, CheckCircle, ArrowUpRight } from 'lucide-react';
+import { KeyRound, Hammer, Paintbrush, CheckCircle2, ArrowRight } from 'lucide-react';
 
 export default function ServicesPage() {
   const services = [
     {
       icon: <KeyRound className="w-6 h-6 text-[#5c3822]" />,
-      title: 'Confidential Acquisition & Representation',
-      tagline: 'Securing off-market architectural landmarks for discerning buyers',
-      description: 'We act as dedicated buy-side advocates for private individuals, family offices, and institutions. Our extensive network enables access to unlisted trophy assets and off-market architectural estates.',
+      title: 'Property Buying & Selling',
+      tagline: 'Verified houses, apartments, and plots in DHA & Clifton',
+      description: 'We help you find, inspect, and purchase genuine properties with clean title deeds. If you want to sell, we connect you with verified serious buyers quickly.',
       points: [
-        'Proprietary off-market pipeline across prime metropolitan enclaves',
-        'Rigorous architectural and structural due diligence',
-        'Complex negotiation and international capital structuring',
+        'Complete document verification and DHA transfer assistance',
+        'Direct access to on-market and private off-market listings',
+        'Fair market pricing and transparent deal closing',
       ],
     },
     {
-      icon: <Building className="w-6 h-6 text-[#2e3a2f]" />,
-      title: 'Bespoke Divestment & Global Marketing',
-      tagline: 'Strategic positioning for architecturally significant residences',
-      description: 'Selling a trophy property requires nuanced storytelling, museum-quality visual documentation, and targeted distribution to qualified ultra-high-net-worth principals worldwide.',
+      icon: <Hammer className="w-6 h-6 text-[#2e3a2f]" />,
+      title: 'Complete Construction Services',
+      tagline: 'Turnkey home construction from foundation to finish',
+      description: 'From architectural floor plans to structural gray structure and luxury finishing, our construction team builds modern, durable homes in Karachi.',
       points: [
-        'Editorial architectural photography and cinematic 4K production',
-        'Direct global marketing to vetted family office syndicates',
-        'Complete confidentiality and controlled buyer qualification',
+        'Architectural design, structural drawings, and DHA approval',
+        'Grade-A steel, cement, plumbing, and electrical materials',
+        'Transparent cost estimation with milestone-based timelines',
       ],
     },
     {
-      icon: <Award className="w-6 h-6 text-[#847666]" />,
-      title: 'Architectural & Development Advisory',
-      tagline: 'Pre-construction consulting for value and aesthetic maximization',
-      description: 'We advise developers, architects, and private owners on spatial optimization, material palettes, and target demographic preferences before groundbreaking or major renovations.',
+      icon: <Paintbrush className="w-6 h-6 text-[#847666]" />,
+      title: 'House Renovation & Remodeling',
+      tagline: 'Upgrade your existing home with modern interiors',
+      description: 'Give your bungalow or apartment a fresh, contemporary look with our interior design, kitchen remodeling, and luxury bathroom upgrades.',
       points: [
-        'Floor plan efficiency and luxury amenities programming',
-        'Material palette and wellness technology curation',
-        'Micro-market pricing optimization and launch sequencing',
+        'Modern chef kitchens, imported fittings, and custom wardrobes',
+        'Imported marble, porcelain tiles, and false ceiling lighting',
+        'Exterior elevation remodeling and waterproofing solutions',
       ],
     },
   ];
@@ -45,73 +45,88 @@ export default function ServicesPage() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-12 space-y-12">
       {/* Header */}
-      <div className="text-center max-w-3xl mx-auto space-y-4">
-        <Badge variant="exclusive" size="sm">Advisory Protocols</Badge>
+      <div className="text-center max-w-2xl mx-auto space-y-3">
+        <Badge variant="exclusive" size="sm">Our Core Services</Badge>
         <h1 className="font-display font-medium text-3xl sm:text-5xl text-[#1F1B16] tracking-tight">
-          Private Client Services & Representation
+          Real Estate, Construction & Renovation
         </h1>
         <p className="text-xs sm:text-sm text-[#7e7365] leading-relaxed">
-          Comprehensive real estate advisory combining architectural discernment with sophisticated transactional execution.
+          Complete property and building solutions for homeowners, buyers, and overseas Pakistanis looking for quality work in Karachi.
         </p>
       </div>
 
       {/* Services Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {services.map((service, idx) => (
           <GlassCard
             key={idx}
             variant="card"
             rounded="2rem"
-            className="p-8 flex flex-col justify-between space-y-6 bg-[#fbf6f0]"
+            className="p-6 sm:p-8 flex flex-col justify-between space-y-6 bg-[#fbf6f0]"
           >
             <div className="space-y-4">
-              <div className="w-12 h-12 rounded-2xl bg-[#f5efe6] border border-[#d8cebe] flex items-center justify-center shadow-sm">
+              <div className="w-12 h-12 rounded-2xl bg-white border border-[#d8cebe] flex items-center justify-center shadow-sm">
                 {service.icon}
               </div>
-              <h2 className="font-display font-medium text-xl text-[#1F1B16] leading-snug">
-                {service.title}
-              </h2>
-              <p className="text-xs font-mono text-[#5c3822]">
-                {service.tagline}
-              </p>
-              <p className="text-xs text-[#7e7365] leading-relaxed">
+
+              <div className="space-y-1.5">
+                <h3 className="font-display font-medium text-xl text-[#1F1B16]">
+                  {service.title}
+                </h3>
+                <p className="text-xs font-mono text-[#5c3822]">
+                  {service.tagline}
+                </p>
+              </div>
+
+              <p className="text-xs sm:text-sm text-[#7e7365] leading-relaxed">
                 {service.description}
               </p>
 
-              <div className="space-y-2 pt-4 border-t border-[#d8cebe]/60">
-                {service.points.map((pt, i) => (
-                  <div key={i} className="flex items-start gap-2 text-xs text-[#1F1B16]">
-                    <CheckCircle className="w-3.5 h-3.5 text-[#2e3a2f] shrink-0 mt-0.5" />
-                    <span>{pt}</span>
+              <div className="space-y-2 pt-2 border-t border-[#d8cebe]/60">
+                {service.points.map((point, pIdx) => (
+                  <div key={pIdx} className="flex items-start gap-2 text-xs text-[#1F1B16]">
+                    <CheckCircle2 className="w-4 h-4 text-[#2e3a2f] shrink-0 mt-0.5" />
+                    <span>{point}</span>
                   </div>
                 ))}
               </div>
             </div>
 
-            <Link href="/contact" className="block pt-4">
-              <Button variant="outline" size="md" className="w-full text-xs">
-                Inquire Regarding Service &rarr;
-              </Button>
-            </Link>
+            <div className="pt-4">
+              <Link href="/contact" className="block w-full">
+                <Button variant="secondary" size="md" className="w-full text-xs">
+                  <span>Inquire About This Service</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Button>
+              </Link>
+            </div>
           </GlassCard>
         ))}
       </div>
 
-      {/* Trust Guarantee Card */}
-      <GlassCard variant="container" rounded="2rem" className="p-8 sm:p-12 bg-gradient-to-br from-[#fbf6f0] to-[#ece3d5] text-center max-w-4xl mx-auto space-y-4">
-        <ShieldCheck className="w-10 h-10 mx-auto text-[#2e3a2f]" />
-        <h3 className="font-display font-medium text-2xl text-[#1F1B16]">
-          Institutional Discretion & Non-Disclosure Protocol
-        </h3>
-        <p className="text-xs text-[#7e7365] max-w-xl mx-auto leading-relaxed">
-          Every client engagement is safeguarded by strict confidentiality agreements. Asset information, identity, and financial negotiations are managed exclusively by our Senior Partners.
+      {/* CTA Box */}
+      <GlassCard variant="container" rounded="2rem" className="p-8 sm:p-12 text-center space-y-4 bg-[#fbf6f0]">
+        <h2 className="font-display font-medium text-2xl sm:text-3xl text-[#1F1B16]">
+          Planning to Build, Buy, or Renovate in Karachi?
+        </h2>
+        <p className="text-xs sm:text-sm text-[#7e7365] max-w-lg mx-auto">
+          Contact our team today for a free site visit, architectural consultation, or property valuation.
         </p>
-        <div className="pt-2">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
           <Link href="/contact">
-            <Button variant="primary" size="md">
-              Initiate Confidential Dialogue
+            <Button variant="primary" size="lg" className="text-xs sm:text-sm">
+              Contact Our Office
             </Button>
           </Link>
+          <a
+            href="https://wa.me/923008224110?text=Hello%20Amber%20Property%20Corner,%20I%20would%20like%20to%20inquire%20about%20your%20services."
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Button variant="secondary" size="lg" className="text-xs sm:text-sm">
+              WhatsApp Us Directly
+            </Button>
+          </a>
         </div>
       </GlassCard>
     </div>

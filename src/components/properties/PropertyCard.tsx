@@ -128,19 +128,19 @@ export function PropertyCard({ property, priority = false }: PropertyCardProps) 
         <div className="mt-auto pt-4 border-t border-[#d8cebe]/60 grid grid-cols-3 gap-2 text-center text-xs">
           <div className="flex flex-col items-center justify-center py-1 bg-[#f5efe6]/60 rounded-xl border border-[#d8cebe]/40">
             <span className="font-mono font-semibold text-[#1F1B16] text-xs sm:text-sm">
-              {property.specs.bedrooms}
+              {property.specs.bedrooms > 0 ? property.specs.bedrooms : (property.specs.propertyType === 'estate' ? 'Plot' : 'Studio')}
             </span>
             <span className="text-[10px] uppercase font-mono text-[#7e7365]">
-              Beds
+              {property.specs.bedrooms > 0 ? 'Beds' : 'Type'}
             </span>
           </div>
 
           <div className="flex flex-col items-center justify-center py-1 bg-[#f5efe6]/60 rounded-xl border border-[#d8cebe]/40">
             <span className="font-mono font-semibold text-[#1F1B16] text-xs sm:text-sm">
-              {property.specs.bathrooms}
+              {property.specs.bathrooms > 0 ? property.specs.bathrooms : (property.status === 'for-lease' ? 'Lease' : 'Open')}
             </span>
             <span className="text-[10px] uppercase font-mono text-[#7e7365]">
-              Baths
+              {property.specs.bathrooms > 0 ? 'Baths' : 'Status'}
             </span>
           </div>
 

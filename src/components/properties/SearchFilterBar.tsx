@@ -32,6 +32,21 @@ export function SearchFilterBar({
   });
 
   const [isExpanded, setIsExpanded] = useState(false);
+  const isRentMode = filters.status === 'for-lease';
+
+  const handleModeToggle = (mode: 'buy' | 'rent' | 'all') => {
+    let nextStatus: PropertyFilterState['status'] = 'all';
+    if (mode === 'buy') nextStatus = 'for-sale';
+    if (mode === 'rent') nextStatus = 'for-lease';
+
+    const updated: PropertyFilterState = {
+      ...filters,
+      status: nextStatus,
+      priceRange: [0, 1000000000],
+    };
+    setFilters(updated);
+    if (onFilterChange) onFilterChange(updated);
+  };
 
   const handleSearch = (e?: React.FormEvent) => {
     if (e) e.preventDefault();
@@ -70,6 +85,38 @@ export function SearchFilterBar({
       className="p-3.5 sm:p-4 shadow-xl w-full bg-[#fbf6f0]"
     >
       <form onSubmit={handleSearch} className="space-y-3">
+        {/* Buy / Rent Segmented Switcher */}
+        <div className="flex items-center justify-between border-b border-[#d8cebe]/60 pb-2.5">
+          <div className="flex items-center gap-1.5 p-1 rounded-full bg-[#e8dece]/70 border border-[#d8cebe]">
+            <button
+              type="button"
+              onClick={() => handleModeToggle('buy')}
+              className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer ${
+                filters.status === 'for-sale' || filters.status === 'all'
+                  ? 'bg-[#5c3822] text-[#F8F4ED] shadow-sm'
+                  : 'text-[#1F1B16] hover:text-[#5c3822]'
+              }`}
+            >
+              Buy Property
+            </button>
+            <button
+              type="button"
+              onClick={() => handleModeToggle('rent')}
+              className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer ${
+                filters.status === 'for-lease'
+                  ? 'bg-[#5c3822] text-[#F8F4ED] shadow-sm'
+                  : 'text-[#1F1B16] hover:text-[#5c3822]'
+              }`}
+            >
+              Rent (Monthly)
+            </button>
+          </div>
+
+          <span className="text-[11px] font-mono text-[#7e7365] hidden sm:inline-block">
+            {isRentMode ? 'Showing Rental Portions, Houses & Flats' : 'Showing Properties for Sale & Investment'}
+          </span>
+        </div>
+
         {/* Main Search Row */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
           {/* Location Search */}
@@ -81,7 +128,11 @@ export function SearchFilterBar({
               <MapPin className="absolute left-3.5 w-4 h-4 text-[#5c3822] pointer-events-none" />
               <input
                 type="text"
-                placeholder="North Nazimabad, Gulshan, FB Area, Scheme 33..."
+                placeholder={
+                  isRentMode
+                    ? 'Search rental portions, flats, houses...'
+                    : 'North Nazimabad, Gulshan, FB Area, Scheme 33...'
+                }
                 value={filters.searchQuery}
                 onChange={(e) => {
                   const updated = { ...filters, searchQuery: e.target.value };
@@ -96,7 +147,7 @@ export function SearchFilterBar({
           {/* Property Category */}
           <div>
             <label className="block text-[11px] font-mono text-[#7e7365] mb-1">
-              Property Type
+              {isRentMode ? 'Rental Unit Type' : 'Property Type'}
             </label>
             <div className="relative flex items-center">
               <Building className="absolute left-3.5 w-4 h-4 text-[#5c3822] pointer-events-none" />
@@ -109,12 +160,12 @@ export function SearchFilterBar({
                 }}
                 className="w-full bg-white text-[#1F1B16] border border-[#d8cebe] rounded-full pl-9 pr-8 py-2 text-xs outline-none focus:border-[#5c3822] shadow-inner appearance-none cursor-pointer"
               >
-                <option value="all">All Types</option>
-                <option value="luxury-villa">Houses & Bungalows</option>
-                <option value="penthouse">Penthouses</option>
-                <option value="estate">Plots & Land</option>
-                <option value="townhouse">Portions & Duplexes</option>
+                <option value="all">{isRentMode ? 'All Rental Units' : 'All Types'}</option>
+                <option value="townhouse">Upper / Lower Portions</option>
+                <option value="luxury-villa">Full Bangalows & Houses</option>
                 <option value="modern-apartment">Apartments & Flats</option>
+                <option value="penthouse">Penthouses</option>
+                <option value="estate">Plots & Commercial Lease</option>
               </select>
             </div>
           </div>
@@ -136,6 +187,7 @@ export function SearchFilterBar({
                 className="w-full bg-white text-[#1F1B16] border border-[#d8cebe] rounded-full pl-9 pr-8 py-2 text-xs outline-none focus:border-[#5c3822] shadow-inner appearance-none cursor-pointer"
               >
                 <option value="all">Any Bedrooms</option>
+                <option value="2">2+ Beds</option>
                 <option value="3">3+ Beds</option>
                 <option value="4">4+ Beds</option>
                 <option value="5">5+ Beds</option>
@@ -151,13 +203,13 @@ export function SearchFilterBar({
               variant="secondary"
               size="md"
               onClick={() => setIsExpanded(!isExpanded)}
-              className="flex-1 text-xs py-2"
+              className="flex-1 text-xs py-2 cursor-pointer"
             >
               <SlidersHorizontal className="w-3.5 h-3.5" />
               <span>{isExpanded ? 'Less' : 'More'}</span>
             </Button>
 
-            <Button type="submit" variant="primary" size="md" className="flex-1 text-xs py-2">
+            <Button type="submit" variant="primary" size="md" className="flex-1 text-xs py-2 cursor-pointer">
               <Search className="w-3.5 h-3.5" />
               <span>Search</span>
             </Button>
@@ -167,31 +219,10 @@ export function SearchFilterBar({
         {/* Expanded Filters Drawer */}
         {isExpanded && (
           <div className="pt-3 border-t border-[#d8cebe]/60 grid grid-cols-1 sm:grid-cols-3 gap-3 animate-in fade-in duration-200">
-            {/* Status Filter */}
-            <div>
-              <label className="block text-[11px] font-mono text-[#7e7365] mb-1">
-                Listing Status
-              </label>
-              <select
-                value={filters.status}
-                onChange={(e) => {
-                  const updated = { ...filters, status: e.target.value };
-                  setFilters(updated);
-                  if (onFilterChange) onFilterChange(updated);
-                }}
-                className="w-full bg-white text-[#1F1B16] border border-[#d8cebe] rounded-full px-3.5 py-1.5 text-xs outline-none focus:border-[#5c3822]"
-              >
-                <option value="all">All Listings (Sale & Rent)</option>
-                <option value="for-sale">For Sale</option>
-                <option value="exclusive">Exclusive / Off-Market</option>
-                <option value="for-lease">For Rent</option>
-              </select>
-            </div>
-
             {/* Neighborhood Filter */}
             <div>
               <label className="block text-[11px] font-mono text-[#7e7365] mb-1">
-                Select Area
+                Select Karachi Area
               </label>
               <select
                 value={filters.neighborhood}
@@ -200,7 +231,7 @@ export function SearchFilterBar({
                   setFilters(updated);
                   if (onFilterChange) onFilterChange(updated);
                 }}
-                className="w-full bg-white text-[#1F1B16] border border-[#d8cebe] rounded-full px-3.5 py-1.5 text-xs outline-none focus:border-[#5c3822]"
+                className="w-full bg-white text-[#1F1B16] border border-[#d8cebe] rounded-full px-3.5 py-1.5 text-xs outline-none focus:border-[#5c3822] cursor-pointer"
               >
                 <option value="all">All Karachi Locations</option>
                 <option value="North Nazimabad">North Nazimabad (Blocks A–W)</option>
@@ -215,6 +246,56 @@ export function SearchFilterBar({
               </select>
             </div>
 
+            {/* Price / Rent Range Filter */}
+            <div>
+              <label className="block text-[11px] font-mono text-[#7e7365] mb-1">
+                {isRentMode ? 'Monthly Rent Budget' : 'Price Range'}
+              </label>
+              {isRentMode ? (
+                <select
+                  onChange={(e) => {
+                    const val = e.target.value;
+                    let range: [number, number] = [0, 1000000000];
+                    if (val === 'under-50k') range = [0, 50000];
+                    if (val === '50k-100k') range = [50000, 100000];
+                    if (val === '100k-200k') range = [100000, 200000];
+                    if (val === '200k-plus') range = [200000, 10000000];
+                    const updated: PropertyFilterState = { ...filters, priceRange: range };
+                    setFilters(updated);
+                    if (onFilterChange) onFilterChange(updated);
+                  }}
+                  className="w-full bg-white text-[#1F1B16] border border-[#d8cebe] rounded-full px-3.5 py-1.5 text-xs outline-none focus:border-[#5c3822] cursor-pointer"
+                >
+                  <option value="all">Any Monthly Rent</option>
+                  <option value="under-50k">Under PKR 50,000 / mo</option>
+                  <option value="50k-100k">PKR 50k – 1 Lakh / mo</option>
+                  <option value="100k-200k">PKR 1 – 2 Lakh / mo</option>
+                  <option value="200k-plus">PKR 2 Lakh+ / mo</option>
+                </select>
+              ) : (
+                <select
+                  onChange={(e) => {
+                    const val = e.target.value;
+                    let range: [number, number] = [0, 1000000000];
+                    if (val === 'under-1cr') range = [0, 10000000];
+                    if (val === '1cr-3cr') range = [10000000, 30000000];
+                    if (val === '3cr-6cr') range = [30000000, 60000000];
+                    if (val === '6cr-plus') range = [60000000, 1000000000];
+                    const updated: PropertyFilterState = { ...filters, priceRange: range };
+                    setFilters(updated);
+                    if (onFilterChange) onFilterChange(updated);
+                  }}
+                  className="w-full bg-white text-[#1F1B16] border border-[#d8cebe] rounded-full px-3.5 py-1.5 text-xs outline-none focus:border-[#5c3822] cursor-pointer"
+                >
+                  <option value="all">Any Price</option>
+                  <option value="under-1cr">Under PKR 1 Crore</option>
+                  <option value="1cr-3cr">PKR 1 – 3 Crore</option>
+                  <option value="3cr-6cr">PKR 3 – 6 Crore</option>
+                  <option value="6cr-plus">PKR 6 Crore+</option>
+                </select>
+              )}
+            </div>
+
             {/* Reset Button */}
             <div className="flex items-end">
               <Button
@@ -222,7 +303,7 @@ export function SearchFilterBar({
                 variant="ghost"
                 size="sm"
                 onClick={resetFilters}
-                className="text-xs text-[#7e7365] hover:text-[#1F1B16]"
+                className="text-xs text-[#7e7365] hover:text-[#1F1B16] cursor-pointer"
               >
                 <RotateCcw className="w-3.5 h-3.5 mr-1" />
                 Reset Filters

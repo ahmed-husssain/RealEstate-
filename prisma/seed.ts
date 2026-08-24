@@ -332,7 +332,128 @@ async function main() {
     },
   });
 
-  console.log('✅ Created Karachi Properties with Galleries.');
+  // Rental Properties (FOR_LEASE)
+  await prisma.property.create({
+    data: {
+      slug: '500-sq-yd-luxury-ground-floor-portion-north-nazimabad-block-f',
+      title: '500 Gaz Ground Floor Executive Portion',
+      description: 'A lavish ground floor portion situated in Block F, North Nazimabad. Features 4 large bedrooms with attached tiled bathrooms, drawing/dining hall, imported open modular kitchen, separate K-Electric 3-phase meter, underground water tank, and covered car parking.',
+      price: 175000.00, // PKR 1.75 Lakh / mo
+      priceType: 'TOTAL',
+      status: PropertyStatus.FOR_LEASE,
+      propertyType: PropertyType.PORTION,
+      bedrooms: 4,
+      bathrooms: 4,
+      areaSize: 500.00,
+      areaUnit: AreaUnit.SQYD,
+      address: 'Street 11, Block F, North Nazimabad, Karachi',
+      areaId: northNazimabad.id,
+      agentId: tariq.id,
+      isFeatured: true,
+      images: {
+        create: [
+          {
+            url: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80',
+            alt: '500 Gaz Ground Floor Portion in North Nazimabad',
+            isHero: true,
+            displayOrder: 1,
+          },
+        ],
+      },
+    },
+  });
+
+  await prisma.property.create({
+    data: {
+      slug: '3-bed-luxury-corner-apartment-gulshan-block-13d',
+      title: '3-Bed Corner Luxury Apartment',
+      description: 'Immaculately maintained 3-bedroom apartment on the 5th floor of an executive gated complex in Block 13-D, Gulshan-e-Iqbal. Features standby generator, high-speed dual elevators, designated basement parking, and 24/7 security.',
+      price: 95000.00, // PKR 95,000 / mo
+      priceType: 'TOTAL',
+      status: PropertyStatus.FOR_LEASE,
+      propertyType: PropertyType.APARTMENT,
+      bedrooms: 3,
+      bathrooms: 3,
+      areaSize: 200.00,
+      areaUnit: AreaUnit.SQYD,
+      address: 'Main University Road, Block 13-D, Gulshan-e-Iqbal, Karachi',
+      areaId: gulshan.id,
+      agentId: zainab.id,
+      isFeatured: true,
+      images: {
+        create: [
+          {
+            url: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1200&q=80',
+            alt: '3-Bed Luxury Apartment in Gulshan Block 13-D',
+            isHero: true,
+            displayOrder: 1,
+          },
+        ],
+      },
+    },
+  });
+
+  await prisma.property.create({
+    data: {
+      slug: '120-sq-yd-renovated-upper-portion-fb-area-block-14',
+      title: '120 Gaz Renovated 1st Floor Portion',
+      description: 'Completely renovated first-floor family portion in Block 14 (Naseerabad), Federal B Area. Includes 3 bedrooms, 2 bathrooms, modern tile work, drawing room, rooftop access, and separate gas & electricity meters.',
+      price: 65000.00, // PKR 65,000 / mo
+      priceType: 'TOTAL',
+      status: PropertyStatus.FOR_LEASE,
+      propertyType: PropertyType.PORTION,
+      bedrooms: 3,
+      bathrooms: 2,
+      areaSize: 120.00,
+      areaUnit: AreaUnit.SQYD,
+      address: 'Street 4, Block 14, Federal B Area, Karachi',
+      areaId: fbArea.id,
+      agentId: tariq.id,
+      isFeatured: false,
+      images: {
+        create: [
+          {
+            url: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=1200&q=80',
+            alt: '120 Gaz Upper Portion in Federal B Area',
+            isHero: true,
+            displayOrder: 1,
+          },
+        ],
+      },
+    },
+  });
+
+  await prisma.property.create({
+    data: {
+      slug: '240-sq-yd-independent-house-scheme-33-saadi-town',
+      title: '240 Gaz Independent 1-Storey House',
+      description: 'Independent 240 Gaz single-storey bungalow available for family rent in Saadi Town, Scheme 33. Gated boundary wall society with security checkpoints, sweet line water, tiled rooms, and wide front road.',
+      price: 85000.00, // PKR 85,000 / mo
+      priceType: 'TOTAL',
+      status: PropertyStatus.FOR_LEASE,
+      propertyType: PropertyType.HOUSE,
+      bedrooms: 3,
+      bathrooms: 3,
+      areaSize: 240.00,
+      areaUnit: AreaUnit.SQYD,
+      address: 'Block 2, Saadi Town, Scheme 33, Karachi',
+      areaId: scheme33.id,
+      agentId: kamran.id,
+      isFeatured: true,
+      images: {
+        create: [
+          {
+            url: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80',
+            alt: '240 Gaz Independent House in Saadi Town Scheme 33',
+            isHero: true,
+            displayOrder: 1,
+          },
+        ],
+      },
+    },
+  });
+
+  console.log('✅ Created Karachi Sale & Rental Properties with Galleries.');
   console.log('🎉 Seeding successfully completed for Amber Property Corner!');
 }
 

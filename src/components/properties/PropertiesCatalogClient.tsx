@@ -89,14 +89,22 @@ export function PropertiesCatalogClient({ initialProperties }: PropertiesCatalog
       {/* Header Banner */}
       <div className="space-y-2">
         <div className="flex items-center gap-2">
-          <Badge variant="exclusive" size="sm">Active Listings</Badge>
+          <Badge variant="exclusive" size="sm">
+            {filters.status === 'for-lease' ? 'Rental Inventory' : 'Active Listings'}
+          </Badge>
           <Badge variant="stone" size="sm">{filteredProperties.length} Properties Available</Badge>
         </div>
         <h1 className="font-display font-medium text-2xl sm:text-4xl text-[#1F1B16] tracking-tight">
-          Properties for Sale in Karachi
+          {filters.status === 'for-lease'
+            ? 'Properties for Rent in Karachi'
+            : filters.status === 'for-sale'
+            ? 'Properties for Sale in Karachi'
+            : 'Properties for Sale & Rent in Karachi'}
         </h1>
         <p className="text-xs sm:text-sm text-[#7e7365] max-w-xl">
-          Browse luxury houses, penthouses, and plots in North Nazimabad, Gulshan, FB Area, Scheme 33, and prime Karachi enclaves with verified details and direct agent contact.
+          {filters.status === 'for-lease'
+            ? 'Browse luxury rental portions, independent houses, and modern apartments across North Nazimabad, Gulshan, FB Area, Scheme 33, Buffer Zone, and North Karachi with verified utilities and direct agent contact.'
+            : 'Browse luxury houses, penthouses, plots, and rental portions in North Nazimabad, Gulshan, FB Area, Scheme 33, and prime Karachi enclaves with verified details and direct agent contact.'}
         </p>
       </div>
 

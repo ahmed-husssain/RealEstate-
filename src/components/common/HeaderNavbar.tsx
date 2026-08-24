@@ -26,7 +26,8 @@ export function HeaderNavbar() {
 
   const navLinks = [
     { name: 'Home', href: '/' },
-    { name: 'Properties', href: '/properties' },
+    { name: 'Buy', href: '/properties' },
+    { name: 'Rent', href: '/properties?status=for-lease' },
     { name: 'Areas', href: '/neighborhoods' },
     { name: 'Price Calculator', href: '/valuation' },
     { name: 'Services', href: '/services' },

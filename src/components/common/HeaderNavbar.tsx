@@ -113,13 +113,13 @@ export function HeaderNavbar() {
 
               {/* Properties Dropdown Menu */}
               {activeDropdown === 'properties' && (
-                <div className="absolute top-full left-0 mt-2 w-72 bg-[#fbf6f0] border border-[#d8cebe] rounded-2xl p-2.5 shadow-2xl animate-in fade-in zoom-in-95 duration-150 z-50">
-                  <div className="space-y-1">
+                <div className="absolute top-full left-0 mt-2 w-[23rem] bg-[#fbf6f0] border border-[#d8cebe] rounded-2xl p-3 shadow-2xl animate-in fade-in zoom-in-95 duration-150 z-50">
+                  <div className="space-y-1.5">
                     <Link
                       href="/properties?status=for-sale"
-                      className="flex items-start gap-2.5 p-2.5 rounded-xl hover:bg-[#e8dece]/60 transition-colors group cursor-pointer"
+                      className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-[#e8dece]/60 transition-colors group cursor-pointer"
                     >
-                      <div className="p-2 rounded-lg bg-[#5c3822]/10 text-[#5c3822] shrink-0 mt-0.5">
+                      <div className="p-2.5 rounded-xl bg-[#5c3822]/10 text-[#5c3822] shrink-0 mt-0.5">
                         <Building2 className="w-4 h-4" />
                       </div>
                       <div>
@@ -127,34 +127,34 @@ export function HeaderNavbar() {
                           Buy Property
                         </div>
                         <p className="text-[11px] text-[#7e7365] leading-snug">
-                          Houses, bangalows, and plots for sale
+                          Verified bangalows, houses, plots, and ready flats
                         </p>
                       </div>
                     </Link>
 
                     <Link
                       href="/properties?status=for-lease"
-                      className="flex items-start gap-2.5 p-2.5 rounded-xl hover:bg-[#e8dece]/60 transition-colors group cursor-pointer"
+                      className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-[#e8dece]/60 transition-colors group cursor-pointer"
                     >
-                      <div className="p-2 rounded-lg bg-[#2e3a2f]/10 text-[#2e3a2f] shrink-0 mt-0.5">
+                      <div className="p-2.5 rounded-xl bg-[#2e3a2f]/10 text-[#2e3a2f] shrink-0 mt-0.5">
                         <KeyRound className="w-4 h-4" />
                       </div>
                       <div>
                         <div className="text-xs font-semibold text-[#1F1B16] group-hover:text-[#2e3a2f] transition-colors flex items-center gap-1.5">
                           <span>Rental Properties</span>
-                          <span className="text-[9px] font-mono px-1.5 py-0.2 rounded-full bg-[#2e3a2f]/15 text-[#2e3a2f] font-bold">NEW</span>
+                          <span className="text-[9px] font-mono px-1.5 py-0.5 rounded-full bg-[#2e3a2f]/15 text-[#2e3a2f] font-bold">NEW</span>
                         </div>
                         <p className="text-[11px] text-[#7e7365] leading-snug">
-                          Upper/lower portions & family flats
+                          Upper/lower portions, single houses & family apartments
                         </p>
                       </div>
                     </Link>
 
                     <Link
                       href="/properties?type=estate"
-                      className="flex items-start gap-2.5 p-2.5 rounded-xl hover:bg-[#e8dece]/60 transition-colors group cursor-pointer"
+                      className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-[#e8dece]/60 transition-colors group cursor-pointer"
                     >
-                      <div className="p-2 rounded-lg bg-[#7e7365]/15 text-[#1F1B16] shrink-0 mt-0.5">
+                      <div className="p-2.5 rounded-xl bg-[#7e7365]/15 text-[#1F1B16] shrink-0 mt-0.5">
                         <MapPin className="w-4 h-4" />
                       </div>
                       <div>
@@ -162,17 +162,17 @@ export function HeaderNavbar() {
                           Plots & Commercial Land
                         </div>
                         <p className="text-[11px] text-[#7e7365] leading-snug">
-                          80, 120, 240, 400 & 500 Gaz plots
+                          80, 120, 240, 400 & 500 Gaz residential/commercial plots
                         </p>
                       </div>
                     </Link>
 
-                    <div className="pt-1.5 border-t border-[#d8cebe]/60 mt-1">
+                    <div className="pt-2 border-t border-[#d8cebe]/60 mt-1">
                       <Link
                         href="/properties"
                         className="flex items-center justify-between p-2 rounded-xl text-xs font-semibold text-[#5c3822] hover:bg-[#5c3822]/10 transition-colors cursor-pointer"
                       >
-                        <span>Browse All Karachi Listings</span>
+                        <span>Browse All Karachi Active Listings</span>
                         <ArrowRight className="w-3.5 h-3.5" />
                       </Link>
                     </div>
@@ -203,13 +203,13 @@ export function HeaderNavbar() {
 
               {/* Services Dropdown Menu */}
               {activeDropdown === 'services' && (
-                <div className="absolute top-full left-0 mt-2 w-76 bg-[#fbf6f0] border border-[#d8cebe] rounded-2xl p-2.5 shadow-2xl animate-in fade-in zoom-in-95 duration-150 z-50">
-                  <div className="space-y-1">
+                <div className="absolute top-full left-0 mt-2 w-[23rem] bg-[#fbf6f0] border border-[#d8cebe] rounded-2xl p-3 shadow-2xl animate-in fade-in zoom-in-95 duration-150 z-50">
+                  <div className="space-y-1.5">
                     <Link
                       href="/services"
-                      className="flex items-start gap-2.5 p-2.5 rounded-xl hover:bg-[#e8dece]/60 transition-colors group cursor-pointer"
+                      className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-[#e8dece]/60 transition-colors group cursor-pointer"
                     >
-                      <div className="p-2 rounded-lg bg-[#5c3822]/10 text-[#5c3822] shrink-0 mt-0.5">
+                      <div className="p-2.5 rounded-xl bg-[#5c3822]/10 text-[#5c3822] shrink-0 mt-0.5">
                         <HardHat className="w-4 h-4" />
                       </div>
                       <div>
@@ -217,16 +217,16 @@ export function HeaderNavbar() {
                           Turnkey Construction & Builds
                         </div>
                         <p className="text-[11px] text-[#7e7365] leading-snug">
-                          Gray structure & architectural finishing
+                          Gray structure, architectural drawings & modern turnkey houses
                         </p>
                       </div>
                     </Link>
 
                     <Link
                       href="/valuation"
-                      className="flex items-start gap-2.5 p-2.5 rounded-xl hover:bg-[#e8dece]/60 transition-colors group cursor-pointer"
+                      className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-[#e8dece]/60 transition-colors group cursor-pointer"
                     >
-                      <div className="p-2 rounded-lg bg-[#2e3a2f]/10 text-[#2e3a2f] shrink-0 mt-0.5">
+                      <div className="p-2.5 rounded-xl bg-[#2e3a2f]/10 text-[#2e3a2f] shrink-0 mt-0.5">
                         <Calculator className="w-4 h-4" />
                       </div>
                       <div>
@@ -234,16 +234,16 @@ export function HeaderNavbar() {
                           Property Price Calculator
                         </div>
                         <p className="text-[11px] text-[#7e7365] leading-snug">
-                          Instant market valuation tool
+                          Instant estimated market value for house, flat, or plot
                         </p>
                       </div>
                     </Link>
 
                     <Link
                       href="/services"
-                      className="flex items-start gap-2.5 p-2.5 rounded-xl hover:bg-[#e8dece]/60 transition-colors group cursor-pointer"
+                      className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-[#e8dece]/60 transition-colors group cursor-pointer"
                     >
-                      <div className="p-2 rounded-lg bg-[#7e7365]/15 text-[#1F1B16] shrink-0 mt-0.5">
+                      <div className="p-2.5 rounded-xl bg-[#7e7365]/15 text-[#1F1B16] shrink-0 mt-0.5">
                         <ShieldCheck className="w-4 h-4" />
                       </div>
                       <div>
@@ -251,10 +251,20 @@ export function HeaderNavbar() {
                           Legal Due Diligence & SBCA
                         </div>
                         <p className="text-[11px] text-[#7e7365] leading-snug">
-                          Map approvals & title registry checks
+                          Map approvals, title registry checks & Sub-Registrar NOCs
                         </p>
                       </div>
                     </Link>
+
+                    <div className="pt-2 border-t border-[#d8cebe]/60 mt-1">
+                      <Link
+                        href="/services"
+                        className="flex items-center justify-between p-2 rounded-xl text-xs font-semibold text-[#5c3822] hover:bg-[#5c3822]/10 transition-colors cursor-pointer"
+                      >
+                        <span>Explore All 5 Construction Wings</span>
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </Link>
+                    </div>
                   </div>
                 </div>
               )}

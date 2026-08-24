@@ -335,15 +335,15 @@ async function main() {
   // Rental Properties (FOR_LEASE)
   await prisma.property.create({
     data: {
-      slug: '500-sq-yd-luxury-ground-floor-portion-north-nazimabad-block-f',
-      title: '500 Gaz Ground Floor Executive Portion',
-      description: 'A lavish ground floor portion situated in Block F, North Nazimabad. Features 4 large bedrooms with attached tiled bathrooms, drawing/dining hall, imported open modular kitchen, separate K-Electric 3-phase meter, underground water tank, and covered car parking.',
-      price: 175000.00, // PKR 1.75 Lakh / mo
+      slug: '500-sq-yd-luxury-single-storey-bungalow-north-nazimabad-block-f',
+      title: '500 Gaz Luxury Independent Bangalow',
+      description: 'A lavish independent full bungalow situated in Block F, North Nazimabad. Features 4 large master bedrooms with attached tiled bathrooms, spacious drawing & dining halls, imported open modular kitchen, lush front lawn, 3-car parking porch, and independent sweet water & 3-phase K-Electric connections.',
+      price: 250000.00, // PKR 2.5 Lakh / mo
       priceType: 'TOTAL',
       status: PropertyStatus.FOR_LEASE,
-      propertyType: PropertyType.PORTION,
+      propertyType: PropertyType.HOUSE,
       bedrooms: 4,
-      bathrooms: 4,
+      bathrooms: 5,
       areaSize: 500.00,
       areaUnit: AreaUnit.SQYD,
       address: 'Street 11, Block F, North Nazimabad, Karachi',
@@ -354,7 +354,7 @@ async function main() {
         create: [
           {
             url: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80',
-            alt: '500 Gaz Ground Floor Portion in North Nazimabad',
+            alt: '500 Gaz Independent Bangalow in North Nazimabad',
             isHero: true,
             displayOrder: 1,
           },
@@ -395,15 +395,15 @@ async function main() {
 
   await prisma.property.create({
     data: {
-      slug: '120-sq-yd-renovated-upper-portion-fb-area-block-14',
-      title: '120 Gaz Renovated 1st Floor Portion',
-      description: 'Completely renovated first-floor family portion in Block 14 (Naseerabad), Federal B Area. Includes 3 bedrooms, 2 bathrooms, modern tile work, drawing room, rooftop access, and separate gas & electricity meters.',
-      price: 65000.00, // PKR 65,000 / mo
+      slug: '120-sq-yd-independent-family-house-fb-area-block-14',
+      title: '120 Gaz Independent 2-Storey House',
+      description: 'Full independent 120 Gaz double-storey family house in Block 14 (Naseerabad), Federal B Area. Includes 4 bedrooms, 3 bathrooms, complete ground & upper floor with private roof, garage, and independent gas & electricity meters.',
+      price: 110000.00, // PKR 1.1 Lakh / mo
       priceType: 'TOTAL',
       status: PropertyStatus.FOR_LEASE,
-      propertyType: PropertyType.PORTION,
-      bedrooms: 3,
-      bathrooms: 2,
+      propertyType: PropertyType.HOUSE,
+      bedrooms: 4,
+      bathrooms: 3,
       areaSize: 120.00,
       areaUnit: AreaUnit.SQYD,
       address: 'Street 4, Block 14, Federal B Area, Karachi',
@@ -414,7 +414,7 @@ async function main() {
         create: [
           {
             url: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=1200&q=80',
-            alt: '120 Gaz Upper Portion in Federal B Area',
+            alt: '120 Gaz Independent House in Federal B Area',
             isHero: true,
             displayOrder: 1,
           },

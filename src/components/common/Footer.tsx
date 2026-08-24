@@ -42,7 +42,7 @@ export function Footer({ siteSettings = DEFAULT_SITE_SETTINGS }: FooterProps) {
               </li>
               <li>
                 <Link href="/properties?status=for-lease" className="hover:text-[#F8F4ED] transition-colors flex items-center gap-1 cursor-pointer font-medium text-[#DDD2C2]">
-                  Rental Portions & Houses <ArrowUpRight className="w-3 h-3 opacity-60" />
+                  Rental Houses & Bangalows <ArrowUpRight className="w-3 h-3 opacity-60" />
                 </Link>
               </li>
               <li>

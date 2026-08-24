@@ -113,7 +113,7 @@ export function SearchFilterBar({
           </div>
 
           <span className="text-[11px] font-mono text-[#7e7365] hidden sm:inline-block">
-            {isRentMode ? 'Showing Rental Portions, Houses & Flats' : 'Showing Properties for Sale & Investment'}
+            {isRentMode ? 'Showing Rental Houses, Bangalows & Flats' : 'Showing Properties for Sale & Investment'}
           </span>
         </div>
 
@@ -130,7 +130,7 @@ export function SearchFilterBar({
                 type="text"
                 placeholder={
                   isRentMode
-                    ? 'Search rental portions, flats, houses...'
+                    ? 'Search rental houses, flats, bangalows...'
                     : 'North Nazimabad, Gulshan, FB Area, Scheme 33...'
                 }
                 value={filters.searchQuery}
@@ -147,7 +147,7 @@ export function SearchFilterBar({
           {/* Property Category */}
           <div>
             <label className="block text-[11px] font-mono text-[#7e7365] mb-1">
-              {isRentMode ? 'Rental Unit Type' : 'Property Type'}
+              {isRentMode ? 'Rental Property Type' : 'Property Type'}
             </label>
             <div className="relative flex items-center">
               <Building className="absolute left-3.5 w-4 h-4 text-[#5c3822] pointer-events-none" />
@@ -161,7 +161,6 @@ export function SearchFilterBar({
                 className="w-full bg-white text-[#1F1B16] border border-[#d8cebe] rounded-full pl-9 pr-8 py-2 text-xs outline-none focus:border-[#5c3822] shadow-inner appearance-none cursor-pointer"
               >
                 <option value="all">{isRentMode ? 'All Rental Units' : 'All Types'}</option>
-                <option value="townhouse">Upper / Lower Portions</option>
                 <option value="luxury-villa">Full Bangalows & Houses</option>
                 <option value="modern-apartment">Apartments & Flats</option>
                 <option value="penthouse">Penthouses</option>

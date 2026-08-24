@@ -103,8 +103,8 @@ export function PropertiesCatalogClient({ initialProperties }: PropertiesCatalog
         </h1>
         <p className="text-xs sm:text-sm text-[#7e7365] max-w-xl">
           {filters.status === 'for-lease'
-            ? 'Browse luxury rental portions, independent houses, and modern apartments across North Nazimabad, Gulshan, FB Area, Scheme 33, Buffer Zone, and North Karachi with verified utilities and direct agent contact.'
-            : 'Browse luxury houses, penthouses, plots, and rental portions in North Nazimabad, Gulshan, FB Area, Scheme 33, and prime Karachi enclaves with verified details and direct agent contact.'}
+            ? 'Browse luxury rental bangalows, independent family houses, and modern apartments across North Nazimabad, Gulshan, FB Area, Scheme 33, Buffer Zone, and North Karachi with verified utilities and direct agent contact.'
+            : 'Browse luxury houses, penthouses, plots, and apartments in North Nazimabad, Gulshan, FB Area, Scheme 33, and prime Karachi enclaves with verified details and direct agent contact.'}
         </p>
       </div>
 

@@ -388,12 +388,12 @@ export const mockProperties: Property[] = [
   },
   {
     id: 'prop-08',
-    slug: '500-sq-yd-luxury-ground-floor-portion-north-nazimabad-block-f',
-    title: '500 Gaz Ground Floor Executive Portion',
-    tagline: 'Spacious 4-Bed Luxury Portion with Separate Gate & Garden in Block F',
-    description: 'A lavish ground floor portion situated in Block F, North Nazimabad. Features 4 large bedrooms with attached tiled bathrooms, drawing/dining hall, imported open modular kitchen, separate K-Electric 3-phase meter, underground water tank, and covered car parking.',
-    price: 175000,
-    priceFormatted: 'PKR 1.75 Lakh / mo',
+    slug: '500-sq-yd-luxury-single-storey-bungalow-north-nazimabad-block-f',
+    title: '500 Gaz Luxury Independent Bangalow',
+    tagline: 'Spacious 4-Bed Luxury Bangalow with Private Lawn & 3-Car Porch in Block F',
+    description: 'A lavish independent full bungalow situated in Block F, North Nazimabad. Features 4 large master bedrooms with attached tiled bathrooms, drawing & dining halls, imported open modular kitchen, lush front lawn, 3-car parking porch, and independent sweet water & 3-phase K-Electric connections.',
+    price: 250000,
+    priceFormatted: 'PKR 2.5 Lakh / mo',
     status: 'for-lease',
     isFeatured: true,
     location: {
@@ -405,25 +405,25 @@ export const mockProperties: Property[] = [
     },
     specs: {
       bedrooms: 4,
-      bathrooms: 4,
-      areaSqFt: 3200,
+      bathrooms: 5,
+      areaSqFt: 4500,
       lotSizeSqFt: 4500,
       yearBuilt: 2023,
-      parkingSpaces: 2,
-      propertyType: 'townhouse',
-      energyRating: 'Separate 3-Phase Meter',
-      floorLevel: 'Ground Floor'
+      parkingSpaces: 3,
+      propertyType: 'luxury-villa',
+      energyRating: 'Independent 3-Phase Meter',
+      floorLevel: 'Full Independent Bangalow'
     },
     amenities: [
-      'Separate Dedicated Gate & Driveway',
-      'Sweet Water Line + Underground Tank',
+      'Private Dedicated Gate & 3-Car Porch',
+      'Sweet Water Line + 3000 Gallon Underground Tank',
       'Modern Modular Acrylic Kitchen',
-      'Imported Tiled Flooring Throughout',
+      'Imported Spanish Tiled Flooring Throughout',
       'Drawing & Dining with Powder Room',
       'Quiet Residential Block Near Hyderi'
     ],
     features: [
-      { title: 'Separate Entrance', desc: 'Complete privacy with independent entrance gate and 2-car internal porch.' },
+      { title: 'Independent Bangalow', desc: 'Complete privacy with full independent grounds, front garden, and private roof.' },
       { title: 'Prime Block F', desc: 'Secure location within walking distance of parks, mosques, and top schools.' }
     ],
     images: {
@@ -497,12 +497,12 @@ export const mockProperties: Property[] = [
   },
   {
     id: 'prop-10',
-    slug: '120-sq-yd-renovated-upper-portion-fb-area-block-14',
-    title: '120 Gaz Renovated 1st Floor Portion',
-    tagline: 'Spick-and-Span 3-Bed Family Floor in Block 14, Federal B Area',
-    description: 'Completely renovated first-floor family portion in Block 14 (Naseerabad), Federal B Area. Includes 3 bedrooms, 2 bathrooms, modern tile work, drawing room, rooftop access, and separate gas & electricity meters.',
-    price: 65000,
-    priceFormatted: 'PKR 65,000 / mo',
+    slug: '120-sq-yd-independent-family-house-fb-area-block-14',
+    title: '120 Gaz Independent 2-Storey House',
+    tagline: 'Full Double-Storey Family Home in Block 14, Federal B Area',
+    description: 'Full independent 120 Gaz double-storey family house in Block 14 (Naseerabad), Federal B Area. Includes 4 bedrooms, 3 bathrooms, complete ground & upper floor with private roof, garage, and independent gas & electricity meters.',
+    price: 110000,
+    priceFormatted: 'PKR 1.1 Lakh / mo',
     status: 'for-lease',
     isFeatured: false,
     location: {
@@ -513,24 +513,24 @@ export const mockProperties: Property[] = [
       coordinates: { lat: 24.9280, lng: 67.0680 }
     },
     specs: {
-      bedrooms: 3,
-      bathrooms: 2,
-      areaSqFt: 1100,
+      bedrooms: 4,
+      bathrooms: 3,
+      areaSqFt: 2160,
       lotSizeSqFt: 1080,
       yearBuilt: 2021,
       parkingSpaces: 1,
-      propertyType: 'townhouse',
+      propertyType: 'luxury-villa',
       energyRating: 'Independent Utilities',
-      floorLevel: '1st Floor'
+      floorLevel: 'Double Storey House'
     },
     amenities: [
-      'Independent Sub-Meter Electricity & Gas',
+      'Independent Electricity & Gas Meters',
       'Freshly Painted with Modern Tile Flooring',
-      'Rooftop Access for Laundry & Family Gathering',
+      'Private Rooftop & Water Storage Tank',
       'Close to Water Pump and Shahrah-e-Pakistan'
     ],
     features: [
-      { title: 'Family Friendly', desc: 'Peaceful residential block close to reputable coaching centers, parks, and grocery stores.' }
+      { title: 'Full Family Home', desc: 'Complete independent house with private garage and rooftop for peaceful family living.' }
     ],
     images: {
       hero: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=1800&q=85',
@@ -582,7 +582,7 @@ export const mockProperties: Property[] = [
       'Sweet Line Water Connection'
     ],
     features: [
-      { title: 'Independent Living', desc: 'No upper-portion sharing; entire house and rooftop for exclusive family use.' }
+      { title: 'Independent Living', desc: 'Entire single-storey house and private rooftop for exclusive family use.' }
     ],
     images: {
       hero: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1800&q=85',
@@ -601,12 +601,12 @@ export const mockProperties: Property[] = [
   },
   {
     id: 'prop-12',
-    slug: '240-sq-yd-ground-floor-portion-buffer-zone-15a',
-    title: '240 Gaz Ground Portion with Separate Gate',
-    tagline: 'Prime Family Portion in Sector 15-A/1, Buffer Zone',
-    description: 'Renovated ground floor portion in Sector 15-A Buffer Zone, adjacent to North Nazimabad Block N. Features 3 bedrooms, drawing room, spacious lounge, separate car gate, and independent utilities.',
-    price: 75000,
-    priceFormatted: 'PKR 75,000 / mo',
+    slug: '240-sq-yd-corner-bangalow-buffer-zone-15a',
+    title: '240 Gaz Corner Family Bangalow',
+    tagline: 'Independent Single-Storey Bangalow in Sector 15-A/1, Buffer Zone',
+    description: 'Renovated corner bungalow in Sector 15-A Buffer Zone, adjacent to North Nazimabad Block N. Features 4 bedrooms, drawing & dining halls, spacious lounge, wide car porch, and independent utilities.',
+    price: 135000,
+    priceFormatted: 'PKR 1.35 Lakh / mo',
     status: 'for-lease',
     isFeatured: false,
     location: {
@@ -617,18 +617,18 @@ export const mockProperties: Property[] = [
       coordinates: { lat: 24.9500, lng: 67.0580 }
     },
     specs: {
-      bedrooms: 3,
-      bathrooms: 3,
-      areaSqFt: 1800,
+      bedrooms: 4,
+      bathrooms: 4,
+      areaSqFt: 2160,
       lotSizeSqFt: 2160,
       yearBuilt: 2021,
-      parkingSpaces: 1,
-      propertyType: 'townhouse',
+      parkingSpaces: 2,
+      propertyType: 'luxury-villa',
       energyRating: 'Independent Meters',
-      floorLevel: 'Ground Floor'
+      floorLevel: 'Full Ground Bangalow'
     },
     amenities: [
-      'Independent Gate & Car Porch',
+      'Independent Car Porch & Gate',
       'Solid Teakwood Doors & Aluminum Windows',
       'Sweet Water Line Available',
       'Near Government Degree College & Parks'
@@ -653,10 +653,10 @@ export const mockProperties: Property[] = [
   },
   {
     id: 'prop-13',
-    slug: '3-bed-family-floor-north-karachi-sector-11a',
-    title: '3-Bed Family Floor in North Karachi',
-    tagline: 'Renovated 120 Gaz Upper Floor in Sector 11-A',
-    description: 'Affordable, clean 3-bedroom upper portion in Sector 11-A, North Karachi. Near Green Line BRT station and Power House Chowrangi. Separate gas & electricity connections.',
+    slug: '3-bed-executive-apartment-north-karachi-sector-11a',
+    title: '3-Bed Executive Family Apartment',
+    tagline: 'Modern 3-Bed Gated Complex Flat in Sector 11-A',
+    description: 'Affordable, clean 3-bedroom apartment in Sector 11-A, North Karachi. Near Green Line BRT station and Power House Chowrangi. Standby lift, security, and independent gas & electricity connections.',
     price: 45000,
     priceFormatted: 'PKR 45,000 / mo',
     status: 'for-lease',
@@ -671,13 +671,13 @@ export const mockProperties: Property[] = [
     specs: {
       bedrooms: 3,
       bathrooms: 2,
-      areaSqFt: 1080,
-      lotSizeSqFt: 1080,
+      areaSqFt: 1200,
+      lotSizeSqFt: 1200,
       yearBuilt: 2020,
       parkingSpaces: 1,
-      propertyType: 'townhouse',
+      propertyType: 'modern-apartment',
       energyRating: 'Standard',
-      floorLevel: '1st Floor'
+      floorLevel: '2nd Floor (Lift Available)'
     },
     amenities: [
       '2 Minutes to Green Line BRT Power House Station',

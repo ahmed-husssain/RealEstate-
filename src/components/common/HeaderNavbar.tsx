@@ -150,7 +150,7 @@ export function HeaderNavbar({ siteSettings = DEFAULT_SITE_SETTINGS }: HeaderNav
                           <span className="text-[9px] font-mono px-1.5 py-0.5 rounded-full bg-[#2e3a2f]/15 text-[#2e3a2f] font-bold">NEW</span>
                         </div>
                         <p className="text-[11px] text-[#7e7365] leading-snug">
-                          Upper/lower portions, single houses & family apartments
+                          Full independent houses, bangalows & luxury apartments
                         </p>
                       </div>
                     </Link>
@@ -393,7 +393,7 @@ export function HeaderNavbar({ siteSettings = DEFAULT_SITE_SETTINGS }: HeaderNav
                     onClick={() => setMobileMenuOpen(false)}
                     className="block p-2.5 rounded-lg text-xs font-medium text-[#2e3a2f] bg-[#2e3a2f]/10"
                   >
-                    🔑 Rent Properties (Portions & Houses)
+                    🔑 Rent Properties (Houses & Apartments)
                   </Link>
                   <Link
                     href="/properties?type=estate"

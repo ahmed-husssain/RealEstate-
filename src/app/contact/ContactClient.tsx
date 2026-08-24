@@ -129,7 +129,7 @@ export function ContactClient({ siteSettings }: { siteSettings: PublicSiteSettin
                   label="Select Service / Department"
                   options={[
                     { value: 'sales-buying', label: '1. Property Buying (Bungalows, Plots, Flats)' },
-                    { value: 'rent-property', label: '2. Rental Properties (Portions & Houses)' },
+                    { value: 'rent-property', label: '2. Rental Properties (Houses, Bangalows & Flats)' },
                     { value: 'sales-selling', label: '3. Property Selling & Investment Booking' },
                     { value: 'construction', label: '4. Turnkey Construction & Gray Structure Rebuild' },
                     { value: 'legal-approvals', label: '5. Legal Due Diligence & SBCA Map Approvals' },

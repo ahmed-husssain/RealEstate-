@@ -31,7 +31,6 @@ enum PropertyType {
   VILLA
   PLOT
   COMMERCIAL
-  PORTION
   ESTATE
   TOWNHOUSE
 }

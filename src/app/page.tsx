@@ -54,8 +54,8 @@ export default async function HomePage() {
       )}
 
       {/* 1. Hero Section */}
-      <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-8">
-        <div className="text-center max-w-3xl mx-auto space-y-5">
+      <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-8 space-y-6">
+        <div className="text-center max-w-3xl mx-auto space-y-4">
           {/* Label Chip */}
           <div className="flex items-center justify-center gap-2">
             <Badge variant="exclusive" size="md">
@@ -75,14 +75,15 @@ export default async function HomePage() {
           <p className="text-sm sm:text-base text-[#7e7365] max-w-2xl mx-auto font-sans leading-relaxed">
             {siteSettings.hero_subtitle}
           </p>
+        </div>
 
-          {/* Search Filter Bar Component */}
-          <div className="pt-4 text-left">
-            <SearchFilterBar />
-          </div>
+        {/* Search Filter Bar Component with full breathing room */}
+        <div className="max-w-5xl mx-auto text-left">
+          <SearchFilterBar />
+        </div>
 
-          {/* Trust Metrics Ribbon */}
-          <div className="pt-3 grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
+        {/* Trust Metrics Ribbon */}
+        <div className="max-w-4xl mx-auto pt-2 grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
             <div className="bg-[#fbf6f0]/90 border border-[#d8cebe] rounded-2xl py-3 px-4 shadow-sm">
               <span className="font-display font-medium text-lg sm:text-xl text-[#1F1B16]">
                 500+ Sq Yd
@@ -116,7 +117,6 @@ export default async function HomePage() {
               </p>
             </div>
           </div>
-        </div>
       </section>
 
       {/* 2. Featured Exclusive Residences */}

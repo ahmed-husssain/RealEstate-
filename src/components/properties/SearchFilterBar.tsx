@@ -118,9 +118,9 @@ export function SearchFilterBar({
         </div>
 
         {/* Main Search Row */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-12 gap-3 items-end">
           {/* Location Search */}
-          <div className="relative">
+          <div className="sm:col-span-2 md:col-span-3 lg:col-span-4 relative">
             <label className="block text-[11px] font-mono text-[#7e7365] mb-1">
               Search Location or Property
             </label>
@@ -145,7 +145,7 @@ export function SearchFilterBar({
           </div>
 
           {/* Property Category */}
-          <div>
+          <div className="sm:col-span-1 md:col-span-1 lg:col-span-3">
             <label className="block text-[11px] font-mono text-[#7e7365] mb-1">
               {isRentMode ? 'Rental Property Type' : 'Property Type'}
             </label>
@@ -170,7 +170,7 @@ export function SearchFilterBar({
           </div>
 
           {/* Bedrooms Selector */}
-          <div>
+          <div className="sm:col-span-1 md:col-span-1 lg:col-span-2">
             <label className="block text-[11px] font-mono text-[#7e7365] mb-1">
               Bedrooms
             </label>
@@ -185,7 +185,7 @@ export function SearchFilterBar({
                 }}
                 className="w-full bg-white text-[#1F1B16] border border-[#d8cebe] rounded-full pl-9 pr-8 py-2 text-xs outline-none focus:border-[#5c3822] shadow-inner appearance-none cursor-pointer"
               >
-                <option value="all">Any Bedrooms</option>
+                <option value="all">Any Beds</option>
                 <option value="2">2+ Beds</option>
                 <option value="3">3+ Beds</option>
                 <option value="4">4+ Beds</option>
@@ -196,20 +196,25 @@ export function SearchFilterBar({
           </div>
 
           {/* Action Buttons */}
-          <div className="flex items-end gap-2">
+          <div className="sm:col-span-2 md:col-span-1 lg:col-span-3 flex items-center gap-2">
             <Button
               type="button"
               variant="secondary"
               size="md"
               onClick={() => setIsExpanded(!isExpanded)}
-              className="flex-1 text-xs py-2 cursor-pointer"
+              className="flex-1 min-w-[65px] text-xs py-2 px-3 cursor-pointer"
             >
-              <SlidersHorizontal className="w-3.5 h-3.5" />
+              <SlidersHorizontal className="w-3.5 h-3.5 shrink-0" />
               <span>{isExpanded ? 'Less' : 'More'}</span>
             </Button>
 
-            <Button type="submit" variant="primary" size="md" className="flex-1 text-xs py-2 cursor-pointer">
-              <Search className="w-3.5 h-3.5" />
+            <Button
+              type="submit"
+              variant="primary"
+              size="md"
+              className="flex-1 min-w-[85px] text-xs py-2 px-3.5 cursor-pointer"
+            >
+              <Search className="w-3.5 h-3.5 shrink-0" />
               <span>Search</span>
             </Button>
           </div>

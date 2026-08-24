@@ -1,8 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { mockProperties } from '@/data/mockProperties';
-import { mockNeighborhoods } from '@/data/neighborhoods';
 import { PropertyCard } from '@/components/properties/PropertyCard';
 import { SearchFilterBar } from '@/components/properties/SearchFilterBar';
 import { Button } from '@/ui/Button';
@@ -30,16 +28,12 @@ export default async function HomePage() {
     getPublicSiteSettings(),
   ]);
 
-  const properties = dbProperties.length > 0
-    ? dbProperties.map(mapDbPropertyToProperty)
-    : mockProperties;
-
-  const neighborhoods = dbAreas.length > 0
-    ? dbAreas.map(mapDbAreaToNeighborhood)
-    : mockNeighborhoods;
+  const properties = dbProperties.map(mapDbPropertyToProperty);
+  const neighborhoods = dbAreas.map(mapDbAreaToNeighborhood);
 
   const featuredProperties = properties.filter((p) => p.isFeatured).slice(0, 3);
   const secondaryProperties = properties.filter((p) => !p.isFeatured).slice(0, 3);
+  const displayProperties = featuredProperties.length > 0 ? featuredProperties : properties.slice(0, 3);
 
   return (
     <div className="space-y-20 sm:space-y-28">
@@ -142,11 +136,17 @@ export default async function HomePage() {
         </div>
 
         {/* 3-Column Listing Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {featuredProperties.map((property, idx) => (
-            <PropertyCard key={property.id} property={property} priority={idx === 0} />
-          ))}
-        </div>
+        {displayProperties.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {displayProperties.map((property, idx) => (
+              <PropertyCard key={property.id} property={property} priority={idx === 0} />
+            ))}
+          </div>
+        ) : (
+          <div className="p-8 text-center bg-[#fbf6f0] border border-[#d8cebe] rounded-2xl text-xs text-[#7e7365]">
+            Currently updating verified luxury listings in North Nazimabad, Gulshan, and Scheme 33.
+          </div>
+        )}
       </section>
 
       {/* 3. Five Core Service Departments */}

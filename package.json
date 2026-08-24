@@ -8,6 +8,7 @@
     "build": "prisma generate && next build",
     "start": "next start",
     "postinstall": "prisma generate",
+    "db:migrate": "prisma migrate deploy",
     "db:seed": "prisma db seed"
   },
   "prisma": {

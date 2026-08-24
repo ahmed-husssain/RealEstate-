@@ -1,7 +1,6 @@
 import React, { Suspense } from 'react';
 import { getPaginatedProperties } from '@/lib/db/properties';
 import { mapDbPropertyToProperty } from '@/lib/db/mappers';
-import { mockProperties } from '@/data/mockProperties';
 import { PropertiesCatalogClient } from '@/components/properties/PropertiesCatalogClient';
 
 export const revalidate = 60;
@@ -52,36 +51,16 @@ export default async function PropertiesPage(props: PageProps) {
     maxPrice,
   });
 
-  const hasFiltersApplied = Boolean(
-    searchQuery ||
-    (propertyType && propertyType !== 'all') ||
-    (neighborhood && neighborhood !== 'all') ||
-    (bedrooms && bedrooms !== 'all') ||
-    (status && status !== 'all') ||
-    minPrice !== undefined ||
-    maxPrice !== undefined
-  );
-
-  let properties = result.properties.map(mapDbPropertyToProperty);
-  let totalCount = result.totalCount;
-  let totalPages = result.totalPages;
-
-  // Fallback to mock data ONLY if database is empty and no specific filters are applied
-  if (properties.length === 0 && !hasFiltersApplied && totalCount === 0) {
-    totalCount = mockProperties.length;
-    totalPages = Math.max(1, Math.ceil(totalCount / pageSize));
-    const start = (page - 1) * pageSize;
-    properties = mockProperties.slice(start, start + pageSize);
-  }
+  const properties = result.properties.map(mapDbPropertyToProperty);
 
   return (
     <Suspense fallback={<div className="max-w-7xl mx-auto p-12 text-center font-mono text-xs text-[#7e7365]">Loading curated properties catalog...</div>}>
       <PropertiesCatalogClient
         properties={properties}
-        totalCount={totalCount}
+        totalCount={result.totalCount}
         currentPage={page}
         pageSize={pageSize}
-        totalPages={totalPages}
+        totalPages={result.totalPages}
         currentFilters={{
           searchQuery,
           neighborhood,

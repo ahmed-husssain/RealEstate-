@@ -1,4 +1,5 @@
 import prisma from '@/lib/prisma';
+import { unstable_cache } from 'next/cache';
 
 export interface PublicSiteSettings {
   hero_headline: string;
@@ -14,6 +15,7 @@ export interface PublicSiteSettings {
   announcement_active: boolean;
 }
 
+// Development and disaster recovery baseline structure
 export const DEFAULT_SITE_SETTINGS: PublicSiteSettings = {
   hero_headline: 'Find Luxury Homes & Penthouses in Karachi',
   hero_subtitle:
@@ -29,7 +31,7 @@ export const DEFAULT_SITE_SETTINGS: PublicSiteSettings = {
   announcement_active: true,
 };
 
-export async function getPublicSiteSettings(): Promise<PublicSiteSettings> {
+async function fetchPublicSiteSettingsFromDb(): Promise<PublicSiteSettings> {
   try {
     const settings = await prisma.siteSetting.findMany();
     const map: Record<string, string> = {};
@@ -54,7 +56,15 @@ export async function getPublicSiteSettings(): Promise<PublicSiteSettings> {
       announcement_active: map.announcement_active !== undefined ? map.announcement_active === 'true' : true,
     };
   } catch (error) {
-    console.error('Error loading site settings from database, using defaults:', error);
+    console.error('Error loading site settings from database:', error);
     return DEFAULT_SITE_SETTINGS;
   }
 }
+
+export const getPublicSiteSettings = async () => {
+  return unstable_cache(
+    fetchPublicSiteSettingsFromDb,
+    ['public-site-settings'],
+    { revalidate: 60, tags: ['site_settings'] }
+  )();
+};

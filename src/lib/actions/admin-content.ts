@@ -2,7 +2,7 @@
 
 import prisma from '@/lib/prisma';
 import { requireAuthUser } from '@/lib/auth/admin';
-import { revalidatePath } from 'next/cache';
+import { revalidatePath, updateTag } from 'next/cache';
 
 export interface SiteSettingsMap {
   hero_headline?: string;
@@ -81,6 +81,7 @@ export async function updateSiteSettingsAction(settings: Record<string, string>)
     revalidatePath('/services');
     revalidatePath('/valuation');
     revalidatePath('/admin/content');
+    updateTag('site_settings');
 
     return {
       success: true,

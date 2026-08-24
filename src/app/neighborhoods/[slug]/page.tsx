@@ -1,10 +1,9 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { notFound } from 'next/navigation';
 import { getAreaBySlug } from '@/lib/db/areas';
 import { mapDbAreaToNeighborhood, mapDbPropertyToProperty } from '@/lib/db/mappers';
-import { mockNeighborhoods } from '@/data/neighborhoods';
-import { mockProperties } from '@/data/mockProperties';
 import { PropertyCard } from '@/components/properties/PropertyCard';
 import { GlassCard } from '@/ui/GlassCard';
 import { Badge } from '@/ui/Badge';
@@ -22,30 +21,13 @@ export default async function SingleNeighborhoodPage(props: PageProps) {
   const slug = resolvedParams.slug;
 
   const dbArea = await getAreaBySlug(slug);
-  const neighborhood = dbArea
-    ? mapDbAreaToNeighborhood(dbArea)
-    : mockNeighborhoods.find((n) => n.slug === slug);
 
-  if (!neighborhood) {
-    return (
-      <div className="max-w-4xl mx-auto px-4 py-20 text-center space-y-4">
-        <h1 className="font-display font-medium text-3xl text-[#1F1B16]">
-          Neighborhood Not Found
-        </h1>
-        <Link href="/neighborhoods">
-          <Button variant="primary">View All Areas</Button>
-        </Link>
-      </div>
-    );
+  if (!dbArea) {
+    notFound();
   }
 
-  const neighborhoodProperties = dbArea && dbArea.properties.length > 0
-    ? dbArea.properties.map(mapDbPropertyToProperty)
-    : mockProperties.filter(
-        (p) =>
-          p.location.neighborhood.toLowerCase().includes(neighborhood.name.toLowerCase()) ||
-          neighborhood.name.toLowerCase().includes(p.location.neighborhood.toLowerCase())
-      );
+  const neighborhood = mapDbAreaToNeighborhood(dbArea);
+  const neighborhoodProperties = (dbArea.properties || []).map(mapDbPropertyToProperty);
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10 space-y-10">
@@ -58,74 +40,97 @@ export default async function SingleNeighborhoodPage(props: PageProps) {
       </Link>
 
       {/* Hero Banner Card */}
-      <div className="relative aspect-[21/9] w-full rounded-[2rem] overflow-hidden border border-[#d8cebe] shadow-xl bg-[#e5decb]">
+      <GlassCard
+        variant="container"
+        rounded="2rem"
+        className="overflow-hidden p-0 relative min-h-[340px] sm:min-h-[420px] flex items-end bg-[#1F1B16]"
+      >
         <Image
           src={neighborhood.heroImage}
           alt={neighborhood.name}
           fill
           priority
-          sizes="100vw"
-          className="object-cover"
+          sizes="(max-width: 1200px) 100vw, 1200px"
+          className="object-cover opacity-70"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#1F1B16]/90 via-[#1F1B16]/40 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#1F1B16] via-[#1F1B16]/50 to-transparent" />
 
-        <div className="absolute bottom-6 sm:bottom-10 inset-x-6 sm:inset-x-10 text-[#F8F4ED] space-y-2 max-w-2xl">
-          <Badge variant="exclusive" size="sm">
-            {neighborhood.city} Guide
-          </Badge>
-          <h1 className="font-display font-medium text-3xl sm:text-5xl tracking-tight">
+        <div className="relative p-6 sm:p-10 space-y-4 max-w-3xl">
+          <div className="flex flex-wrap items-center gap-2">
+            <Badge variant="stone" size="sm" className="bg-white/20 text-[#F8F4ED] border-white/30 backdrop-blur-md">
+              {neighborhood.city}
+            </Badge>
+            <Badge variant="exclusive" size="sm">
+              Prime Karachi Enclave
+            </Badge>
+          </div>
+
+          <h1 className="font-display font-medium text-3xl sm:text-5xl text-[#F8F4ED] tracking-tight">
             {neighborhood.name}
           </h1>
-          <p className="text-xs sm:text-sm text-[#D7CBBB]">
-            {neighborhood.tagline}
+
+          <p className="text-xs sm:text-sm text-[#D7CBBB] font-sans leading-relaxed">
+            {neighborhood.description}
           </p>
         </div>
+      </GlassCard>
+
+      {/* Market Fundamentals Ribbon */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <GlassCard variant="card" rounded="1.75rem" className="p-5 flex items-center gap-4 bg-[#fbf6f0]">
+          <div className="w-10 h-10 rounded-xl bg-[#5c3822]/10 text-[#5c3822] flex items-center justify-center shrink-0">
+            <TrendingUp className="w-5 h-5" />
+          </div>
+          <div>
+            <span className="text-[10px] font-mono uppercase text-[#7e7365] block">Average Rate / Sq Yd</span>
+            <span className="font-display font-medium text-lg text-[#1F1B16]">{neighborhood.stats.avgPriceSqFt}</span>
+          </div>
+        </GlassCard>
+
+        <GlassCard variant="card" rounded="1.75rem" className="p-5 flex items-center gap-4 bg-[#fbf6f0]">
+          <div className="w-10 h-10 rounded-xl bg-[#2e3a2f]/10 text-[#2e3a2f] flex items-center justify-center shrink-0">
+            <ShieldCheck className="w-5 h-5" />
+          </div>
+          <div>
+            <span className="text-[10px] font-mono uppercase text-[#7e7365] block">Title & Land Security</span>
+            <span className="font-display font-medium text-lg text-[#2e3a2f]">{neighborhood.stats.safetyRating} Approved</span>
+          </div>
+        </GlassCard>
+
+        <GlassCard variant="card" rounded="1.75rem" className="p-5 flex items-center gap-4 bg-[#fbf6f0]">
+          <div className="w-10 h-10 rounded-xl bg-[#5c3822]/10 text-[#5c3822] flex items-center justify-center shrink-0">
+            <CheckCircle2 className="w-5 h-5" />
+          </div>
+          <div>
+            <span className="text-[10px] font-mono uppercase text-[#7e7365] block">5-Year Capital Growth</span>
+            <span className="font-display font-medium text-lg text-[#1F1B16]">{neighborhood.stats.annualGrowth}</span>
+          </div>
+        </GlassCard>
       </div>
 
-      {/* District Intelligence Metrics */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
-        <div className="p-4 rounded-2xl bg-[#fbf6f0] border border-[#d8cebe] space-y-1 shadow-sm">
-          <TrendingUp className="w-4 h-4 mx-auto text-[#5c3822] mb-1" />
-          <span className="text-[11px] font-mono text-[#7e7365] block">Average Rate</span>
-          <span className="font-display font-medium text-base sm:text-lg text-[#1F1B16]">{neighborhood.stats.avgPriceSqFt} / Sq Yd</span>
-        </div>
-
-        <div className="p-4 rounded-2xl bg-[#fbf6f0] border border-[#d8cebe] space-y-1 shadow-sm">
-          <ShieldCheck className="w-4 h-4 mx-auto text-[#2e3a2f] mb-1" />
-          <span className="text-[11px] font-mono text-[#7e7365] block">Annual Growth</span>
-          <span className="font-display font-medium text-base sm:text-lg text-[#2e3a2f]">{neighborhood.stats.annualGrowth}</span>
-        </div>
-
-        <div className="p-4 rounded-2xl bg-[#fbf6f0] border border-[#d8cebe] space-y-1 shadow-sm">
-          <span className="text-[11px] font-mono text-[#7e7365] block">Security</span>
-          <span className="font-display font-medium text-base sm:text-lg text-[#1F1B16]">{neighborhood.stats.safetyRating}</span>
-        </div>
-
-        <div className="p-4 rounded-2xl bg-[#fbf6f0] border border-[#d8cebe] space-y-1 shadow-sm">
-          <span className="text-[11px] font-mono text-[#7e7365] block">Location Score</span>
-          <span className="font-display font-medium text-base sm:text-lg text-[#1F1B16]">{neighborhood.stats.walkScore}/100</span>
-        </div>
-      </div>
-
-      {/* Narrative & Lifestyle Highlights */}
+      {/* Highlights & Lifestyle Tags */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         <div className="lg:col-span-8 space-y-6">
-          <div className="space-y-2.5">
-            <h2 className="font-display font-medium text-xl sm:text-2xl text-[#1F1B16]">
-              About {neighborhood.name}
+          <div className="space-y-3">
+            <h2 className="font-display font-medium text-2xl text-[#1F1B16]">
+              Enclave Character & Overview
             </h2>
-            <p className="text-xs sm:text-sm text-[#7e7365] leading-relaxed font-sans">
+            <p className="text-xs sm:text-sm text-[#7e7365] leading-relaxed">
               {neighborhood.description}
             </p>
           </div>
 
+          {/* Key Advantages */}
           <div className="space-y-3 pt-4 border-t border-[#d8cebe]/60">
             <h3 className="font-display font-medium text-lg text-[#1F1B16]">
-              Area Highlights
+              Strategic Advantages
             </h3>
-            <div className="space-y-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {neighborhood.highlights.map((highlight, i) => (
-                <div key={i} className="flex items-start gap-2.5 p-3 rounded-xl bg-[#fbf6f0] border border-[#d8cebe]/70 text-xs">
+                <div
+                  key={i}
+                  className="p-3.5 rounded-2xl bg-[#fbf6f0] border border-[#d8cebe] text-xs flex items-start gap-2.5"
+                >
                   <CheckCircle2 className="w-4 h-4 text-[#2e3a2f] shrink-0 mt-0.5" />
                   <span className="text-[#1F1B16]">{highlight}</span>
                 </div>

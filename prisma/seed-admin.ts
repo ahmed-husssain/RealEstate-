@@ -14,8 +14,8 @@ async function main() {
     );
   }
 
-  if (password.length < 8) {
-    throw new Error('ADMIN_INITIAL_PASSWORD must be at least 8 characters in length.');
+  if (password.length < 6) {
+    throw new Error('ADMIN_INITIAL_PASSWORD must be at least 6 characters in length.');
   }
 
   const existingAdmin = await prisma.adminUser.findUnique({

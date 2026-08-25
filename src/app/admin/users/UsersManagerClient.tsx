@@ -205,7 +205,7 @@ export function UsersManagerClient({
             <Input
               label="Temporary / Initial Password"
               type="password"
-              placeholder="Minimum 8 characters"
+              placeholder="Minimum 6 characters"
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
               required
@@ -257,7 +257,7 @@ export function UsersManagerClient({
             <Input
               label="New Password"
               type="password"
-              placeholder="Minimum 8 characters"
+              placeholder="Minimum 6 characters"
               value={resetPasswordValue}
               onChange={(e) => setResetPasswordValue(e.target.value)}
               required

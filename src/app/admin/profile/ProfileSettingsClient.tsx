@@ -175,7 +175,7 @@ export function ProfileSettingsClient({ user }: { user: UserProfile }) {
           <Input
             label="New Password"
             type="password"
-            placeholder="Minimum 8 characters"
+            placeholder="Minimum 6 characters"
             value={newPassword}
             onChange={(e) => setNewPassword(e.target.value)}
             required

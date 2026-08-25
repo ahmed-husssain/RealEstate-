@@ -9,7 +9,7 @@ import { revalidatePath } from 'next/cache';
 const createUserSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
   email: z.string().email('Please enter a valid email address'),
-  password: z.string().min(8, 'Password must be at least 8 characters'),
+  password: z.string().min(6, 'Password must be at least 6 characters'),
   role: z.nativeEnum(AdminRole),
 });
 
@@ -118,8 +118,8 @@ export async function resetUserPasswordAction(userId: string, newPassword: strin
   try {
     await requireSuperAdminRole();
 
-    if (!newPassword || newPassword.length < 8) {
-      return { success: false, error: 'Password must be at least 8 characters' };
+    if (!newPassword || newPassword.length < 6) {
+      return { success: false, error: 'Password must be at least 6 characters' };
     }
 
     const passwordHash = await hashPassword(newPassword);

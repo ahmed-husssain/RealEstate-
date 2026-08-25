@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { requireAuthUser } from '@/lib/auth/admin';
+import { requireAuthUserPage } from '@/lib/auth/admin';
 import { getAdminPropertiesList } from '@/lib/db/admin';
 import { GlassCard } from '@/ui/GlassCard';
 import { Badge } from '@/ui/Badge';
@@ -12,7 +12,7 @@ import { PropertyRowActions } from './PropertyRowActions';
 export const dynamic = 'force-dynamic';
 
 export default async function AdminPropertiesListPage() {
-  await requireAuthUser();
+  await requireAuthUserPage();
   const properties = await getAdminPropertiesList();
 
   return (

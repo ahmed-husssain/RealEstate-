@@ -1,7 +1,7 @@
 import React from 'react';
 import { notFound } from 'next/navigation';
 import prisma from '@/lib/prisma';
-import { requireAuthUser } from '@/lib/auth/admin';
+import { requireAuthUserPage } from '@/lib/auth/admin';
 import { PropertyForm } from '../../PropertyForm';
 
 export const dynamic = 'force-dynamic';
@@ -11,7 +11,7 @@ interface EditPropertyPageProps {
 }
 
 export default async function AdminEditPropertyPage(props: EditPropertyPageProps) {
-  await requireAuthUser();
+  await requireAuthUserPage();
 
   const resolvedParams = await props.params;
   const { id } = resolvedParams;

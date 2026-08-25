@@ -1,4 +1,5 @@
 import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
 import prisma from '@/lib/prisma';
 import bcrypt from 'bcryptjs';
 import crypto from 'crypto';
@@ -129,6 +130,7 @@ export async function getCurrentAdminUser() {
   }
 }
 
+// For Server Actions (API mutations): throws error for programmatic handling
 export async function requireAuthUser() {
   const user = await getCurrentAdminUser();
   if (!user) {
@@ -137,10 +139,32 @@ export async function requireAuthUser() {
   return user;
 }
 
+// For Server Component Pages: gracefully redirects to login instead of throwing 500 error
+export async function requireAuthUserPage() {
+  const user = await getCurrentAdminUser();
+  if (!user) {
+    redirect('/admin/login');
+  }
+  return user;
+}
+
+// For Super Admin Server Actions
 export async function requireSuperAdminRole() {
   const user = await requireAuthUser();
   if (user.role !== AdminRole.ADMIN) {
     throw new Error('Forbidden. Only Super Admin has permission to perform this action.');
+  }
+  return user;
+}
+
+// For Super Admin Server Component Pages: gracefully redirects to login or dashboard
+export async function requireSuperAdminRolePage() {
+  const user = await getCurrentAdminUser();
+  if (!user) {
+    redirect('/admin/login');
+  }
+  if (user.role !== AdminRole.ADMIN) {
+    redirect('/admin');
   }
   return user;
 }

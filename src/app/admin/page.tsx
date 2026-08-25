@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { requireAuthUser } from '@/lib/auth/admin';
+import { requireAuthUserPage } from '@/lib/auth/admin';
 import { getAdminDashboardMetrics } from '@/lib/db/admin';
 import { GlassCard } from '@/ui/GlassCard';
 import { Badge } from '@/ui/Badge';
@@ -19,7 +19,7 @@ import {
 export const dynamic = 'force-dynamic';
 
 export default async function AdminDashboardPage() {
-  const user = await requireAuthUser();
+  const user = await requireAuthUserPage();
   const metrics = await getAdminDashboardMetrics();
 
   return (

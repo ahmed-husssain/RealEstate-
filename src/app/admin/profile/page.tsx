@@ -1,11 +1,11 @@
-import { requireAuthUser } from '@/lib/auth/admin';
+import { requireAuthUserPage } from '@/lib/auth/admin';
 import { Badge } from '@/ui/Badge';
 import { ProfileSettingsClient } from './ProfileSettingsClient';
 
 export const dynamic = 'force-dynamic';
 
 export default async function AdminProfilePage() {
-  const user = await requireAuthUser();
+  const user = await requireAuthUserPage();
 
   return (
     <div className="space-y-6">

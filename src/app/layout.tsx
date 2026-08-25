@@ -62,7 +62,7 @@ export default async function RootLayout({
   const siteSettings = await getPublicSiteSettings();
 
   return (
-    <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable}`}>
+    <html lang="en" data-scroll-behavior="smooth" className={`${inter.variable} ${jetbrainsMono.variable}`}>
       <body className="font-sans bg-[#f5efe6] text-[#1F1B16] antialiased selection:bg-[#5c3822] selection:text-[#F8F4ED]">
         {/* Top Route Progress Bar for Instant Navigation Feedback */}
         <Suspense fallback={null}>

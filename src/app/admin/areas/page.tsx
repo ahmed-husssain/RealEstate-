@@ -1,4 +1,4 @@
-import { requireAuthUser } from '@/lib/auth/admin';
+import { requireAuthUserPage } from '@/lib/auth/admin';
 import { getAdminAreasList } from '@/lib/db/admin';
 import { Badge } from '@/ui/Badge';
 import { AreasManagerClient } from './AreasManagerClient';
@@ -6,7 +6,7 @@ import { AreasManagerClient } from './AreasManagerClient';
 export const dynamic = 'force-dynamic';
 
 export default async function AdminAreasPage() {
-  await requireAuthUser();
+  await requireAuthUserPage();
   const areas = await getAdminAreasList();
 
   return (

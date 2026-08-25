@@ -1,5 +1,5 @@
 import React from 'react';
-import { requireAuthUser } from '@/lib/auth/admin';
+import { requireAuthUserPage } from '@/lib/auth/admin';
 import { getAdminValuationsList } from '@/lib/db/admin';
 import { Badge } from '@/ui/Badge';
 import { ValuationsListClient } from './ValuationsListClient';
@@ -7,7 +7,7 @@ import { ValuationsListClient } from './ValuationsListClient';
 export const dynamic = 'force-dynamic';
 
 export default async function AdminValuationsPage() {
-  await requireAuthUser();
+  await requireAuthUserPage();
   const valuations = await getAdminValuationsList();
 
   return (

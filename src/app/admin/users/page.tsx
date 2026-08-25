@@ -1,4 +1,4 @@
-import { requireSuperAdminRole } from '@/lib/auth/admin';
+import { requireSuperAdminRolePage } from '@/lib/auth/admin';
 import { getAdminUsersList } from '@/lib/db/admin';
 import { Badge } from '@/ui/Badge';
 import { UsersManagerClient } from './UsersManagerClient';
@@ -6,7 +6,7 @@ import { UsersManagerClient } from './UsersManagerClient';
 export const dynamic = 'force-dynamic';
 
 export default async function AdminUsersPage() {
-  const currentUser = await requireSuperAdminRole();
+  const currentUser = await requireSuperAdminRolePage();
   const users = await getAdminUsersList();
 
   return (

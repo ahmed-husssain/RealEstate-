@@ -124,8 +124,11 @@ export async function createPropertyAction(rawData: any) {
     revalidatePath('/properties');
     revalidatePath('/');
     revalidatePath('/admin/properties');
+    revalidatePath('/admin');
     revalidatePath('/neighborhoods');
     updateTag('properties');
+    updateTag('admin-properties');
+    updateTag('admin-dashboard');
 
     return {
       success: true,
@@ -223,7 +226,10 @@ export async function updatePropertyAction(propertyId: string, rawData: any) {
     revalidatePath(`/properties/${slug}`);
     revalidatePath('/');
     revalidatePath('/admin/properties');
+    revalidatePath('/admin');
     updateTag('properties');
+    updateTag('admin-properties');
+    updateTag('admin-dashboard');
 
     return {
       success: true,
@@ -260,7 +266,10 @@ export async function deletePropertyAction(propertyId: string) {
     revalidatePath(`/properties/${property.slug}`);
     revalidatePath('/');
     revalidatePath('/admin/properties');
+    revalidatePath('/admin');
     updateTag('properties');
+    updateTag('admin-properties');
+    updateTag('admin-dashboard');
 
     return { success: true, message: `Property "${property.title}" deleted successfully` };
   } catch (error: any) {

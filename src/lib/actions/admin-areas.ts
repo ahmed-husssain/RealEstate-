@@ -3,7 +3,7 @@
 import prisma from '@/lib/prisma';
 import { z } from 'zod';
 import { requireAuthUser } from '@/lib/auth/admin';
-import { revalidatePath } from 'next/cache';
+import { revalidatePath, updateTag } from 'next/cache';
 
 const areaSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
@@ -63,7 +63,11 @@ export async function createAreaAction(rawData: any) {
 
     revalidatePath('/neighborhoods');
     revalidatePath('/admin/areas');
+    revalidatePath('/admin');
     revalidatePath('/');
+    updateTag('admin-areas');
+    updateTag('admin-dashboard');
+    updateTag('areas');
 
     return { success: true, area, message: `Area "${area.name}" created successfully` };
   } catch (error: any) {
@@ -96,7 +100,12 @@ export async function updateAreaAction(areaId: string, rawData: any) {
     revalidatePath('/neighborhoods');
     revalidatePath(`/neighborhoods/${updated.slug}`);
     revalidatePath('/admin/areas');
+    revalidatePath('/admin');
     revalidatePath('/');
+    updateTag('admin-areas');
+    updateTag('admin-dashboard');
+    updateTag('areas');
+    updateTag('properties');
 
     return { success: true, area: updated, message: `Area "${updated.name}" updated successfully` };
   } catch (error: any) {
@@ -135,7 +144,11 @@ export async function deleteAreaAction(areaId: string) {
 
     revalidatePath('/neighborhoods');
     revalidatePath('/admin/areas');
+    revalidatePath('/admin');
     revalidatePath('/');
+    updateTag('admin-areas');
+    updateTag('admin-dashboard');
+    updateTag('areas');
 
     return { success: true, message: `Area "${area.name}" deleted` };
   } catch (error: any) {

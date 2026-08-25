@@ -1,8 +1,8 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import prisma from '@/lib/prisma';
-import { getCurrentAdminUser } from '@/lib/auth/admin';
+import { requireAuthUser } from '@/lib/auth/admin';
+import { getAdminPropertiesList } from '@/lib/db/admin';
 import { GlassCard } from '@/ui/GlassCard';
 import { Badge } from '@/ui/Badge';
 import { Button } from '@/ui/Button';
@@ -12,19 +12,8 @@ import { PropertyRowActions } from './PropertyRowActions';
 export const dynamic = 'force-dynamic';
 
 export default async function AdminPropertiesListPage() {
-  const user = await getCurrentAdminUser();
-  if (!user) return null;
-
-  const properties = await prisma.property.findMany({
-    orderBy: { createdAt: 'desc' },
-    include: {
-      area: true,
-      images: {
-        where: { isHero: true },
-        take: 1,
-      },
-    },
-  });
+  await requireAuthUser();
+  const properties = await getAdminPropertiesList();
 
   return (
     <div className="space-y-6">

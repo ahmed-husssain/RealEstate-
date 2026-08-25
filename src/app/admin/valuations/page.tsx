@@ -1,18 +1,14 @@
 import React from 'react';
-import prisma from '@/lib/prisma';
-import { getCurrentAdminUser } from '@/lib/auth/admin';
+import { requireAuthUser } from '@/lib/auth/admin';
+import { getAdminValuationsList } from '@/lib/db/admin';
 import { Badge } from '@/ui/Badge';
 import { ValuationsListClient } from './ValuationsListClient';
 
 export const dynamic = 'force-dynamic';
 
 export default async function AdminValuationsPage() {
-  const user = await getCurrentAdminUser();
-  if (!user) return null;
-
-  const valuations = await prisma.valuationRequest.findMany({
-    orderBy: { createdAt: 'desc' },
-  });
+  await requireAuthUser();
+  const valuations = await getAdminValuationsList();
 
   return (
     <div className="space-y-6">
@@ -32,14 +28,7 @@ export default async function AdminValuationsPage() {
         </p>
       </div>
 
-      <ValuationsListClient
-        initialValuations={valuations.map((v: any) => ({
-          ...v,
-          areaSize: Number(v.areaSize),
-          estimatedMin: v.estimatedMin ? Number(v.estimatedMin) : null,
-          estimatedMax: v.estimatedMax ? Number(v.estimatedMax) : null,
-        }))}
-      />
+      <ValuationsListClient initialValuations={valuations} />
     </div>
   );
 }

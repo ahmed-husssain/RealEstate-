@@ -210,8 +210,8 @@ export function AreasManagerClient({ initialAreas }: { initialAreas: AreaData[] 
               >
                 Cancel
               </Button>
-              <Button type="submit" variant="primary" size="sm" isLoading={loading}>
-                <span>Save Area Data</span>
+              <Button type="submit" variant="primary" size="sm" isLoading={loading} disabled={loading}>
+                <span>{loading ? 'Saving Area Data...' : 'Save Area Data'}</span>
               </Button>
             </div>
           </form>

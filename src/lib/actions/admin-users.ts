@@ -4,7 +4,7 @@ import prisma from '@/lib/prisma';
 import { z } from 'zod';
 import { requireSuperAdminRole, hashPassword } from '@/lib/auth/admin';
 import { AdminRole } from '@prisma/client';
-import { revalidatePath } from 'next/cache';
+import { revalidatePath, updateTag } from 'next/cache';
 
 const createUserSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
@@ -32,7 +32,7 @@ export async function getTeamUsersAction() {
 
     return { success: true, data: users };
   } catch (error: any) {
-    return { success: false, error: error.message };
+    return { success: false, error: error.message || 'Failed to load team users' };
   }
 }
 
@@ -43,7 +43,7 @@ export async function createTeamUserAction(data: {
   role: AdminRole;
 }) {
   try {
-    const currentAdmin = await requireSuperAdminRole();
+    await requireSuperAdminRole();
     const validated = createUserSchema.parse(data);
 
     // Check duplicate email
@@ -74,6 +74,10 @@ export async function createTeamUserAction(data: {
     });
 
     revalidatePath('/admin/users');
+    revalidatePath('/admin');
+    updateTag('admin-users');
+    updateTag('admin-dashboard');
+
     return { success: true, user: newUser, message: `Account created for ${newUser.name}` };
   } catch (error: any) {
     if (error instanceof z.ZodError) {
@@ -105,6 +109,10 @@ export async function toggleUserActiveAction(userId: string) {
     });
 
     revalidatePath('/admin/users');
+    revalidatePath('/admin');
+    updateTag('admin-users');
+    updateTag('admin-dashboard');
+
     return {
       success: true,
       message: `User ${updated.name} has been ${updated.isActive ? 'activated' : 'suspended'}`,
@@ -130,6 +138,9 @@ export async function resetUserPasswordAction(userId: string, newPassword: strin
     });
 
     revalidatePath('/admin/users');
+    revalidatePath('/admin');
+    updateTag('admin-users');
+
     return { success: true, message: 'User password reset successfully' };
   } catch (error: any) {
     return { success: false, error: error.message || 'Failed to reset password' };
@@ -149,6 +160,10 @@ export async function deleteTeamUserAction(userId: string) {
     });
 
     revalidatePath('/admin/users');
+    revalidatePath('/admin');
+    updateTag('admin-users');
+    updateTag('admin-dashboard');
+
     return { success: true, message: 'User account deleted successfully' };
   } catch (error: any) {
     return { success: false, error: error.message || 'Failed to delete user' };

@@ -129,8 +129,8 @@ export function ProfileSettingsClient({ user }: { user: UserProfile }) {
                 {user.role}
               </Badge>
             </div>
-            <Button type="submit" variant="primary" size="sm" isLoading={profileLoading}>
-              Save Name
+            <Button type="submit" variant="primary" size="sm" isLoading={profileLoading} disabled={profileLoading}>
+              <span>{profileLoading ? 'Saving Name...' : 'Save Name'}</span>
             </Button>
           </div>
         </form>
@@ -191,8 +191,8 @@ export function ProfileSettingsClient({ user }: { user: UserProfile }) {
           />
 
           <div className="flex justify-end pt-2">
-            <Button type="submit" variant="primary" size="md" isLoading={passwordLoading}>
-              <span>Update Password</span>
+            <Button type="submit" variant="primary" size="md" isLoading={passwordLoading} disabled={passwordLoading}>
+              <span>{passwordLoading ? 'Updating Password...' : 'Update Password'}</span>
             </Button>
           </div>
         </form>

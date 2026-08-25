@@ -1,4 +1,4 @@
-import { getCurrentAdminUser } from '@/lib/auth/admin';
+import { requireAuthUser } from '@/lib/auth/admin';
 import { getSiteSettingsAction } from '@/lib/actions/admin-content';
 import { Badge } from '@/ui/Badge';
 import { SiteContentEditorClient } from './SiteContentEditorClient';
@@ -6,9 +6,7 @@ import { SiteContentEditorClient } from './SiteContentEditorClient';
 export const dynamic = 'force-dynamic';
 
 export default async function AdminSiteContentPage() {
-  const user = await getCurrentAdminUser();
-  if (!user) return null;
-
+  await requireAuthUser();
   const { data: settings } = await getSiteSettingsAction();
 
   return (

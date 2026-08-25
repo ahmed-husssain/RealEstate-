@@ -183,8 +183,16 @@ export function PropertyForm({ initialData, areas, isEdit = false }: PropertyFor
         </div>
 
         <div className="flex items-center gap-2">
-          <Button type="submit" variant="primary" size="md" isLoading={loading}>
-            <span>{isEdit ? 'Update Listing' : 'Publish Listing'}</span>
+          <Button type="submit" variant="primary" size="md" isLoading={loading} disabled={loading}>
+            <span>
+              {loading
+                ? isEdit
+                  ? 'Updating Listing...'
+                  : 'Publishing Listing...'
+                : isEdit
+                ? 'Update Listing'
+                : 'Publish Listing'}
+            </span>
           </Button>
         </div>
       </div>

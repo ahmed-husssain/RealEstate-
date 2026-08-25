@@ -81,7 +81,9 @@ export async function updateSiteSettingsAction(settings: Record<string, string>)
     revalidatePath('/services');
     revalidatePath('/valuation');
     revalidatePath('/admin/content');
+    revalidatePath('/admin');
     updateTag('site_settings');
+    updateTag('admin-content');
 
     return {
       success: true,

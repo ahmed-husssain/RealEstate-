@@ -1,14 +1,13 @@
-import { getCurrentAdminUser } from '@/lib/auth/admin';
-import { getTeamUsersAction } from '@/lib/actions/admin-users';
+import { requireSuperAdminRole } from '@/lib/auth/admin';
+import { getAdminUsersList } from '@/lib/db/admin';
 import { Badge } from '@/ui/Badge';
 import { UsersManagerClient } from './UsersManagerClient';
 
 export const dynamic = 'force-dynamic';
 
 export default async function AdminUsersPage() {
-  const currentUser = await getCurrentAdminUser();
-  if (!currentUser || currentUser.role !== 'ADMIN') return null;
-  const { data: users } = await getTeamUsersAction();
+  const currentUser = await requireSuperAdminRole();
+  const users = await getAdminUsersList();
 
   return (
     <div className="space-y-6">
@@ -17,7 +16,7 @@ export default async function AdminUsersPage() {
         <div className="flex items-center gap-2">
           <Badge variant="exclusive" size="sm">Super Admin Only</Badge>
           <span className="text-xs font-mono text-[#7e7365]">
-            {users?.length || 0} Authorized Accounts
+            {users.length} Authorized Accounts
           </span>
         </div>
         <h1 className="font-display font-medium text-2xl sm:text-3xl text-[#1F1B16]">

@@ -1,23 +1,14 @@
 import React from 'react';
-import prisma from '@/lib/prisma';
-import { getCurrentAdminUser } from '@/lib/auth/admin';
+import { requireAuthUser } from '@/lib/auth/admin';
+import { getAdminInquiriesList } from '@/lib/db/admin';
 import { Badge } from '@/ui/Badge';
 import { InquiriesListClient } from './InquiriesListClient';
 
 export const dynamic = 'force-dynamic';
 
 export default async function AdminInquiriesPage() {
-  const user = await getCurrentAdminUser();
-  if (!user) return null;
-
-  const inquiries = await prisma.inquiry.findMany({
-    orderBy: { createdAt: 'desc' },
-    include: {
-      property: {
-        select: { id: true, title: true, slug: true },
-      },
-    },
-  });
+  await requireAuthUser();
+  const inquiries = await getAdminInquiriesList();
 
   return (
     <div className="space-y-6">

@@ -230,11 +230,11 @@ export function UsersManagerClient({
             </div>
 
             <div className="flex justify-end gap-2 pt-2">
-              <Button type="button" variant="ghost" size="sm" onClick={() => setIsCreating(false)}>
+              <Button type="button" variant="ghost" size="sm" onClick={() => setIsCreating(false)} disabled={loading}>
                 Cancel
               </Button>
-              <Button type="submit" variant="primary" size="sm" isLoading={loading}>
-                <span>Create Account</span>
+              <Button type="submit" variant="primary" size="sm" isLoading={loading} disabled={loading}>
+                <span>{loading ? 'Creating Account...' : 'Create Account'}</span>
               </Button>
             </div>
           </form>
@@ -248,7 +248,7 @@ export function UsersManagerClient({
             <h2 className="font-display font-medium text-lg text-[#1F1B16]">
               Reset User Password
             </h2>
-            <button onClick={() => setResettingUserId(null)} className="p-1 rounded-full hover:bg-stone-100">
+            <button onClick={() => setResettingUserId(null)} className="p-1 rounded-full hover:bg-stone-100" disabled={loading}>
               <X className="w-5 h-5 text-[#7e7365]" />
             </button>
           </div>
@@ -264,11 +264,11 @@ export function UsersManagerClient({
             />
 
             <div className="flex justify-end gap-2 pt-2">
-              <Button type="button" variant="ghost" size="sm" onClick={() => setResettingUserId(null)}>
+              <Button type="button" variant="ghost" size="sm" onClick={() => setResettingUserId(null)} disabled={loading}>
                 Cancel
               </Button>
-              <Button type="submit" variant="primary" size="sm" isLoading={loading}>
-                <span>Save New Password</span>
+              <Button type="submit" variant="primary" size="sm" isLoading={loading} disabled={loading}>
+                <span>{loading ? 'Saving Password...' : 'Save New Password'}</span>
               </Button>
             </div>
           </form>

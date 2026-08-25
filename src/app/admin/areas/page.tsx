@@ -1,15 +1,13 @@
-import { getCurrentAdminUser } from '@/lib/auth/admin';
-import { getAdminAreasAction } from '@/lib/actions/admin-areas';
+import { requireAuthUser } from '@/lib/auth/admin';
+import { getAdminAreasList } from '@/lib/db/admin';
 import { Badge } from '@/ui/Badge';
 import { AreasManagerClient } from './AreasManagerClient';
 
 export const dynamic = 'force-dynamic';
 
 export default async function AdminAreasPage() {
-  const user = await getCurrentAdminUser();
-  if (!user) return null;
-
-  const { data: areas } = await getAdminAreasAction();
+  await requireAuthUser();
+  const areas = await getAdminAreasList();
 
   return (
     <div className="space-y-6">

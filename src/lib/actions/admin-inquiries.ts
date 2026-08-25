@@ -3,7 +3,7 @@
 import prisma from '@/lib/prisma';
 import { requireAuthUser } from '@/lib/auth/admin';
 import { InquiryStatus, ValuationStatus } from '@prisma/client';
-import { revalidatePath } from 'next/cache';
+import { revalidatePath, updateTag } from 'next/cache';
 
 export async function getAdminInquiriesAction() {
   try {
@@ -20,7 +20,7 @@ export async function getAdminInquiriesAction() {
 
     return { success: true, data: inquiries };
   } catch (error: any) {
-    return { success: false, error: error.message };
+    return { success: false, error: error.message || 'Failed to load inquiries' };
   }
 }
 
@@ -28,12 +28,16 @@ export async function updateInquiryStatusAction(inquiryId: string, status: Inqui
   try {
     await requireAuthUser();
 
-    const updated = await prisma.inquiry.update({
+    await prisma.inquiry.update({
       where: { id: inquiryId },
       data: { status },
     });
 
     revalidatePath('/admin/inquiries');
+    revalidatePath('/admin');
+    updateTag('admin-inquiries');
+    updateTag('admin-dashboard');
+
     return { success: true, message: `Inquiry status changed to ${status}` };
   } catch (error: any) {
     return { success: false, error: error.message || 'Failed to update inquiry status' };
@@ -49,6 +53,10 @@ export async function deleteInquiryAction(inquiryId: string) {
     });
 
     revalidatePath('/admin/inquiries');
+    revalidatePath('/admin');
+    updateTag('admin-inquiries');
+    updateTag('admin-dashboard');
+
     return { success: true, message: 'Inquiry record deleted' };
   } catch (error: any) {
     return { success: false, error: error.message || 'Failed to delete inquiry' };
@@ -73,7 +81,7 @@ export async function getAdminValuationsAction() {
       })),
     };
   } catch (error: any) {
-    return { success: false, error: error.message };
+    return { success: false, error: error.message || 'Failed to load valuations' };
   }
 }
 
@@ -87,6 +95,10 @@ export async function updateValuationStatusAction(valuationId: string, status: V
     });
 
     revalidatePath('/admin/valuations');
+    revalidatePath('/admin');
+    updateTag('admin-valuations');
+    updateTag('admin-dashboard');
+
     return { success: true, message: `Valuation status changed to ${status}` };
   } catch (error: any) {
     return { success: false, error: error.message || 'Failed to update valuation status' };

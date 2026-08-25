@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
-import prisma from '@/lib/prisma';
-import { getCurrentAdminUser } from '@/lib/auth/admin';
+import { requireAuthUser } from '@/lib/auth/admin';
+import { getAdminDashboardMetrics } from '@/lib/db/admin';
 import { GlassCard } from '@/ui/GlassCard';
 import { Badge } from '@/ui/Badge';
 import { Button } from '@/ui/Button';
@@ -10,10 +10,8 @@ import {
   Inbox,
   Calculator,
   MapPin,
-  Users,
   ArrowUpRight,
   Phone,
-  Clock,
   Plus,
   FileText,
 } from 'lucide-react';
@@ -21,37 +19,8 @@ import {
 export const dynamic = 'force-dynamic';
 
 export default async function AdminDashboardPage() {
-  const user = await getCurrentAdminUser();
-  if (!user) return null;
-
-  // Fetch metrics in parallel
-  const [
-    totalProperties,
-    featuredProperties,
-    totalInquiries,
-    newInquiries,
-    totalValuations,
-    totalAreas,
-    totalUsers,
-    recentInquiries,
-  ] = await Promise.all([
-    prisma.property.count(),
-    prisma.property.count({ where: { isFeatured: true } }),
-    prisma.inquiry.count(),
-    prisma.inquiry.count({ where: { status: 'NEW' } }),
-    prisma.valuationRequest.count(),
-    prisma.area.count(),
-    prisma.adminUser.count(),
-    prisma.inquiry.findMany({
-      take: 5,
-      orderBy: { createdAt: 'desc' },
-      include: {
-        property: {
-          select: { title: true },
-        },
-      },
-    }),
-  ]);
+  const user = await requireAuthUser();
+  const metrics = await getAdminDashboardMetrics();
 
   return (
     <div className="space-y-8">
@@ -96,8 +65,8 @@ export default async function AdminDashboardPage() {
               <Building2 className="w-4 h-4" />
             </div>
           </div>
-          <p className="font-display font-medium text-2xl text-[#1F1B16]">{totalProperties}</p>
-          <p className="text-[11px] text-[#7e7365]">{featuredProperties} Featured on Home</p>
+          <p className="font-display font-medium text-2xl text-[#1F1B16]">{metrics.totalProperties}</p>
+          <p className="text-[11px] text-[#7e7365]">{metrics.featuredProperties} Featured on Home</p>
         </GlassCard>
 
         {/* Client Inquiries Card */}
@@ -108,11 +77,11 @@ export default async function AdminDashboardPage() {
               <Inbox className="w-4 h-4" />
             </div>
           </div>
-          <p className="font-display font-medium text-2xl text-[#1F1B16]">{totalInquiries}</p>
+          <p className="font-display font-medium text-2xl text-[#1F1B16]">{metrics.totalInquiries}</p>
           <div className="flex items-center gap-1.5">
-            {newInquiries > 0 ? (
+            {metrics.newInquiries > 0 ? (
               <span className="px-2 py-0.5 rounded-full bg-red-100 text-red-800 text-[10px] font-mono font-bold">
-                {newInquiries} New Leads
+                {metrics.newInquiries} New Leads
               </span>
             ) : (
               <span className="text-[11px] text-[#7e7365]">All caught up</span>
@@ -128,7 +97,7 @@ export default async function AdminDashboardPage() {
               <Calculator className="w-4 h-4" />
             </div>
           </div>
-          <p className="font-display font-medium text-2xl text-[#1F1B16]">{totalValuations}</p>
+          <p className="font-display font-medium text-2xl text-[#1F1B16]">{metrics.totalValuations}</p>
           <p className="text-[11px] text-[#7e7365]">Submitted by Sellers</p>
         </GlassCard>
 
@@ -140,8 +109,8 @@ export default async function AdminDashboardPage() {
               <MapPin className="w-4 h-4" />
             </div>
           </div>
-          <p className="font-display font-medium text-2xl text-[#1F1B16]">{totalAreas}</p>
-          <p className="text-[11px] text-[#7e7365]">{totalUsers} Team Accounts</p>
+          <p className="font-display font-medium text-2xl text-[#1F1B16]">{metrics.totalAreas}</p>
+          <p className="text-[11px] text-[#7e7365]">{metrics.totalUsers} Team Accounts</p>
         </GlassCard>
       </div>
 
@@ -158,15 +127,15 @@ export default async function AdminDashboardPage() {
           </div>
           <Link href="/admin/inquiries">
             <Button variant="secondary" size="sm" className="text-xs">
-              <span>View All Leads ({totalInquiries})</span>
+              <span>View All Leads ({metrics.totalInquiries})</span>
               <ArrowUpRight className="w-3.5 h-3.5" />
             </Button>
           </Link>
         </div>
 
-        {recentInquiries.length > 0 ? (
+        {metrics.recentInquiries.length > 0 ? (
           <div className="divide-y divide-[#d8cebe]/60">
-            {recentInquiries.map((inquiry) => (
+            {metrics.recentInquiries.map((inquiry) => (
               <div
                 key={inquiry.id}
                 className="py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3"

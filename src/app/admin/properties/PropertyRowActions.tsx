@@ -48,6 +48,7 @@ export function PropertyRowActions({ propertyId, slug, title }: { propertyId: st
         size="sm"
         onClick={handleDelete}
         isLoading={isDeleting}
+        disabled={isDeleting}
         title="Delete Property"
         className="p-1.5 h-8 w-8 text-red-600 hover:bg-red-50 hover:text-red-700"
       >

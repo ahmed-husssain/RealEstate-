@@ -52,7 +52,7 @@ export function ContactClient({ siteSettings }: { siteSettings: PublicSiteSettin
             origin: { y: 0.6 },
             colors: ['#5c3822', '#2e3a2f', '#D8CEBE', '#847666'],
           });
-        } catch (e) {}
+        } catch (e) { }
       } else {
         setErrorMessage(res.error || 'Failed to submit inquiry');
       }
@@ -117,7 +117,7 @@ export function ContactClient({ siteSettings }: { siteSettings: PublicSiteSettin
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <Input
                     label="Full Name *"
-                    placeholder="e.g. Tariq Mehmood"
+                    placeholder="e.g. Syed Sikander Waqar"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     required

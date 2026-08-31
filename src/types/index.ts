@@ -4,7 +4,10 @@ export type PropertyType =
   | 'modern-apartment' 
   | 'estate' 
   | 'townhouse' 
-  | 'historic-manor';
+  | 'historic-manor'
+  | 'residential-plot'
+  | 'commercial-property'
+  | 'floor-portion';
 
 export type PropertyStatus = 
   | 'for-sale' 
@@ -16,11 +19,16 @@ export type PropertyStatus =
 export interface PropertySpecs {
   bedrooms: number;
   bathrooms: number;
+  areaSize: number;
+  areaUnit: string;
+  areaFormatted: string;
   areaSqFt: number;
   lotSizeSqFt?: number;
-  yearBuilt: number;
+  yearBuilt?: number | null;
   parkingSpaces: number;
+  condition?: string;
   propertyType: PropertyType;
+  rawPropertyType?: string;
   energyRating?: string;
   floorLevel?: string;
 }
@@ -98,38 +106,37 @@ export interface Neighborhood {
   highlights: string[];
 }
 
+export interface InquiryFormData {
+  name: string;
+  email: string;
+  phone: string;
+  message: string;
+  propertyId?: string;
+  preferredDate?: string;
+  timeSlot?: string;
+}
+
+export interface ValuationFormData {
+  propertyType: PropertyType;
+  location: string;
+  areaSqFt: number;
+  bedrooms: number;
+  bathrooms: number;
+  condition: string;
+  ownerName: string;
+  ownerEmail: string;
+  ownerPhone: string;
+}
+
 export interface PropertyFilterState {
-  searchQuery: string;
+  searchQuery?: string;
   neighborhood: string;
   propertyType: string;
   priceRange: [number, number];
   bedrooms: string;
-  bathrooms: string;
+  bathrooms?: string;
   status: string;
-  sortBy: 'featured' | 'price-asc' | 'price-desc' | 'newest' | 'area-desc';
+  sortBy: string;
 }
 
-export interface ViewingBooking {
-  propertyId: string;
-  propertyTitle: string;
-  clientName: string;
-  clientEmail: string;
-  clientPhone: string;
-  preferredDate: string;
-  timeSlot: string;
-  viewingType: 'in-person' | 'virtual';
-  notes?: string;
-}
-
-export interface ValuationSubmission {
-  propertyType: string;
-  address: string;
-  bedrooms: number;
-  bathrooms: number;
-  areaSqFt: number;
-  condition: string;
-  contactName: string;
-  contactEmail: string;
-  contactPhone: string;
-  timeframe: string;
-}
+export type FilterState = PropertyFilterState;

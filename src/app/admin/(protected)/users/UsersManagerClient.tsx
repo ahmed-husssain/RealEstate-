@@ -157,11 +157,10 @@ export function UsersManagerClient({
 
       {statusMsg && (
         <div
-          className={`p-4 rounded-2xl border text-xs flex items-center gap-2 ${
-            statusMsg.type === 'success'
+          className={`p-4 rounded-2xl border text-xs flex items-center gap-2 ${statusMsg.type === 'success'
               ? 'bg-green-50 border-green-200 text-green-800'
               : 'bg-red-50 border-red-200 text-red-800'
-          }`}
+            }`}
         >
           {statusMsg.type === 'success' ? (
             <CheckCircle2 className="w-4 h-4 shrink-0" />
@@ -187,7 +186,7 @@ export function UsersManagerClient({
           <form onSubmit={handleCreateUser} className="space-y-4">
             <Input
               label="Full Name"
-              placeholder="e.g. Tariq Mehmood (Senior Property Advisor)"
+              placeholder="e.g. Sikander Waqar (Senior Property Advisor)"
               value={newName}
               onChange={(e) => setNewName(e.target.value)}
               required
@@ -196,7 +195,7 @@ export function UsersManagerClient({
             <Input
               label="Staff Email (Login ID)"
               type="email"
-              placeholder="tariq@amberproperty.com"
+              placeholder="syedsikander1401@gmail.com"
               value={newEmail}
               onChange={(e) => setNewEmail(e.target.value)}
               required
@@ -321,11 +320,10 @@ export function UsersManagerClient({
 
                     <td className="p-4">
                       <span
-                        className={`px-2.5 py-0.5 rounded-full font-mono text-[10px] font-bold ${
-                          u.isActive
+                        className={`px-2.5 py-0.5 rounded-full font-mono text-[10px] font-bold ${u.isActive
                             ? 'bg-green-100 text-green-800'
                             : 'bg-red-100 text-red-800'
-                        }`}
+                          }`}
                       >
                         {u.isActive ? 'ACTIVE' : 'SUSPENDED'}
                       </span>
@@ -351,11 +349,10 @@ export function UsersManagerClient({
                             <button
                               type="button"
                               onClick={() => handleToggleActive(u.id)}
-                              className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
-                                u.isActive
+                              className={`p-1.5 rounded-lg transition-colors cursor-pointer ${u.isActive
                                   ? 'text-amber-700 hover:bg-amber-100'
                                   : 'text-green-700 hover:bg-green-100'
-                              }`}
+                                }`}
                               title={u.isActive ? 'Suspend access' : 'Activate access'}
                             >
                               <Power className="w-3.5 h-3.5" />

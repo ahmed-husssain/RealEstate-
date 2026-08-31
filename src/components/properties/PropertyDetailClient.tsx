@@ -26,6 +26,9 @@ import {
   ArrowLeft,
   Clock,
   Sparkles,
+  Key,
+  Compass,
+  FileCheck,
 } from 'lucide-react';
 import { formatNumber } from '@/lib/utils';
 
@@ -49,6 +52,37 @@ export function PropertyDetailClient({
     }
   };
 
+  const isRental = property.status === 'for-lease';
+  const isPlot = property.specs.propertyType === 'residential-plot' || property.specs.rawPropertyType === 'PLOT';
+  const isCommercial = property.specs.propertyType === 'commercial-property' || property.specs.rawPropertyType === 'COMMERCIAL';
+
+  // Status Badge Label
+  const getStatusBadge = () => {
+    switch (property.status) {
+      case 'for-lease':
+        return <Badge variant="moss" size="sm">For Rent (Lease)</Badge>;
+      case 'exclusive':
+        return <Badge variant="exclusive" size="sm">Exclusive Listing</Badge>;
+      case 'under-offer':
+        return <Badge variant="stone" size="sm">Under Offer</Badge>;
+      case 'sold':
+        return <Badge variant="stone" size="sm">Sold</Badge>;
+      case 'for-sale':
+      default:
+        return <Badge variant="exclusive" size="sm">For Sale</Badge>;
+    }
+  };
+
+  // Human-readable category label
+  const getCategoryBadge = () => {
+    if (isPlot) return 'Residential Plot';
+    if (isCommercial) return 'Commercial Property';
+    if (property.specs.propertyType === 'floor-portion') return 'Floor Portion';
+    if (property.specs.propertyType === 'modern-apartment') return 'Apartment';
+    if (property.specs.propertyType === 'penthouse') return 'Penthouse';
+    return 'Bungalow / Villa';
+  };
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10 space-y-10">
       {/* Navigation Breadcrumb */}
@@ -63,7 +97,7 @@ export function PropertyDetailClient({
         <div className="flex items-center gap-2">
           <button
             onClick={handleShare}
-            className="px-3.5 py-1.5 rounded-full bg-[#fbf6f0] border border-[#d8cebe] hover:bg-white text-xs font-mono text-[#1F1B16] flex items-center gap-1.5 transition-all cursor-pointer"
+            className="px-3.5 py-1.5 rounded-full bg-[#fbf6f0] border border-[#d8cebe] hover:bg-white text-xs font-mono text-[#1F1B16] flex items-center gap-1.5 transition-all cursor-pointer shadow-sm"
           >
             <Share2 className="w-3.5 h-3.5 text-[#5c3822]" />
             <span>{copied ? 'Link Copied' : 'Share Property'}</span>
@@ -75,8 +109,9 @@ export function PropertyDetailClient({
       <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-5 pb-6 border-b border-[#d8cebe]/60">
         <div className="space-y-2.5 max-w-3xl">
           <div className="flex flex-wrap items-center gap-2">
-            <Badge variant="exclusive" size="sm">
-              {property.status === 'for-sale' ? 'For Sale' : 'Exclusive Listing'}
+            {getStatusBadge()}
+            <Badge variant="stone" size="sm">
+              {getCategoryBadge()}
             </Badge>
             <Badge variant="stone" size="sm">
               {property.location.neighborhood}, {property.location.city}
@@ -97,7 +132,7 @@ export function PropertyDetailClient({
         <div className="flex flex-col sm:flex-row lg:flex-col items-start lg:items-end gap-3 shrink-0">
           <div className="text-left lg:text-right">
             <span className="text-[11px] font-mono text-[#7e7365] block">
-              Demand / Price
+              {isRental ? 'Monthly Rental Demand' : 'Demand / Price'}
             </span>
             <span className="font-display font-medium text-2xl sm:text-4xl text-[#1F1B16]">
               {property.priceFormatted}
@@ -117,51 +152,99 @@ export function PropertyDetailClient({
         </div>
       </div>
 
-      {/* Interactive Photo Gallery with Masonry & Lightbox */}
-      <PropertyGallery images={{ hero: property.images.hero, gallery: property.images.gallery }} title={property.title} />
+      {/* Interactive Photo Gallery */}
+      <PropertyGallery
+        images={{ hero: property.images.hero, gallery: property.images.gallery }}
+        title={property.title}
+      />
 
-      {/* Key Property Specs Ribbon */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-        <div className="bg-[#fbf6f0] border border-[#d8cebe] rounded-2xl p-3.5 text-center shadow-sm">
-          <Bed className="w-4 h-4 mx-auto text-[#5c3822] mb-1" />
-          <span className="text-[11px] font-mono uppercase text-[#7e7365] block">Bedrooms</span>
-          <span className="font-display font-medium text-base text-[#1F1B16]">{property.specs.bedrooms} Beds</span>
-        </div>
+      {/* Adaptive Property Specs Ribbon (Render ONLY actual applicable specs) */}
+      <div className="flex flex-wrap gap-3">
+        {/* Total Area / Footprint (always present) */}
+        {property.specs.areaSize > 0 && (
+          <div className="flex-1 min-w-[140px] bg-[#fbf6f0] border border-[#d8cebe] rounded-2xl p-3.5 text-center shadow-sm">
+            <Maximize2 className="w-4 h-4 mx-auto text-[#5c3822] mb-1" />
+            <span className="text-[11px] font-mono uppercase text-[#7e7365] block">
+              {isPlot ? 'Plot Area' : 'Total Area'}
+            </span>
+            <span className="font-display font-medium text-base text-[#1F1B16]">
+              {property.specs.areaFormatted}
+            </span>
+          </div>
+        )}
 
-        <div className="bg-[#fbf6f0] border border-[#d8cebe] rounded-2xl p-3.5 text-center shadow-sm">
-          <Bath className="w-4 h-4 mx-auto text-[#5c3822] mb-1" />
-          <span className="text-[11px] font-mono uppercase text-[#7e7365] block">Bathrooms</span>
-          <span className="font-display font-medium text-base text-[#1F1B16]">{property.specs.bathrooms} Baths</span>
-        </div>
+        {/* Bedrooms (Hidden for Plots and Commercial) */}
+        {!isPlot && !isCommercial && property.specs.bedrooms > 0 && (
+          <div className="flex-1 min-w-[120px] bg-[#fbf6f0] border border-[#d8cebe] rounded-2xl p-3.5 text-center shadow-sm">
+            <Bed className="w-4 h-4 mx-auto text-[#5c3822] mb-1" />
+            <span className="text-[11px] font-mono uppercase text-[#7e7365] block">Bedrooms</span>
+            <span className="font-display font-medium text-base text-[#1F1B16]">
+              {property.specs.bedrooms} Beds
+            </span>
+          </div>
+        )}
 
-        <div className="bg-[#fbf6f0] border border-[#d8cebe] rounded-2xl p-3.5 text-center shadow-sm">
-          <Maximize2 className="w-4 h-4 mx-auto text-[#5c3822] mb-1" />
-          <span className="text-[11px] font-mono uppercase text-[#7e7365] block">Total Area</span>
-          <span className="font-display font-medium text-base text-[#1F1B16]">{formatNumber(property.specs.areaSqFt)} Sq Ft</span>
-        </div>
+        {/* Bathrooms / Washrooms (Hidden for Plots) */}
+        {!isPlot && property.specs.bathrooms > 0 && (
+          <div className="flex-1 min-w-[120px] bg-[#fbf6f0] border border-[#d8cebe] rounded-2xl p-3.5 text-center shadow-sm">
+            <Bath className="w-4 h-4 mx-auto text-[#5c3822] mb-1" />
+            <span className="text-[11px] font-mono uppercase text-[#7e7365] block">
+              {isCommercial ? 'Washrooms' : 'Bathrooms'}
+            </span>
+            <span className="font-display font-medium text-base text-[#1F1B16]">
+              {property.specs.bathrooms} Baths
+            </span>
+          </div>
+        )}
 
-        <div className="bg-[#fbf6f0] border border-[#d8cebe] rounded-2xl p-3.5 text-center shadow-sm">
-          <Calendar className="w-4 h-4 mx-auto text-[#5c3822] mb-1" />
-          <span className="text-[11px] font-mono uppercase text-[#7e7365] block">Built Year</span>
-          <span className="font-display font-medium text-base text-[#1F1B16]">{property.specs.yearBuilt}</span>
-        </div>
+        {/* Built Year (Only if entered and not a plot) */}
+        {!isPlot && Boolean(property.specs.yearBuilt && property.specs.yearBuilt > 0) && (
+          <div className="flex-1 min-w-[120px] bg-[#fbf6f0] border border-[#d8cebe] rounded-2xl p-3.5 text-center shadow-sm">
+            <Calendar className="w-4 h-4 mx-auto text-[#5c3822] mb-1" />
+            <span className="text-[11px] font-mono uppercase text-[#7e7365] block">Built Year</span>
+            <span className="font-display font-medium text-base text-[#1F1B16]">
+              {property.specs.yearBuilt}
+            </span>
+          </div>
+        )}
 
-        <div className="bg-[#fbf6f0] border border-[#d8cebe] rounded-2xl p-3.5 text-center shadow-sm">
-          <Clock className="w-4 h-4 mx-auto text-[#5c3822] mb-1" />
-          <span className="text-[11px] font-mono uppercase text-[#7e7365] block">Car Parking</span>
-          <span className="font-display font-medium text-base text-[#1F1B16]">{property.specs.parkingSpaces} Cars</span>
-        </div>
+        {/* Car Parking (Only if > 0 and not a plot) */}
+        {!isPlot && property.specs.parkingSpaces > 0 && (
+          <div className="flex-1 min-w-[120px] bg-[#fbf6f0] border border-[#d8cebe] rounded-2xl p-3.5 text-center shadow-sm">
+            <Clock className="w-4 h-4 mx-auto text-[#5c3822] mb-1" />
+            <span className="text-[11px] font-mono uppercase text-[#7e7365] block">Car Parking</span>
+            <span className="font-display font-medium text-base text-[#1F1B16]">
+              {property.specs.parkingSpaces} Cars
+            </span>
+          </div>
+        )}
 
-        <div className="bg-[#fbf6f0] border border-[#d8cebe] rounded-2xl p-3.5 text-center shadow-sm">
-          <Sparkles className="w-4 h-4 mx-auto text-[#5c3822] mb-1" />
-          <span className="text-[11px] font-mono uppercase text-[#7e7365] block">Condition</span>
-          <span className="font-display font-medium text-base text-[#2e3a2f]">Brand New</span>
-        </div>
+        {/* Condition (Hidden for Plots) */}
+        {!isPlot && property.specs.condition && (
+          <div className="flex-1 min-w-[120px] bg-[#fbf6f0] border border-[#d8cebe] rounded-2xl p-3.5 text-center shadow-sm">
+            <Sparkles className="w-4 h-4 mx-auto text-[#5c3822] mb-1" />
+            <span className="text-[11px] font-mono uppercase text-[#7e7365] block">Condition</span>
+            <span className="font-display font-medium text-base text-[#2e3a2f]">
+              {property.specs.condition}
+            </span>
+          </div>
+        )}
+
+        {/* Plot Status Chip for Plots */}
+        {isPlot && (
+          <div className="flex-1 min-w-[140px] bg-[#fbf6f0] border border-[#d8cebe] rounded-2xl p-3.5 text-center shadow-sm">
+            <Compass className="w-4 h-4 mx-auto text-[#5c3822] mb-1" />
+            <span className="text-[11px] font-mono uppercase text-[#7e7365] block">Plot Status</span>
+            <span className="font-display font-medium text-base text-[#2e3a2f]">
+              Ready to Build
+            </span>
+          </div>
+        )}
       </div>
 
       {/* Main Content & Sidebar Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-10">
-        {/* Left Column: Description, Features, Floorplans, Calculator */}
+        {/* Left Column: Description, Features, Floorplans, Calculator / Lease Terms */}
         <div className="lg:col-span-8 space-y-8">
           {/* Property Overview */}
           <div className="space-y-3">
@@ -173,55 +256,103 @@ export function PropertyDetailClient({
             </p>
           </div>
 
-          {/* Key Highlights */}
-          <div className="space-y-3">
-            <h3 className="font-display font-medium text-lg text-[#1F1B16]">
-              Key Highlights
-            </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
-              {property.features.map((feat, i) => (
-                <div
-                  key={i}
-                  className="p-4 rounded-2xl bg-[#fbf6f0] border border-[#d8cebe] space-y-1.5 shadow-sm"
-                >
-                  <h4 className="font-display font-medium text-sm text-[#1F1B16]">
-                    {feat.title}
-                  </h4>
-                  <p className="text-xs text-[#7e7365] leading-relaxed">
-                    {feat.desc}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Amenities Checklist */}
-          <div className="space-y-3">
-            <h3 className="font-display font-medium text-lg text-[#1F1B16]">
-              Features & Amenities
-            </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-              {property.amenities.map((amenity, i) => (
-                <div
-                  key={i}
-                  className="flex items-center gap-2.5 p-3 rounded-xl bg-[#fbf6f0] border border-[#d8cebe]/70 text-xs font-sans text-[#1F1B16]"
-                >
-                  <div className="w-4 h-4 rounded-full bg-[#2e3a2f]/10 text-[#2e3a2f] flex items-center justify-center shrink-0">
-                    <Check className="w-2.5 h-2.5" />
+          {/* Key Highlights (Render ONLY if real features exist) */}
+          {property.features && property.features.length > 0 && (
+            <div className="space-y-3">
+              <h3 className="font-display font-medium text-lg text-[#1F1B16]">
+                Key Highlights
+              </h3>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+                {property.features.map((feat, i) => (
+                  <div
+                    key={i}
+                    className="p-4 rounded-2xl bg-[#fbf6f0] border border-[#d8cebe] space-y-1.5 shadow-sm"
+                  >
+                    <h4 className="font-display font-medium text-sm text-[#1F1B16]">
+                      {feat.title}
+                    </h4>
+                    <p className="text-xs text-[#7e7365] leading-relaxed">
+                      {feat.desc}
+                    </p>
                   </div>
-                  <span>{amenity}</span>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
-          </div>
+          )}
 
-          {/* Floor Plans Viewer */}
+          {/* Features & Amenities (Render ONLY if real amenities were entered by admin) */}
+          {property.amenities && property.amenities.length > 0 && (
+            <div className="space-y-3">
+              <h3 className="font-display font-medium text-lg text-[#1F1B16]">
+                Features & Amenities
+              </h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                {property.amenities.map((amenity, i) => (
+                  <div
+                    key={i}
+                    className="flex items-center gap-2.5 p-3 rounded-xl bg-[#fbf6f0] border border-[#d8cebe]/70 text-xs font-sans text-[#1F1B16] shadow-sm"
+                  >
+                    <div className="w-4 h-4 rounded-full bg-[#2e3a2f]/10 text-[#2e3a2f] flex items-center justify-center shrink-0">
+                      <Check className="w-2.5 h-2.5" />
+                    </div>
+                    <span>{amenity}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Floor Plans Viewer (only if real floorplans are present) */}
           {property.images.floorPlans && property.images.floorPlans.length > 0 && (
             <FloorPlanViewer floorPlans={property.images.floorPlans} />
           )}
 
-          {/* Mortgage Calculator Component */}
-          <MortgageCalculator initialPrice={property.price} />
+          {/* Smart Financials Module: Mortgage for Sale vs Lease Terms for Rental */}
+          {isRental ? (
+            <GlassCard
+              variant="container"
+              rounded="2rem"
+              className="p-6 bg-[#fbf6f0] border border-[#d8cebe] space-y-4 shadow-sm"
+            >
+              <div className="flex items-center gap-2.5 border-b border-[#d8cebe]/60 pb-3">
+                <div className="w-9 h-9 rounded-full bg-[#5c3822]/10 text-[#5c3822] flex items-center justify-center shrink-0">
+                  <Key className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="font-display font-medium text-lg text-[#1F1B16]">
+                    Lease & Rental Guidelines
+                  </h3>
+                  <p className="text-xs text-[#7e7365]">
+                    Standard tenancy structure and security deposit policies
+                  </p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
+                <div className="p-3.5 bg-white border border-[#d8cebe] rounded-2xl space-y-1 shadow-sm">
+                  <span className="text-[10px] font-mono text-[#7e7365] block uppercase">Monthly Rent</span>
+                  <span className="font-semibold text-sm text-[#1F1B16]">{property.priceFormatted}</span>
+                </div>
+                <div className="p-3.5 bg-white border border-[#d8cebe] rounded-2xl space-y-1 shadow-sm">
+                  <span className="text-[10px] font-mono text-[#7e7365] block uppercase">Security Deposit</span>
+                  <span className="font-semibold text-sm text-[#1F1B16]">2 - 3 Months Rent</span>
+                </div>
+                <div className="p-3.5 bg-white border border-[#d8cebe] rounded-2xl space-y-1 shadow-sm">
+                  <span className="text-[10px] font-mono text-[#7e7365] block uppercase">Tenancy Period</span>
+                  <span className="font-semibold text-sm text-[#1F1B16]">11 Months (Renewable)</span>
+                </div>
+              </div>
+
+              <div className="p-3 rounded-xl bg-[#efebe4] text-xs text-[#5c3822] flex items-start gap-2">
+                <FileCheck className="w-4 h-4 shrink-0 mt-0.5" />
+                <p className="leading-relaxed">
+                  Amber Property Corner prepares registered tenancy agreements, utility transfer verifications, and professional inventory check-ins for tenant peace of mind.
+                </p>
+              </div>
+            </GlassCard>
+          ) : (
+            <MortgageCalculator initialPrice={property.price} />
+          )}
         </div>
 
         {/* Right Sticky Sidebar: Advisor Card */}
@@ -256,7 +387,7 @@ export function PropertyDetailClient({
 
               <div className="space-y-2 pt-1 text-xs">
                 <a
-                  href={`https://wa.me/923008224110?text=${encodeURIComponent(`Assalam o Alaikum, I want to inquire about ${property.title} in ${property.location.neighborhood}.`)}`}
+                  href={`https://wa.me/${(property.agent.whatsapp || '923008224110').replace(/[^0-9]/g, '')}?text=${encodeURIComponent(`Assalam o Alaikum, I want to inquire about ${property.title} in ${property.location.neighborhood}.`)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-2.5 p-3 rounded-xl bg-[#22c55e]/15 border border-[#22c55e]/30 hover:bg-[#22c55e]/25 text-[#1F1B16] transition-colors group cursor-pointer"

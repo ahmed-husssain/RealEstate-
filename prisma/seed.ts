@@ -13,9 +13,9 @@ async function main() {
 
   // 2. Idempotent Upsert for Senior Real Estate Advisors
   const tariq = await prisma.agent.upsert({
-    where: { email: 'tariq.siddiqui@amberproperty.com' },
+    where: { email: 'syedsikander1401@gmail.com' },
     update: {
-      name: 'Tariq Mehmood Siddiqui',
+      name: 'Syed Sikander Waqar',
       phone: '+92 300 822 4110',
       whatsapp: '+923008224110',
       avatarUrl: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=600&q=80',
@@ -23,9 +23,9 @@ async function main() {
       isActive: true,
     },
     create: {
-      name: 'Tariq Mehmood Siddiqui',
+      name: 'Syed Sikander Waqar',
       phone: '+92 300 822 4110',
-      email: 'tariq.siddiqui@amberproperty.com',
+      email: 'syedsikander1401@gmail.com',
       whatsapp: '+923008224110',
       avatarUrl: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=600&q=80',
       role: 'Senior Managing Partner | North Nazimabad & Construction',

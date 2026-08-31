@@ -30,18 +30,18 @@ export function PropertyForm({ initialData, areas, isEdit = false }: PropertyFor
   const [title, setTitle] = useState(initialData?.title || '');
   const [tagline, setTagline] = useState(initialData?.tagline || '');
   const [description, setDescription] = useState(initialData?.description || '');
-  const [price, setPrice] = useState<number>(initialData ? Number(initialData.price) : 50000000);
+  const [price, setPrice] = useState<number | string>(initialData ? Number(initialData.price) : 50000000);
   const [priceFormatted, setPriceFormatted] = useState(initialData?.priceFormatted || '');
   const [status, setStatus] = useState<PropertyStatus>(initialData?.status || PropertyStatus.FOR_SALE);
   const [propertyType, setPropertyType] = useState<PropertyType>(initialData?.propertyType || PropertyType.HOUSE);
   const [isFeatured, setIsFeatured] = useState<boolean>(initialData?.isFeatured || false);
 
-  const [bedrooms, setBedrooms] = useState<number>(initialData?.bedrooms ?? 5);
-  const [bathrooms, setBathrooms] = useState<number>(initialData?.bathrooms ?? 5);
-  const [areaSize, setAreaSize] = useState<number>(initialData ? Number(initialData.areaSize) : 240);
+  const [bedrooms, setBedrooms] = useState<number | string>(initialData?.bedrooms ?? 5);
+  const [bathrooms, setBathrooms] = useState<number | string>(initialData?.bathrooms ?? 5);
+  const [areaSize, setAreaSize] = useState<number | string>(initialData ? Number(initialData.areaSize) : 240);
   const [areaUnit, setAreaUnit] = useState<AreaUnit>(initialData?.areaUnit || AreaUnit.SQYD);
-  const [yearBuilt, setYearBuilt] = useState<number>(initialData?.yearBuilt || 2024);
-  const [parkingSpaces, setParkingSpaces] = useState<number>(initialData?.parkingSpaces || 2);
+  const [yearBuilt, setYearBuilt] = useState<number | string>(initialData?.yearBuilt ?? 2024);
+  const [parkingSpaces, setParkingSpaces] = useState<number | string>(initialData?.parkingSpaces ?? 2);
   const [condition, setCondition] = useState<PropertyCondition>(initialData?.condition || PropertyCondition.GOOD);
 
   const [address, setAddress] = useState(initialData?.address || '');
@@ -73,6 +73,13 @@ export function PropertyForm({ initialData, areas, isEdit = false }: PropertyFor
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
+
+  // Helper to sanitize numeric input and strip accidental leading zeros (e.g. 020000 -> 20000)
+  const sanitizeNumberInput = (val: string): string => {
+    if (val === '') return '';
+    // Strip leading zeros before a non-zero digit
+    return val.replace(/^0+(?=\d)/, '');
+  };
 
   const addAmenity = () => {
     if (!amenityInput.trim()) return;
@@ -106,23 +113,35 @@ export function PropertyForm({ initialData, areas, isEdit = false }: PropertyFor
       return;
     }
 
+    const numericPrice = Number(price);
+    if (!numericPrice || numericPrice <= 0) {
+      setError('Please enter a valid price greater than 0.');
+      return;
+    }
+
+    const numericAreaSize = Number(areaSize);
+    if (!numericAreaSize || numericAreaSize <= 0) {
+      setError('Please enter a valid area size greater than 0.');
+      return;
+    }
+
     setLoading(true);
 
     const payload = {
       title,
       tagline: tagline || null,
       description,
-      price,
+      price: numericPrice,
       priceFormatted: priceFormatted || null,
       status,
       isFeatured,
       propertyType,
-      bedrooms,
-      bathrooms,
-      areaSize,
+      bedrooms: Number(bedrooms) || 0,
+      bathrooms: Number(bathrooms) || 0,
+      areaSize: numericAreaSize,
       areaUnit,
-      yearBuilt: yearBuilt || null,
-      parkingSpaces,
+      yearBuilt: yearBuilt ? Number(yearBuilt) : null,
+      parkingSpaces: Number(parkingSpaces) || 0,
       condition,
       address,
       areaId,
@@ -247,7 +266,7 @@ export function PropertyForm({ initialData, areas, isEdit = false }: PropertyFor
               className="w-full bg-white text-[#1F1B16] border border-[#d8cebe] rounded-full px-3.5 py-2 text-xs outline-none"
             >
               <option value={PropertyStatus.FOR_SALE}>For Sale</option>
-              <option value={PropertyStatus.FOR_LEASE}>For Lease</option>
+              <option value={PropertyStatus.FOR_LEASE}>For Rent</option>
               <option value={PropertyStatus.EXCLUSIVE}>Exclusive</option>
               <option value={PropertyStatus.UNDER_OFFER}>Under Offer</option>
               <option value={PropertyStatus.SOLD}>Sold</option>
@@ -301,7 +320,7 @@ export function PropertyForm({ initialData, areas, isEdit = false }: PropertyFor
             type="number"
             placeholder="e.g. 145000000 for 14.50 Crore"
             value={price}
-            onChange={(e) => setPrice(Number(e.target.value))}
+            onChange={(e) => setPrice(sanitizeNumberInput(e.target.value))}
             required
           />
 
@@ -351,30 +370,34 @@ export function PropertyForm({ initialData, areas, isEdit = false }: PropertyFor
           <Input
             label="Area Size (in Gaz / Sq Yd)"
             type="number"
+            placeholder="e.g. 240"
             value={areaSize}
-            onChange={(e) => setAreaSize(Number(e.target.value))}
+            onChange={(e) => setAreaSize(sanitizeNumberInput(e.target.value))}
             required
           />
 
           <Input
             label="Bedrooms"
             type="number"
+            placeholder="e.g. 4"
             value={bedrooms}
-            onChange={(e) => setBedrooms(Number(e.target.value))}
+            onChange={(e) => setBedrooms(sanitizeNumberInput(e.target.value))}
           />
 
           <Input
             label="Bathrooms"
             type="number"
+            placeholder="e.g. 4"
             value={bathrooms}
-            onChange={(e) => setBathrooms(Number(e.target.value))}
+            onChange={(e) => setBathrooms(sanitizeNumberInput(e.target.value))}
           />
 
           <Input
             label="Car Parking"
             type="number"
+            placeholder="e.g. 2"
             value={parkingSpaces}
-            onChange={(e) => setParkingSpaces(Number(e.target.value))}
+            onChange={(e) => setParkingSpaces(sanitizeNumberInput(e.target.value))}
           />
         </div>
       </GlassCard>

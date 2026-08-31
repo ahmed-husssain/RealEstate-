@@ -27,11 +27,21 @@ import {
   Mail,
   ShieldCheck,
   TrendingUp,
+  Info,
+  Layers,
+  Check,
 } from 'lucide-react';
 import { calculateMonthlyMortgage, formatCurrency } from '@/lib/utils';
 
+// Clean integer input sanitizer (only digits 0-9, no leading zero bug)
+function sanitizeIntegerString(val: string): string {
+  const digitsOnly = val.replace(/\D/g, '');
+  if (!digitsOnly) return '';
+  return String(parseInt(digitsOnly, 10));
+}
+
 export function SiteContentEditorClient({ initialSettings }: { initialSettings: SiteSettingsMap }) {
-  const [activeTab, setActiveTab] = useState<'advisor' | 'mortgage' | 'valuation' | 'hero' | 'general'>('advisor');
+  const [activeTab, setActiveTab] = useState<'advisor' | 'mortgage' | 'valuation' | 'hero' | 'general'>('valuation');
 
   // --- 1. Senior Property Advisor Profile State ---
   const [advisorName, setAdvisorName] = useState(initialSettings.advisor_name || 'Syed Sikander Waqar');
@@ -63,7 +73,7 @@ export function SiteContentEditorClient({ initialSettings }: { initialSettings: 
     initialSettings.mortgage_default_interest || '6.25'
   );
   const [mortgageDefaultDownPayment, setMortgageDefaultDownPayment] = useState(
-    initialSettings.mortgage_default_downpayment || '20'
+    sanitizeIntegerString(initialSettings.mortgage_default_downpayment || '20')
   );
   const [mortgageTerms, setMortgageTerms] = useState(initialSettings.mortgage_terms || '15, 30');
   const [mortgageTaxRate, setMortgageTaxRate] = useState(initialSettings.mortgage_tax_rate || '0.5');
@@ -76,31 +86,65 @@ export function SiteContentEditorClient({ initialSettings }: { initialSettings: 
   );
 
   // --- 3. Karachi Valuation Engine Behind-The-Scenes (BTS) ---
+  // Base Gaz Rates (PKR / Gaz) - strictly clean integer strings
   const [valRateNorthNazimabad, setValRateNorthNazimabad] = useState(
-    initialSettings.val_rate_north_nazimabad || '280000'
+    sanitizeIntegerString(initialSettings.val_rate_north_nazimabad || '280000')
   );
-  const [valRateGulshan, setValRateGulshan] = useState(initialSettings.val_rate_gulshan || '260000');
-  const [valRateFbArea, setValRateFbArea] = useState(initialSettings.val_rate_fb_area || '220000');
-  const [valRateGulberg, setValRateGulberg] = useState(initialSettings.val_rate_gulberg || '210000');
-  const [valRateBufferZone, setValRateBufferZone] = useState(initialSettings.val_rate_buffer_zone || '190000');
-  const [valRateScheme33, setValRateScheme33] = useState(initialSettings.val_rate_scheme33 || '175000');
+  const [valRateGulshan, setValRateGulshan] = useState(
+    sanitizeIntegerString(initialSettings.val_rate_gulshan || '260000')
+  );
+  const [valRateFbArea, setValRateFbArea] = useState(
+    sanitizeIntegerString(initialSettings.val_rate_fb_area || '220000')
+  );
+  const [valRateGulberg, setValRateGulberg] = useState(
+    sanitizeIntegerString(initialSettings.val_rate_gulberg || '210000')
+  );
+  const [valRateBufferZone, setValRateBufferZone] = useState(
+    sanitizeIntegerString(initialSettings.val_rate_buffer_zone || '190000')
+  );
+  const [valRateScheme33, setValRateScheme33] = useState(
+    sanitizeIntegerString(initialSettings.val_rate_scheme33 || '175000')
+  );
   const [valRateNorthKarachi, setValRateNorthKarachi] = useState(
-    initialSettings.val_rate_north_karachi || '160000'
+    sanitizeIntegerString(initialSettings.val_rate_north_karachi || '160000')
   );
-  const [valRateScheme45, setValRateScheme45] = useState(initialSettings.val_rate_scheme45 || '75000');
-  const [valRateClifton, setValRateClifton] = useState(initialSettings.val_rate_clifton || '350000');
-
-  const [valMultHouse, setValMultHouse] = useState(initialSettings.val_mult_house || '1.00');
-  const [valMultPlot, setValMultPlot] = useState(initialSettings.val_mult_plot || '0.65');
-  const [valMultApartment, setValMultApartment] = useState(initialSettings.val_mult_apartment || '0.75');
-  const [valMultPenthouse, setValMultPenthouse] = useState(initialSettings.val_mult_penthouse || '0.90');
-  const [valMultTownhouse, setValMultTownhouse] = useState(initialSettings.val_mult_townhouse || '0.85');
-
-  const [valCondBrandNew, setValCondBrandNew] = useState(initialSettings.val_cond_brand_new || '1.25');
-  const [valCondWellMaintained, setValCondWellMaintained] = useState(
-    initialSettings.val_cond_well_maintained || '1.05'
+  const [valRateScheme45, setValRateScheme45] = useState(
+    sanitizeIntegerString(initialSettings.val_rate_scheme45 || '75000')
   );
-  const [valCondRenovation, setValCondRenovation] = useState(initialSettings.val_cond_renovation || '0.85');
+  const [valRateClifton, setValRateClifton] = useState(
+    sanitizeIntegerString(initialSettings.val_rate_clifton || '350000')
+  );
+
+  // Category Multipliers (Percentages: e.g. 100 = 100%, 65 = 65%)
+  const parsePct = (val: string | undefined, defaultVal: number): string => {
+    if (!val) return String(defaultVal);
+    const num = parseFloat(val);
+    if (isNaN(num)) return String(defaultVal);
+    // If stored as decimal <= 2.0 (e.g. 0.65), convert to percentage 65
+    if (num <= 2.0) return String(Math.round(num * 100));
+    return String(Math.round(num));
+  };
+
+  const [valMultHousePct, setValMultHousePct] = useState(parsePct(initialSettings.val_mult_house, 100));
+  const [valMultPlotPct, setValMultPlotPct] = useState(parsePct(initialSettings.val_mult_plot, 65));
+  const [valMultApartmentPct, setValMultApartmentPct] = useState(parsePct(initialSettings.val_mult_apartment, 75));
+  const [valMultPenthousePct, setValMultPenthousePct] = useState(parsePct(initialSettings.val_mult_penthouse, 90));
+  const [valMultTownhousePct, setValMultTownhousePct] = useState(parsePct(initialSettings.val_mult_townhouse, 85));
+
+  // Condition Multipliers (Percentages: e.g. 125 = 125%, 105 = 105%, 85 = 85%)
+  const [valCondBrandNewPct, setValCondBrandNewPct] = useState(parsePct(initialSettings.val_cond_brand_new, 125));
+  const [valCondWellMaintainedPct, setValCondWellMaintainedPct] = useState(
+    parsePct(initialSettings.val_cond_well_maintained, 105)
+  );
+  const [valCondRenovationPct, setValCondRenovationPct] = useState(
+    parsePct(initialSettings.val_cond_renovation, 85)
+  );
+
+  // Interactive Live Simulator in Admin Panel
+  const [simArea, setSimArea] = useState<'North Nazimabad' | 'Gulshan' | 'FB Area' | 'Gulberg' | 'Buffer Zone' | 'Scheme 33' | 'North Karachi' | 'Scheme 45' | 'Clifton'>('North Nazimabad');
+  const [simCategory, setSimCategory] = useState<'house' | 'plot' | 'apartment' | 'penthouse' | 'townhouse'>('house');
+  const [simCondition, setSimCondition] = useState<'brand_new' | 'well_maintained' | 'renovation'>('brand_new');
+  const [simGazSize, setSimGazSize] = useState<string>('240');
 
   // --- 4. Hero & Branding State ---
   const [heroHeadline, setHeroHeadline] = useState(
@@ -169,18 +213,49 @@ export function SiteContentEditorClient({ initialSettings }: { initialSettings: 
   const numDownPct = Number(mortgageDefaultDownPayment) || 20;
   const mortgagePreviewCalc = calculateMonthlyMortgage(samplePrice, numDownPct, numInterest, 30);
 
-  // Preview Valuation calculation (240 Sq Yd House in North Nazimabad)
-  const previewValuation = () => {
-    const baseRate = Number(valRateNorthNazimabad) || 280000;
-    const catMult = Number(valMultHouse) || 1.0;
-    const condMult = Number(valCondBrandNew) || 1.25;
-    const mid = 240 * baseRate * catMult * condMult;
+  // Interactive Live Simulator Calculation
+  const runLiveSimulation = () => {
+    let rate = 280000;
+    if (simArea === 'North Nazimabad') rate = parseInt(valRateNorthNazimabad, 10) || 280000;
+    else if (simArea === 'Gulshan') rate = parseInt(valRateGulshan, 10) || 260000;
+    else if (simArea === 'FB Area') rate = parseInt(valRateFbArea, 10) || 220000;
+    else if (simArea === 'Gulberg') rate = parseInt(valRateGulberg, 10) || 210000;
+    else if (simArea === 'Buffer Zone') rate = parseInt(valRateBufferZone, 10) || 190000;
+    else if (simArea === 'Scheme 33') rate = parseInt(valRateScheme33, 10) || 175000;
+    else if (simArea === 'North Karachi') rate = parseInt(valRateNorthKarachi, 10) || 160000;
+    else if (simArea === 'Scheme 45') rate = parseInt(valRateScheme45, 10) || 75000;
+    else if (simArea === 'Clifton') rate = parseInt(valRateClifton, 10) || 350000;
+
+    let catFactor = 1.0;
+    if (simCategory === 'plot') catFactor = (parseInt(valMultPlotPct, 10) || 65) / 100;
+    else if (simCategory === 'apartment') catFactor = (parseInt(valMultApartmentPct, 10) || 75) / 100;
+    else if (simCategory === 'penthouse') catFactor = (parseInt(valMultPenthousePct, 10) || 90) / 100;
+    else if (simCategory === 'townhouse') catFactor = (parseInt(valMultTownhousePct, 10) || 85) / 100;
+    else catFactor = (parseInt(valMultHousePct, 10) || 100) / 100;
+
+    let condFactor = 1.05;
+    if (simCondition === 'brand_new') condFactor = (parseInt(valCondBrandNewPct, 10) || 125) / 100;
+    else if (simCondition === 'well_maintained') condFactor = (parseInt(valCondWellMaintainedPct, 10) || 105) / 100;
+    else condFactor = (parseInt(valCondRenovationPct, 10) || 85) / 100;
+
+    const gaz = parseInt(simGazSize, 10) || 240;
+    const mid = gaz * rate * catFactor * condFactor;
     const low = Math.round((mid * 0.93) / 100000) * 100000;
     const high = Math.round((mid * 1.07) / 100000) * 100000;
-    return { low, mid, high };
+
+    return {
+      rate,
+      catFactor,
+      condFactor,
+      gaz,
+      low,
+      mid,
+      high,
+      avgPerGaz: Math.round(mid / (gaz || 1)),
+    };
   };
 
-  const valPreview = previewValuation();
+  const simResult = runLiveSimulation();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -209,7 +284,7 @@ export function SiteContentEditorClient({ initialSettings }: { initialSettings: 
         mortgage_insurance_rate: mortgageInsuranceRate,
         mortgage_disclaimer: mortgageDisclaimer,
 
-        // Karachi Valuation BTS
+        // Karachi Valuation BTS (Saved as normalized clean strings)
         val_rate_north_nazimabad: valRateNorthNazimabad,
         val_rate_gulshan: valRateGulshan,
         val_rate_fb_area: valRateFbArea,
@@ -220,15 +295,16 @@ export function SiteContentEditorClient({ initialSettings }: { initialSettings: 
         val_rate_scheme45: valRateScheme45,
         val_rate_clifton: valRateClifton,
 
-        val_mult_house: valMultHouse,
-        val_mult_plot: valMultPlot,
-        val_mult_apartment: valMultApartment,
-        val_mult_penthouse: valMultPenthouse,
-        val_mult_townhouse: valMultTownhouse,
+        // Multipliers converted to 2-decimal floats for the backend engine
+        val_mult_house: ((parseInt(valMultHousePct, 10) || 100) / 100).toFixed(2),
+        val_mult_plot: ((parseInt(valMultPlotPct, 10) || 65) / 100).toFixed(2),
+        val_mult_apartment: ((parseInt(valMultApartmentPct, 10) || 75) / 100).toFixed(2),
+        val_mult_penthouse: ((parseInt(valMultPenthousePct, 10) || 90) / 100).toFixed(2),
+        val_mult_townhouse: ((parseInt(valMultTownhousePct, 10) || 85) / 100).toFixed(2),
 
-        val_cond_brand_new: valCondBrandNew,
-        val_cond_well_maintained: valCondWellMaintained,
-        val_cond_renovation: valCondRenovation,
+        val_cond_brand_new: ((parseInt(valCondBrandNewPct, 10) || 125) / 100).toFixed(2),
+        val_cond_well_maintained: ((parseInt(valCondWellMaintainedPct, 10) || 105) / 100).toFixed(2),
+        val_cond_renovation: ((parseInt(valCondRenovationPct, 10) || 85) / 100).toFixed(2),
 
         // Hero & General
         hero_headline: heroHeadline,
@@ -284,6 +360,19 @@ export function SiteContentEditorClient({ initialSettings }: { initialSettings: 
       <div className="flex flex-wrap items-center gap-2 p-1.5 bg-[#f5efe6] border border-[#d8cebe] rounded-2xl">
         <button
           type="button"
+          onClick={() => setActiveTab('valuation')}
+          className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-mono font-medium transition-all cursor-pointer ${
+            activeTab === 'valuation'
+              ? 'bg-[#5c3822] text-[#F8F4ED] shadow-sm font-bold'
+              : 'text-[#7e7365] hover:text-[#1F1B16] hover:bg-white/60'
+          }`}
+        >
+          <TrendingUp className="w-3.5 h-3.5" />
+          <span>1. Karachi Valuation Engine (BTS)</span>
+        </button>
+
+        <button
+          type="button"
           onClick={() => setActiveTab('advisor')}
           className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-mono font-medium transition-all cursor-pointer ${
             activeTab === 'advisor'
@@ -292,7 +381,7 @@ export function SiteContentEditorClient({ initialSettings }: { initialSettings: 
           }`}
         >
           <UserCheck className="w-3.5 h-3.5" />
-          <span>1. Property Advisor</span>
+          <span>2. Property Advisor Profile</span>
         </button>
 
         <button
@@ -305,20 +394,7 @@ export function SiteContentEditorClient({ initialSettings }: { initialSettings: 
           }`}
         >
           <Calculator className="w-3.5 h-3.5" />
-          <span>2. Mortgage Estimator</span>
-        </button>
-
-        <button
-          type="button"
-          onClick={() => setActiveTab('valuation')}
-          className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-mono font-medium transition-all cursor-pointer ${
-            activeTab === 'valuation'
-              ? 'bg-[#5c3822] text-[#F8F4ED] shadow-sm font-bold'
-              : 'text-[#7e7365] hover:text-[#1F1B16] hover:bg-white/60'
-          }`}
-        >
-          <TrendingUp className="w-3.5 h-3.5" />
-          <span>3. Karachi Valuation Engine (BTS)</span>
+          <span>3. Mortgage Estimator</span>
         </button>
 
         <button
@@ -331,7 +407,7 @@ export function SiteContentEditorClient({ initialSettings }: { initialSettings: 
           }`}
         >
           <Sparkles className="w-3.5 h-3.5" />
-          <span>4. Hero & Copy</span>
+          <span>4. Hero & Taglines</span>
         </button>
 
         <button
@@ -376,11 +452,445 @@ export function SiteContentEditorClient({ initialSettings }: { initialSettings: 
       )}
 
       {/* ======================================================== */}
-      {/* TAB 1: PROPERTY ADVISOR PROFILE (SCREENSHOT 1)           */}
+      {/* TAB 1: KARACHI VALUATION ENGINE (BTS)                    */}
+      {/* ======================================================== */}
+      {activeTab === 'valuation' && (
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <div className="lg:col-span-7 space-y-6">
+            {/* Guide Explainer Banner */}
+            <div className="p-4 rounded-2xl bg-[#efebe4] border border-[#d8cebe] text-xs text-[#5c3822] space-y-1">
+              <div className="flex items-center gap-1.5 font-bold">
+                <Info className="w-4 h-4" />
+                <span>How Behind-The-Scenes (BTS) Valuation Works</span>
+              </div>
+              <p className="text-[11px] text-[#7e7365] leading-relaxed">
+                When a client uses <strong className="text-[#1F1B16]">/valuation</strong>, the algorithm multiplies:{' '}
+                <span className="font-mono text-[#5c3822]">[Plot Gaz Size] × [Area Base Rate] × [Category %] × [Condition %]</span>.
+                Adjust the base rates and percentage weights below to align with current market prices.
+              </p>
+            </div>
+
+            {/* Section A: Area Base Gaz Rates */}
+            <GlassCard variant="container" rounded="2rem" className="p-6 bg-[#fbf6f0] border border-[#d8cebe] space-y-5">
+              <div className="border-b border-[#d8cebe]/60 pb-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <TrendingUp className="w-4 h-4 text-[#5c3822]" />
+                    <h2 className="font-display font-medium text-lg text-[#1F1B16]">
+                      1. Karachi Enclave Base Rates (PKR per Gaz / Sq Yd)
+                    </h2>
+                  </div>
+                  <Badge variant="exclusive" size="sm">Baseline</Badge>
+                </div>
+                <p className="text-xs text-[#7e7365] mt-1">
+                  Represents the standard combined land and base construction value per Gaz (Square Yard) in each sector.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {[
+                  {
+                    name: 'North Nazimabad',
+                    desc: 'Blocks A to W prime residential',
+                    val: valRateNorthNazimabad,
+                    set: setValRateNorthNazimabad,
+                  },
+                  {
+                    name: 'Gulshan-e-Iqbal',
+                    desc: 'All residential & commercial blocks',
+                    val: valRateGulshan,
+                    set: setValRateGulshan,
+                  },
+                  {
+                    name: 'Federal B Area',
+                    desc: 'F.B Area central residential blocks',
+                    val: valRateFbArea,
+                    set: setValRateFbArea,
+                  },
+                  {
+                    name: 'Gulberg Karachi',
+                    desc: 'Block 12, 13 & adjacent sectors',
+                    val: valRateGulberg,
+                    set: setValRateGulberg,
+                  },
+                  {
+                    name: 'Buffer Zone',
+                    desc: 'Sector 15-A, 15-B & surroundings',
+                    val: valRateBufferZone,
+                    set: setValRateBufferZone,
+                  },
+                  {
+                    name: 'Scheme 33',
+                    desc: 'Gulzar-e-Hijri housing societies',
+                    val: valRateScheme33,
+                    set: setValRateScheme33,
+                  },
+                  {
+                    name: 'North Karachi',
+                    desc: 'Sectors 1 to 11 residential',
+                    val: valRateNorthKarachi,
+                    set: setValRateNorthKarachi,
+                  },
+                  {
+                    name: 'Scheme 45 (Taiser Town)',
+                    desc: 'MDA development plots & houses',
+                    val: valRateScheme45,
+                    set: setValRateScheme45,
+                  },
+                  {
+                    name: 'Clifton & Sea View',
+                    desc: 'High-end seaside luxury enclaves',
+                    val: valRateClifton,
+                    set: setValRateClifton,
+                  },
+                ].map((area, idx) => {
+                  const numericRate = parseInt(area.val, 10) || 0;
+                  const lakhFormatted = (numericRate / 100000).toFixed(2);
+                  const sample240Crore = ((numericRate * 240) / 10000000).toFixed(2);
+
+                  return (
+                    <div
+                      key={idx}
+                      className={`p-3.5 rounded-2xl bg-white border border-[#d8cebe] space-y-2 shadow-sm ${
+                        idx === 8 ? 'sm:col-span-2' : ''
+                      }`}
+                    >
+                      <div className="flex items-start justify-between gap-2">
+                        <div>
+                          <span className="font-semibold text-xs text-[#1F1B16] block">{area.name}</span>
+                          <span className="text-[10px] text-[#7e7365] block">{area.desc}</span>
+                        </div>
+                        <span className="text-[10px] font-mono font-bold bg-[#efebe4] text-[#5c3822] px-2 py-0.5 rounded-full shrink-0">
+                          PKR {lakhFormatted} Lakh / Gaz
+                        </span>
+                      </div>
+
+                      <div className="space-y-1">
+                        <label className="text-[10px] font-mono text-[#7e7365] uppercase">
+                          Rate (PKR / Gaz) — Digits Only
+                        </label>
+                        <input
+                          type="text"
+                          inputMode="numeric"
+                          pattern="[0-9]*"
+                          value={area.val}
+                          onChange={(e) => area.set(sanitizeIntegerString(e.target.value))}
+                          placeholder="e.g. 280000"
+                          className="w-full bg-[#fbf6f0] text-[#1F1B16] border border-[#d8cebe] rounded-xl px-3 py-1.5 text-xs font-mono font-medium outline-none focus:border-[#5c3822] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                        />
+                      </div>
+
+                      <p className="text-[10px] text-[#7e7365] font-mono pt-0.5">
+                        240 Gaz baseline ≈ <span className="font-bold text-[#1F1B16]">PKR {sample240Crore} Crore</span>
+                      </p>
+                    </div>
+                  );
+                })}
+              </div>
+            </GlassCard>
+
+            {/* Section B: Category Multipliers */}
+            <GlassCard variant="container" rounded="2rem" className="p-6 bg-[#fbf6f0] border border-[#d8cebe] space-y-5">
+              <div className="border-b border-[#d8cebe]/60 pb-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Layers className="w-4 h-4 text-[#5c3822]" />
+                    <h2 className="font-display font-medium text-lg text-[#1F1B16]">
+                      2. Property Category Multipliers (%)
+                    </h2>
+                  </div>
+                  <Badge variant="stone" size="sm">Type Weight</Badge>
+                </div>
+                <p className="text-xs text-[#7e7365] mt-1">
+                  Adjusts value based on structure type. For instance, a Plot has no building cost, so it is weighted at ~65% of a built house.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                {[
+                  {
+                    title: 'Bungalow / House',
+                    desc: 'Full constructed house with land (Baseline 100%)',
+                    val: valMultHousePct,
+                    set: setValMultHousePct,
+                    badge: '100% Base',
+                  },
+                  {
+                    title: 'Residential Plot',
+                    desc: 'Land value only without construction & finishing cost',
+                    val: valMultPlotPct,
+                    set: setValMultPlotPct,
+                    badge: `${valMultPlotPct}% of House`,
+                  },
+                  {
+                    title: 'Apartment / Flat',
+                    desc: 'Covered apartment unit with undivided sub-lease land share',
+                    val: valMultApartmentPct,
+                    set: setValMultApartmentPct,
+                    badge: `${valMultApartmentPct}% of House`,
+                  },
+                  {
+                    title: 'Penthouse',
+                    desc: 'Top floor luxury penthouse with private terrace access',
+                    val: valMultPenthousePct,
+                    set: setValMultPenthousePct,
+                    badge: `${valMultPenthousePct}% of House`,
+                  },
+                  {
+                    title: 'Townhouse / Duplex',
+                    desc: 'Multi-level semi-detached home or independent portion',
+                    val: valMultTownhousePct,
+                    set: setValMultTownhousePct,
+                    badge: `${valMultTownhousePct}% of House`,
+                  },
+                ].map((item, idx) => (
+                  <div
+                    key={idx}
+                    className={`p-3.5 rounded-2xl bg-white border border-[#d8cebe] space-y-2 shadow-sm ${
+                      idx === 4 ? 'sm:col-span-2' : ''
+                    }`}
+                  >
+                    <div className="flex items-start justify-between gap-2">
+                      <div>
+                        <span className="font-semibold text-xs text-[#1F1B16] block">{item.title}</span>
+                        <span className="text-[10px] text-[#7e7365] block">{item.desc}</span>
+                      </div>
+                      <span className="text-[10px] font-mono font-bold bg-[#efebe4] text-[#5c3822] px-2 py-0.5 rounded-full shrink-0">
+                        {item.badge}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="text"
+                        inputMode="numeric"
+                        pattern="[0-9]*"
+                        value={item.val}
+                        onChange={(e) => item.set(sanitizeIntegerString(e.target.value))}
+                        className="w-24 bg-[#fbf6f0] text-[#1F1B16] border border-[#d8cebe] rounded-xl px-3 py-1.5 text-xs font-mono font-bold outline-none focus:border-[#5c3822] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                      />
+                      <span className="text-xs font-mono font-bold text-[#7e7365]">%</span>
+                      <span className="text-[11px] text-[#7e7365] font-mono ml-auto">
+                        Factor: {(parseInt(item.val, 10) / 100 || 1.0).toFixed(2)}x
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </GlassCard>
+
+            {/* Section C: Condition Multipliers */}
+            <GlassCard variant="container" rounded="2rem" className="p-6 bg-[#fbf6f0] border border-[#d8cebe] space-y-5">
+              <div className="border-b border-[#d8cebe]/60 pb-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Sparkles className="w-4 h-4 text-[#5c3822]" />
+                    <h2 className="font-display font-medium text-lg text-[#1F1B16]">
+                      3. Condition & Construction Adjustment Factors (%)
+                    </h2>
+                  </div>
+                  <Badge variant="stone" size="sm">Quality Tier</Badge>
+                </div>
+                <p className="text-xs text-[#7e7365] mt-1">
+                  Premiums or discounts applied depending on age, fixtures, and readiness.
+                </p>
+              </div>
+
+              <div className="space-y-3">
+                {[
+                  {
+                    title: 'Brand New / Modern Luxury',
+                    desc: 'Recently built with imported sanitary, Italian tiles, modern elevation, and zero repair work required.',
+                    val: valCondBrandNewPct,
+                    set: setValCondBrandNewPct,
+                    chip: '+25% Premium',
+                    chipColor: 'bg-green-100 text-green-800',
+                  },
+                  {
+                    title: 'Well-Maintained',
+                    desc: 'Clean habitable condition, ready to move in, minor or zero renovations required.',
+                    val: valCondWellMaintainedPct,
+                    set: setValCondWellMaintainedPct,
+                    chip: '+5% Normal',
+                    chipColor: 'bg-blue-100 text-blue-800',
+                  },
+                  {
+                    title: 'Needs Renovation',
+                    desc: 'Older construction requiring modernizing, sanitary replacement, electrical rewiring, or paint.',
+                    val: valCondRenovationPct,
+                    set: setValCondRenovationPct,
+                    chip: '-15% Discount',
+                    chipColor: 'bg-amber-100 text-amber-900',
+                  },
+                ].map((item, idx) => (
+                  <div key={idx} className="p-3.5 rounded-2xl bg-white border border-[#d8cebe] space-y-2 shadow-sm">
+                    <div className="flex items-start justify-between gap-2">
+                      <div>
+                        <span className="font-semibold text-xs text-[#1F1B16] block">{item.title}</span>
+                        <span className="text-[10px] text-[#7e7365] block">{item.desc}</span>
+                      </div>
+                      <span className={`text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full shrink-0 ${item.chipColor}`}>
+                        {item.chip}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="text"
+                        inputMode="numeric"
+                        pattern="[0-9]*"
+                        value={item.val}
+                        onChange={(e) => item.set(sanitizeIntegerString(e.target.value))}
+                        className="w-24 bg-[#fbf6f0] text-[#1F1B16] border border-[#d8cebe] rounded-xl px-3 py-1.5 text-xs font-mono font-bold outline-none focus:border-[#5c3822] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                      />
+                      <span className="text-xs font-mono font-bold text-[#7e7365]">%</span>
+                      <span className="text-[11px] text-[#7e7365] font-mono ml-auto">
+                        Multiplier: {(parseInt(item.val, 10) / 100 || 1.0).toFixed(2)}x
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </GlassCard>
+          </div>
+
+          {/* Live Interactive Simulator Column */}
+          <div className="lg:col-span-5 space-y-4">
+            <div className="flex items-center gap-1.5 text-xs font-mono text-[#7e7365]">
+              <Eye className="w-3.5 h-3.5 text-[#5c3822]" />
+              <span>Interactive BTS Pricing Simulator:</span>
+            </div>
+
+            <GlassCard variant="card" rounded="2rem" className="p-6 space-y-5 bg-[#fbf6f0] border border-[#d8cebe] shadow-lg sticky top-24">
+              <div className="flex items-center justify-between border-b border-[#d8cebe]/60 pb-3">
+                <div className="flex items-center gap-2">
+                  <Calculator className="w-4 h-4 text-[#5c3822]" />
+                  <h3 className="font-display font-medium text-sm text-[#1F1B16]">
+                    Live Output Verification
+                  </h3>
+                </div>
+                <Badge variant="moss" size="sm">Real-Time Sync</Badge>
+              </div>
+
+              {/* Simulator Selector Controls */}
+              <div className="space-y-3 text-xs">
+                <div>
+                  <label className="text-[10px] font-mono text-[#7e7365] uppercase block mb-1">
+                    Test Karachi Area
+                  </label>
+                  <select
+                    value={simArea}
+                    onChange={(e) => setSimArea(e.target.value as any)}
+                    className="w-full bg-white border border-[#d8cebe] rounded-xl p-2 text-xs outline-none focus:border-[#5c3822]"
+                  >
+                    <option value="North Nazimabad">North Nazimabad</option>
+                    <option value="Gulshan">Gulshan-e-Iqbal</option>
+                    <option value="FB Area">Federal B Area</option>
+                    <option value="Gulberg">Gulberg Karachi</option>
+                    <option value="Buffer Zone">Buffer Zone</option>
+                    <option value="Scheme 33">Scheme 33</option>
+                    <option value="North Karachi">North Karachi</option>
+                    <option value="Scheme 45">Scheme 45 (Taiser)</option>
+                    <option value="Clifton">Clifton & Sea View</option>
+                  </select>
+                </div>
+
+                <div className="grid grid-cols-2 gap-2">
+                  <div>
+                    <label className="text-[10px] font-mono text-[#7e7365] uppercase block mb-1">
+                      Property Type
+                    </label>
+                    <select
+                      value={simCategory}
+                      onChange={(e) => setSimCategory(e.target.value as any)}
+                      className="w-full bg-white border border-[#d8cebe] rounded-xl p-2 text-xs outline-none focus:border-[#5c3822]"
+                    >
+                      <option value="house">Bungalow / House</option>
+                      <option value="plot">Residential Plot</option>
+                      <option value="apartment">Apartment</option>
+                      <option value="penthouse">Penthouse</option>
+                      <option value="townhouse">Townhouse</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="text-[10px] font-mono text-[#7e7365] uppercase block mb-1">
+                      Condition
+                    </label>
+                    <select
+                      value={simCondition}
+                      onChange={(e) => setSimCondition(e.target.value as any)}
+                      className="w-full bg-white border border-[#d8cebe] rounded-xl p-2 text-xs outline-none focus:border-[#5c3822]"
+                    >
+                      <option value="brand_new">Brand New</option>
+                      <option value="well_maintained">Well-Maintained</option>
+                      <option value="renovation">Needs Renovation</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="text-[10px] font-mono text-[#7e7365] uppercase block mb-1">
+                    Plot Size (Sq Yds / Gaz)
+                  </label>
+                  <input
+                    type="text"
+                    inputMode="numeric"
+                    pattern="[0-9]*"
+                    value={simGazSize}
+                    onChange={(e) => setSimGazSize(sanitizeIntegerString(e.target.value))}
+                    className="w-full bg-white border border-[#d8cebe] rounded-xl p-2 text-xs font-mono font-bold outline-none focus:border-[#5c3822] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                    placeholder="e.g. 240"
+                  />
+                </div>
+              </div>
+
+              {/* Calculated Results Card */}
+              <div className="bg-white border border-[#d8cebe] rounded-2xl p-4 space-y-3">
+                <div className="text-center space-y-1">
+                  <span className="text-[10px] font-mono text-[#7e7365] uppercase tracking-widest block">
+                    ESTIMATED MARKET RANGE
+                  </span>
+                  <div className="text-xl sm:text-2xl font-display font-medium text-[#1F1B16]">
+                    {formatCurrency(simResult.low)} – {formatCurrency(simResult.high)}
+                  </div>
+                  <div className="pt-1">
+                    <Badge variant="moss" size="sm">
+                      Average: {formatCurrency(simResult.mid)}
+                    </Badge>
+                  </div>
+                </div>
+
+                {/* Calculation Breakdown Step-by-Step */}
+                <div className="space-y-1.5 pt-3 border-t border-[#d8cebe]/60 text-xs font-mono">
+                  <div className="flex justify-between text-[#7e7365]">
+                    <span>Base Gaz Rate:</span>
+                    <span className="font-semibold text-[#1F1B16]">PKR {simResult.rate.toLocaleString()} / Gaz</span>
+                  </div>
+                  <div className="flex justify-between text-[#7e7365]">
+                    <span>Category Factor:</span>
+                    <span className="font-semibold text-[#1F1B16]">{simResult.catFactor.toFixed(2)}x</span>
+                  </div>
+                  <div className="flex justify-between text-[#7e7365]">
+                    <span>Condition Factor:</span>
+                    <span className="font-semibold text-[#1F1B16]">{simResult.condFactor.toFixed(2)}x</span>
+                  </div>
+                  <div className="flex justify-between text-[#7e7365] pt-1 border-t border-[#d8cebe]/40">
+                    <span>Effective Rate / Gaz:</span>
+                    <span className="font-bold text-[#5c3822]">PKR {simResult.avgPerGaz.toLocaleString()} / Gaz</span>
+                  </div>
+                </div>
+              </div>
+            </GlassCard>
+          </div>
+        </div>
+      )}
+
+      {/* ======================================================== */}
+      {/* TAB 2: PROPERTY ADVISOR PROFILE (SCREENSHOT 1)           */}
       {/* ======================================================== */}
       {activeTab === 'advisor' && (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-          {/* Form Fields Column */}
           <div className="lg:col-span-7 space-y-6">
             <GlassCard variant="container" rounded="2rem" className="p-6 bg-[#fbf6f0] border border-[#d8cebe] space-y-4">
               <div className="flex items-center gap-2 border-b border-[#d8cebe]/60 pb-3">
@@ -504,7 +1014,7 @@ export function SiteContentEditorClient({ initialSettings }: { initialSettings: 
             </GlassCard>
           </div>
 
-          {/* Live Preview Column (Matches Screenshot 1 exactly) */}
+          {/* Live Preview Column */}
           <div className="lg:col-span-5 space-y-3">
             <div className="flex items-center gap-1.5 text-xs font-mono text-[#7e7365]">
               <Eye className="w-3.5 h-3.5 text-[#5c3822]" />
@@ -569,11 +1079,10 @@ export function SiteContentEditorClient({ initialSettings }: { initialSettings: 
       )}
 
       {/* ======================================================== */}
-      {/* TAB 2: MORTGAGE ESTIMATOR CMS (SCREENSHOT 2)             */}
+      {/* TAB 3: MORTGAGE ESTIMATOR CMS (SCREENSHOT 2)             */}
       {/* ======================================================== */}
       {activeTab === 'mortgage' && (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-          {/* Form Fields Column */}
           <div className="lg:col-span-7 space-y-6">
             <GlassCard variant="container" rounded="2rem" className="p-6 bg-[#fbf6f0] border border-[#d8cebe] space-y-4">
               <div className="flex items-center gap-2 border-b border-[#d8cebe]/60 pb-3">
@@ -612,14 +1121,21 @@ export function SiteContentEditorClient({ initialSettings }: { initialSettings: 
                   required
                 />
 
-                <Input
-                  label="Default Down Payment (%) *"
-                  type="number"
-                  placeholder="e.g. 20 or 30"
-                  value={mortgageDefaultDownPayment}
-                  onChange={(e) => setMortgageDefaultDownPayment(e.target.value)}
-                  required
-                />
+                <div className="space-y-1">
+                  <label className="block text-xs font-mono font-medium text-[#7e7365]">
+                    Default Down Payment (%) *
+                  </label>
+                  <input
+                    type="text"
+                    inputMode="numeric"
+                    pattern="[0-9]*"
+                    value={mortgageDefaultDownPayment}
+                    onChange={(e) => setMortgageDefaultDownPayment(sanitizeIntegerString(e.target.value))}
+                    className="w-full bg-white text-[#1F1B16] border border-[#d8cebe] rounded-full px-3.5 py-2 text-xs font-mono outline-none focus:border-[#5c3822] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                    placeholder="20"
+                    required
+                  />
+                </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -656,7 +1172,6 @@ export function SiteContentEditorClient({ initialSettings }: { initialSettings: 
             </GlassCard>
           </div>
 
-          {/* Live Preview Column (Matches Screenshot 2 exactly) */}
           <div className="lg:col-span-5 space-y-3">
             <div className="flex items-center gap-1.5 text-xs font-mono text-[#7e7365]">
               <Eye className="w-3.5 h-3.5 text-[#5c3822]" />
@@ -709,208 +1224,6 @@ export function SiteContentEditorClient({ initialSettings }: { initialSettings: 
                 <p className="text-[10px] text-[#7e7365] leading-tight pt-1">
                   {mortgageDisclaimer}
                 </p>
-              </div>
-            </GlassCard>
-          </div>
-        </div>
-      )}
-
-      {/* ======================================================== */}
-      {/* TAB 3: KARACHI VALUATION ENGINE (BTS)                    */}
-      {/* ======================================================== */}
-      {activeTab === 'valuation' && (
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-          <div className="lg:col-span-7 space-y-6">
-            {/* Area Base Gaz Rates */}
-            <GlassCard variant="container" rounded="2rem" className="p-6 bg-[#fbf6f0] border border-[#d8cebe] space-y-4">
-              <div className="flex items-center justify-between border-b border-[#d8cebe]/60 pb-3">
-                <div className="flex items-center gap-2">
-                  <TrendingUp className="w-4 h-4 text-[#5c3822]" />
-                  <h2 className="font-display font-medium text-lg text-[#1F1B16]">
-                    Karachi Enclave Base Rate (PKR / Gaz)
-                  </h2>
-                </div>
-                <Badge variant="exclusive" size="sm">BTS Engine</Badge>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                <Input
-                  label="North Nazimabad (PKR / Gaz)"
-                  type="number"
-                  value={valRateNorthNazimabad}
-                  onChange={(e) => setValRateNorthNazimabad(e.target.value)}
-                />
-                <Input
-                  label="Gulshan-e-Iqbal (PKR / Gaz)"
-                  type="number"
-                  value={valRateGulshan}
-                  onChange={(e) => setValRateGulshan(e.target.value)}
-                />
-                <Input
-                  label="Federal B Area (PKR / Gaz)"
-                  type="number"
-                  value={valRateFbArea}
-                  onChange={(e) => setValRateFbArea(e.target.value)}
-                />
-                <Input
-                  label="Gulberg Karachi (PKR / Gaz)"
-                  type="number"
-                  value={valRateGulberg}
-                  onChange={(e) => setValRateGulberg(e.target.value)}
-                />
-                <Input
-                  label="Buffer Zone (PKR / Gaz)"
-                  type="number"
-                  value={valRateBufferZone}
-                  onChange={(e) => setValRateBufferZone(e.target.value)}
-                />
-                <Input
-                  label="Scheme 33 (PKR / Gaz)"
-                  type="number"
-                  value={valRateScheme33}
-                  onChange={(e) => setValRateScheme33(e.target.value)}
-                />
-                <Input
-                  label="North Karachi (PKR / Gaz)"
-                  type="number"
-                  value={valRateNorthKarachi}
-                  onChange={(e) => setValRateNorthKarachi(e.target.value)}
-                />
-                <Input
-                  label="Scheme 45 / Taiser (PKR / Gaz)"
-                  type="number"
-                  value={valRateScheme45}
-                  onChange={(e) => setValRateScheme45(e.target.value)}
-                />
-                <div className="sm:col-span-2">
-                  <Input
-                    label="Clifton & Sea View (PKR / Gaz)"
-                    type="number"
-                    value={valRateClifton}
-                    onChange={(e) => setValRateClifton(e.target.value)}
-                  />
-                </div>
-              </div>
-            </GlassCard>
-
-            {/* Category Multipliers */}
-            <GlassCard variant="container" rounded="2rem" className="p-6 bg-[#fbf6f0] border border-[#d8cebe] space-y-4">
-              <div className="flex items-center gap-2 border-b border-[#d8cebe]/60 pb-3">
-                <MapPin className="w-4 h-4 text-[#5c3822]" />
-                <h2 className="font-display font-medium text-lg text-[#1F1B16]">
-                  Property Category Multipliers
-                </h2>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                <Input
-                  label="Bungalow / House"
-                  type="number"
-                  step="0.05"
-                  value={valMultHouse}
-                  onChange={(e) => setValMultHouse(e.target.value)}
-                />
-                <Input
-                  label="Residential Plot"
-                  type="number"
-                  step="0.05"
-                  value={valMultPlot}
-                  onChange={(e) => setValMultPlot(e.target.value)}
-                />
-                <Input
-                  label="Apartment / Flat"
-                  type="number"
-                  step="0.05"
-                  value={valMultApartment}
-                  onChange={(e) => setValMultApartment(e.target.value)}
-                />
-                <Input
-                  label="Penthouse"
-                  type="number"
-                  step="0.05"
-                  value={valMultPenthouse}
-                  onChange={(e) => setValMultPenthouse(e.target.value)}
-                />
-                <Input
-                  label="Townhouse / Duplex"
-                  type="number"
-                  step="0.05"
-                  value={valMultTownhouse}
-                  onChange={(e) => setValMultTownhouse(e.target.value)}
-                />
-              </div>
-            </GlassCard>
-
-            {/* Condition Multipliers */}
-            <GlassCard variant="container" rounded="2rem" className="p-6 bg-[#fbf6f0] border border-[#d8cebe] space-y-4">
-              <div className="flex items-center gap-2 border-b border-[#d8cebe]/60 pb-3">
-                <Sparkles className="w-4 h-4 text-[#5c3822]" />
-                <h2 className="font-display font-medium text-lg text-[#1F1B16]">
-                  Condition Weight Factors
-                </h2>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                <Input
-                  label="Brand New / Luxury"
-                  type="number"
-                  step="0.05"
-                  value={valCondBrandNew}
-                  onChange={(e) => setValCondBrandNew(e.target.value)}
-                />
-                <Input
-                  label="Well-Maintained"
-                  type="number"
-                  step="0.05"
-                  value={valCondWellMaintained}
-                  onChange={(e) => setValCondWellMaintained(e.target.value)}
-                />
-                <Input
-                  label="Needs Renovation"
-                  type="number"
-                  step="0.05"
-                  value={valCondRenovation}
-                  onChange={(e) => setValCondRenovation(e.target.value)}
-                />
-              </div>
-            </GlassCard>
-          </div>
-
-          {/* Live Valuation Engine Preview */}
-          <div className="lg:col-span-5 space-y-3">
-            <div className="flex items-center gap-1.5 text-xs font-mono text-[#7e7365]">
-              <Eye className="w-3.5 h-3.5 text-[#5c3822]" />
-              <span>BTS Live Output (240 Gaz Brand New House in North Nazimabad):</span>
-            </div>
-
-            <GlassCard variant="card" rounded="2rem" className="p-6 space-y-4 bg-[#fbf6f0] border border-[#d8cebe] shadow-lg">
-              <div className="text-center space-y-1">
-                <span className="text-[10px] font-mono text-[#7e7365] uppercase tracking-widest block">
-                  CALCULATED VALUATION RANGE
-                </span>
-                <div className="text-2xl font-display font-medium text-[#1F1B16]">
-                  {formatCurrency(valPreview.low)} – {formatCurrency(valPreview.high)}
-                </div>
-                <div className="pt-1">
-                  <Badge variant="moss" size="sm">
-                    Average: {formatCurrency(valPreview.mid)}
-                  </Badge>
-                </div>
-              </div>
-
-              <div className="space-y-2 pt-2 border-t border-[#d8cebe]/60 text-xs font-mono text-[#7e7365]">
-                <div className="flex justify-between">
-                  <span>Base Rate:</span>
-                  <span className="font-semibold text-[#1F1B16]">PKR {Number(valRateNorthNazimabad).toLocaleString()} / Gaz</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Category Factor:</span>
-                  <span className="font-semibold text-[#1F1B16]">{valMultHouse}x</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Condition Factor:</span>
-                  <span className="font-semibold text-[#1F1B16]">{valCondBrandNew}x</span>
-                </div>
               </div>
             </GlassCard>
           </div>

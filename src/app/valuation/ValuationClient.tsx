@@ -5,7 +5,7 @@ import { GlassCard } from '@/ui/GlassCard';
 import { Badge } from '@/ui/Badge';
 import { Button } from '@/ui/Button';
 import { formatCurrency } from '@/lib/utils';
-import { Sparkles, ArrowRight, ArrowLeft, CheckCircle2 } from 'lucide-react';
+import { Sparkles, ArrowRight, ArrowLeft } from 'lucide-react';
 import { submitValuationAction } from '@/lib/actions/valuation';
 import { SiteSettingsMap } from '@/lib/actions/admin-content';
 import { PropertyType, AreaUnit, PropertyCondition } from '@prisma/client';
@@ -16,13 +16,23 @@ interface ValuationClientProps {
   siteSettings: SiteSettingsMap;
 }
 
+// Clean integer input sanitizer for user inputs (0-9 only, removes leading zeros)
+function handleIntegerChange(raw: string, setter: (val: number | '') => void) {
+  const digitsOnly = raw.replace(/\D/g, '');
+  if (!digitsOnly) {
+    setter('');
+    return;
+  }
+  setter(parseInt(digitsOnly, 10));
+}
+
 export function ValuationClient({ siteSettings }: ValuationClientProps) {
   const [step, setStep] = useState(1);
   const [propertyType, setPropertyType] = useState('luxury-villa');
   const [address, setAddress] = useState('');
   const [city, setCity] = useState('North Nazimabad');
-
-  // Clean integer states (stored as numbers or strings while editing)
+  
+  // Clean integer states
   const [areaSqYd, setAreaSqYd] = useState<number | ''>(240);
   const [bedrooms, setBedrooms] = useState<number | ''>(5);
   const [bathrooms, setBathrooms] = useState<number | ''>(6);
@@ -63,28 +73,36 @@ export function ValuationClient({ siteSettings }: ValuationClientProps) {
       basePerSqYd = Number(siteSettings.val_rate_scheme45) || 75000;
     }
 
-    // 2. Category Multiplier from DB
+    // 2. Category Multiplier from DB (handles float 0.65 or percentage 65)
+    const parseMultiplier = (rawVal: string | undefined, defaultFloat: number): number => {
+      if (!rawVal) return defaultFloat;
+      const num = parseFloat(rawVal);
+      if (isNaN(num) || num <= 0) return defaultFloat;
+      if (num > 2.0) return num / 100;
+      return num;
+    };
+
     let catMultiplier = 1.0;
     if (propertyType === 'estate') {
-      catMultiplier = Number(siteSettings.val_mult_plot) || 0.65;
+      catMultiplier = parseMultiplier(siteSettings.val_mult_plot, 0.65);
     } else if (propertyType === 'modern-apartment') {
-      catMultiplier = Number(siteSettings.val_mult_apartment) || 0.75;
+      catMultiplier = parseMultiplier(siteSettings.val_mult_apartment, 0.75);
     } else if (propertyType === 'penthouse') {
-      catMultiplier = Number(siteSettings.val_mult_penthouse) || 0.90;
+      catMultiplier = parseMultiplier(siteSettings.val_mult_penthouse, 0.90);
     } else if (propertyType === 'townhouse') {
-      catMultiplier = Number(siteSettings.val_mult_townhouse) || 0.85;
+      catMultiplier = parseMultiplier(siteSettings.val_mult_townhouse, 0.85);
     } else {
-      catMultiplier = Number(siteSettings.val_mult_house) || 1.00;
+      catMultiplier = parseMultiplier(siteSettings.val_mult_house, 1.00);
     }
 
     // 3. Condition Multiplier from DB
     let condMultiplier = 1.05;
     if (condition === 'museum') {
-      condMultiplier = Number(siteSettings.val_cond_brand_new) || 1.25;
+      condMultiplier = parseMultiplier(siteSettings.val_cond_brand_new, 1.25);
     } else if (condition === 'turnkey') {
-      condMultiplier = Number(siteSettings.val_cond_well_maintained) || 1.05;
+      condMultiplier = parseMultiplier(siteSettings.val_cond_well_maintained, 1.05);
     } else if (condition === 'renovation') {
-      condMultiplier = Number(siteSettings.val_cond_renovation) || 0.85;
+      condMultiplier = parseMultiplier(siteSettings.val_cond_renovation, 0.85);
     }
 
     const currentArea = typeof areaSqYd === 'number' && areaSqYd > 0 ? areaSqYd : 240;
@@ -144,7 +162,7 @@ export function ValuationClient({ siteSettings }: ValuationClientProps) {
             origin: { y: 0.6 },
             colors: ['#5c3822', '#2e3a2f', '#D8CEBE', '#847666'],
           });
-        } catch (err) { }
+        } catch (err) {}
       } else {
         setErrorMessage(res.error || 'Failed to calculate valuation');
       }
@@ -279,8 +297,9 @@ export function ValuationClient({ siteSettings }: ValuationClientProps) {
                 {[1, 2, 3].map((s) => (
                   <div
                     key={s}
-                    className={`w-8 h-1.5 rounded-full transition-all ${s <= step ? 'bg-[#5c3822]' : 'bg-[#d8cebe]'
-                      }`}
+                    className={`w-8 h-1.5 rounded-full transition-all ${
+                      s <= step ? 'bg-[#5c3822]' : 'bg-[#d8cebe]'
+                    }`}
                   />
                 ))}
               </div>
@@ -309,10 +328,11 @@ export function ValuationClient({ siteSettings }: ValuationClientProps) {
                           key={type.id}
                           type="button"
                           onClick={() => setPropertyType(type.id)}
-                          className={`p-3 rounded-xl border text-xs font-medium transition-all text-left cursor-pointer ${propertyType === type.id
+                          className={`p-3 rounded-xl border text-xs font-medium transition-all text-left cursor-pointer ${
+                            propertyType === type.id
                               ? 'bg-[#5c3822] text-[#F8F4ED] border-[#5c3822] shadow-sm font-semibold'
                               : 'bg-white text-[#1F1B16] border-[#d8cebe] hover:border-[#5c3822]'
-                            }`}
+                          }`}
                         >
                           {type.label}
                         </button>
@@ -364,14 +384,14 @@ export function ValuationClient({ siteSettings }: ValuationClientProps) {
               </div>
             )}
 
-            {/* STEP 2: Dimensions & Condition (Single-Line Row & No Spinners) */}
+            {/* STEP 2: Dimensions & Condition (Single-Line Row & Strict Clean Integers) */}
             {step === 2 && (
               <div className="space-y-5">
                 <h3 className="font-display font-medium text-lg text-[#1F1B16]">
                   2. Dimensions & Property Condition
                 </h3>
-
-                {/* Single Horizontal Row for Plot Size, Bedrooms, Bathrooms (Without Spinners) */}
+                
+                {/* Single Horizontal Row for Plot Size, Bedrooms, Bathrooms (Strict Clean Integers, No Spinners) */}
                 <div className={`grid gap-3.5 ${isPlot ? 'grid-cols-1' : 'grid-cols-3'}`}>
                   {/* Plot / Covered Size */}
                   <div className="space-y-1">
@@ -379,14 +399,13 @@ export function ValuationClient({ siteSettings }: ValuationClientProps) {
                       {isPlot ? 'Plot Size (Sq Yds / Gaz) *' : 'Plot / Covered Size (Sq Yds) *'}
                     </label>
                     <input
-                      type="number"
+                      type="text"
+                      inputMode="numeric"
+                      pattern="[0-9]*"
                       placeholder="240"
                       value={areaSqYd === '' ? '' : areaSqYd}
-                      onChange={(e) => {
-                        const val = e.target.value;
-                        setAreaSqYd(val === '' ? '' : parseInt(val, 10) || 0);
-                      }}
-                      className="w-full bg-white text-[#1F1B16] border border-[#d8cebe] rounded-full px-4 py-2.5 text-xs sm:text-sm outline-none focus:border-[#5c3822] shadow-sm [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                      onChange={(e) => handleIntegerChange(e.target.value, setAreaSqYd)}
+                      className="w-full bg-white text-[#1F1B16] border border-[#d8cebe] rounded-full px-4 py-2.5 text-xs sm:text-sm font-mono font-medium outline-none focus:border-[#5c3822] shadow-sm [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                       required
                     />
                   </div>
@@ -398,14 +417,13 @@ export function ValuationClient({ siteSettings }: ValuationClientProps) {
                         Bedrooms *
                       </label>
                       <input
-                        type="number"
+                        type="text"
+                        inputMode="numeric"
+                        pattern="[0-9]*"
                         placeholder="5"
                         value={bedrooms === '' ? '' : bedrooms}
-                        onChange={(e) => {
-                          const val = e.target.value;
-                          setBedrooms(val === '' ? '' : parseInt(val, 10) || 0);
-                        }}
-                        className="w-full bg-white text-[#1F1B16] border border-[#d8cebe] rounded-full px-4 py-2.5 text-xs sm:text-sm outline-none focus:border-[#5c3822] shadow-sm [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                        onChange={(e) => handleIntegerChange(e.target.value, setBedrooms)}
+                        className="w-full bg-white text-[#1F1B16] border border-[#d8cebe] rounded-full px-4 py-2.5 text-xs sm:text-sm font-mono font-medium outline-none focus:border-[#5c3822] shadow-sm [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                         required
                       />
                     </div>
@@ -418,14 +436,13 @@ export function ValuationClient({ siteSettings }: ValuationClientProps) {
                         Bathrooms *
                       </label>
                       <input
-                        type="number"
+                        type="text"
+                        inputMode="numeric"
+                        pattern="[0-9]*"
                         placeholder="6"
                         value={bathrooms === '' ? '' : bathrooms}
-                        onChange={(e) => {
-                          const val = e.target.value;
-                          setBathrooms(val === '' ? '' : parseInt(val, 10) || 0);
-                        }}
-                        className="w-full bg-white text-[#1F1B16] border border-[#d8cebe] rounded-full px-4 py-2.5 text-xs sm:text-sm outline-none focus:border-[#5c3822] shadow-sm [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                        onChange={(e) => handleIntegerChange(e.target.value, setBathrooms)}
+                        className="w-full bg-white text-[#1F1B16] border border-[#d8cebe] rounded-full px-4 py-2.5 text-xs sm:text-sm font-mono font-medium outline-none focus:border-[#5c3822] shadow-sm [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                         required
                       />
                     </div>
@@ -459,15 +476,17 @@ export function ValuationClient({ siteSettings }: ValuationClientProps) {
                         key={cond.id}
                         type="button"
                         onClick={() => setCondition(cond.id)}
-                        className={`p-3 rounded-xl text-left border transition-all cursor-pointer ${condition === cond.id
-                            ? 'bg-[#5c3822] text-[#F8F4ED] border-[#5c3822] shadow-sm'
+                        className={`p-3 rounded-xl text-left border transition-all cursor-pointer ${
+                          condition === cond.id
+                            ? 'bg-[#5c3822] text-[#F8F4ED] border-[#5c3822] shadow-sm font-semibold'
                             : 'bg-white text-[#1F1B16] border-[#d8cebe] hover:bg-[#f5efe6]'
-                          }`}
+                        }`}
                       >
                         <div className="font-medium text-xs">{cond.label}</div>
                         <div
-                          className={`text-[10px] mt-0.5 ${condition === cond.id ? 'text-[#D7CBBB]' : 'text-[#7e7365]'
-                            }`}
+                          className={`text-[10px] mt-0.5 ${
+                            condition === cond.id ? 'text-[#D7CBBB]' : 'text-[#7e7365]'
+                          }`}
                         >
                           {cond.desc}
                         </div>
@@ -574,4 +593,3 @@ export function ValuationClient({ siteSettings }: ValuationClientProps) {
     </div>
   );
 }
-

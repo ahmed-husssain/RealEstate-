@@ -26,11 +26,12 @@ import {
   Eye,
   Mail,
   ShieldCheck,
+  TrendingUp,
 } from 'lucide-react';
 import { calculateMonthlyMortgage, formatCurrency } from '@/lib/utils';
 
 export function SiteContentEditorClient({ initialSettings }: { initialSettings: SiteSettingsMap }) {
-  const [activeTab, setActiveTab] = useState<'advisor' | 'mortgage' | 'hero' | 'general'>('advisor');
+  const [activeTab, setActiveTab] = useState<'advisor' | 'mortgage' | 'valuation' | 'hero' | 'general'>('advisor');
 
   // --- 1. Senior Property Advisor Profile State ---
   const [advisorName, setAdvisorName] = useState(initialSettings.advisor_name || 'Syed Sikander Waqar');
@@ -74,7 +75,34 @@ export function SiteContentEditorClient({ initialSettings }: { initialSettings: 
       '*Estimates provided for informational illustrative modeling. Subject to lender qualification and tax advisory review.'
   );
 
-  // --- 3. Hero & Branding State ---
+  // --- 3. Karachi Valuation Engine Behind-The-Scenes (BTS) ---
+  const [valRateNorthNazimabad, setValRateNorthNazimabad] = useState(
+    initialSettings.val_rate_north_nazimabad || '280000'
+  );
+  const [valRateGulshan, setValRateGulshan] = useState(initialSettings.val_rate_gulshan || '260000');
+  const [valRateFbArea, setValRateFbArea] = useState(initialSettings.val_rate_fb_area || '220000');
+  const [valRateGulberg, setValRateGulberg] = useState(initialSettings.val_rate_gulberg || '210000');
+  const [valRateBufferZone, setValRateBufferZone] = useState(initialSettings.val_rate_buffer_zone || '190000');
+  const [valRateScheme33, setValRateScheme33] = useState(initialSettings.val_rate_scheme33 || '175000');
+  const [valRateNorthKarachi, setValRateNorthKarachi] = useState(
+    initialSettings.val_rate_north_karachi || '160000'
+  );
+  const [valRateScheme45, setValRateScheme45] = useState(initialSettings.val_rate_scheme45 || '75000');
+  const [valRateClifton, setValRateClifton] = useState(initialSettings.val_rate_clifton || '350000');
+
+  const [valMultHouse, setValMultHouse] = useState(initialSettings.val_mult_house || '1.00');
+  const [valMultPlot, setValMultPlot] = useState(initialSettings.val_mult_plot || '0.65');
+  const [valMultApartment, setValMultApartment] = useState(initialSettings.val_mult_apartment || '0.75');
+  const [valMultPenthouse, setValMultPenthouse] = useState(initialSettings.val_mult_penthouse || '0.90');
+  const [valMultTownhouse, setValMultTownhouse] = useState(initialSettings.val_mult_townhouse || '0.85');
+
+  const [valCondBrandNew, setValCondBrandNew] = useState(initialSettings.val_cond_brand_new || '1.25');
+  const [valCondWellMaintained, setValCondWellMaintained] = useState(
+    initialSettings.val_cond_well_maintained || '1.05'
+  );
+  const [valCondRenovation, setValCondRenovation] = useState(initialSettings.val_cond_renovation || '0.85');
+
+  // --- 4. Hero & Branding State ---
   const [heroHeadline, setHeroHeadline] = useState(
     initialSettings.hero_headline || 'Find Luxury Homes & Penthouses in Karachi'
   );
@@ -141,6 +169,19 @@ export function SiteContentEditorClient({ initialSettings }: { initialSettings: 
   const numDownPct = Number(mortgageDefaultDownPayment) || 20;
   const mortgagePreviewCalc = calculateMonthlyMortgage(samplePrice, numDownPct, numInterest, 30);
 
+  // Preview Valuation calculation (240 Sq Yd House in North Nazimabad)
+  const previewValuation = () => {
+    const baseRate = Number(valRateNorthNazimabad) || 280000;
+    const catMult = Number(valMultHouse) || 1.0;
+    const condMult = Number(valCondBrandNew) || 1.25;
+    const mid = 240 * baseRate * catMult * condMult;
+    const low = Math.round((mid * 0.93) / 100000) * 100000;
+    const high = Math.round((mid * 1.07) / 100000) * 100000;
+    return { low, mid, high };
+  };
+
+  const valPreview = previewValuation();
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -167,6 +208,27 @@ export function SiteContentEditorClient({ initialSettings }: { initialSettings: 
         mortgage_tax_rate: mortgageTaxRate,
         mortgage_insurance_rate: mortgageInsuranceRate,
         mortgage_disclaimer: mortgageDisclaimer,
+
+        // Karachi Valuation BTS
+        val_rate_north_nazimabad: valRateNorthNazimabad,
+        val_rate_gulshan: valRateGulshan,
+        val_rate_fb_area: valRateFbArea,
+        val_rate_gulberg: valRateGulberg,
+        val_rate_buffer_zone: valRateBufferZone,
+        val_rate_scheme33: valRateScheme33,
+        val_rate_north_karachi: valRateNorthKarachi,
+        val_rate_scheme45: valRateScheme45,
+        val_rate_clifton: valRateClifton,
+
+        val_mult_house: valMultHouse,
+        val_mult_plot: valMultPlot,
+        val_mult_apartment: valMultApartment,
+        val_mult_penthouse: valMultPenthouse,
+        val_mult_townhouse: valMultTownhouse,
+
+        val_cond_brand_new: valCondBrandNew,
+        val_cond_well_maintained: valCondWellMaintained,
+        val_cond_renovation: valCondRenovation,
 
         // Hero & General
         hero_headline: heroHeadline,
@@ -195,8 +257,9 @@ export function SiteContentEditorClient({ initialSettings }: { initialSettings: 
           text: `Verified & Saved to Database at ${timeString}!`,
           details: [
             `Senior Advisor: ${advisorName} (${advisorRole})`,
-            `Mortgage Estimator: ${mortgageTitle} (Default ${mortgageDefaultInterest}%)`,
-            `All public property detail pages and website routes have been updated live.`,
+            `Mortgage Estimator: ${mortgageTitle} (${mortgageDefaultInterest}%)`,
+            `Valuation Engine: North Nazimabad PKR ${Number(valRateNorthNazimabad).toLocaleString()} / Gaz`,
+            `All public property detail pages and valuation calculator routes updated live.`,
           ],
         });
       } else {
@@ -222,53 +285,66 @@ export function SiteContentEditorClient({ initialSettings }: { initialSettings: 
         <button
           type="button"
           onClick={() => setActiveTab('advisor')}
-          className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-mono font-medium transition-all cursor-pointer ${
+          className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-mono font-medium transition-all cursor-pointer ${
             activeTab === 'advisor'
               ? 'bg-[#5c3822] text-[#F8F4ED] shadow-sm font-bold'
               : 'text-[#7e7365] hover:text-[#1F1B16] hover:bg-white/60'
           }`}
         >
           <UserCheck className="w-3.5 h-3.5" />
-          <span>1. Property Advisor Profile</span>
+          <span>1. Property Advisor</span>
         </button>
 
         <button
           type="button"
           onClick={() => setActiveTab('mortgage')}
-          className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-mono font-medium transition-all cursor-pointer ${
+          className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-mono font-medium transition-all cursor-pointer ${
             activeTab === 'mortgage'
               ? 'bg-[#5c3822] text-[#F8F4ED] shadow-sm font-bold'
               : 'text-[#7e7365] hover:text-[#1F1B16] hover:bg-white/60'
           }`}
         >
           <Calculator className="w-3.5 h-3.5" />
-          <span>2. Mortgage Estimator CMS</span>
+          <span>2. Mortgage Estimator</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => setActiveTab('valuation')}
+          className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-mono font-medium transition-all cursor-pointer ${
+            activeTab === 'valuation'
+              ? 'bg-[#5c3822] text-[#F8F4ED] shadow-sm font-bold'
+              : 'text-[#7e7365] hover:text-[#1F1B16] hover:bg-white/60'
+          }`}
+        >
+          <TrendingUp className="w-3.5 h-3.5" />
+          <span>3. Karachi Valuation Engine (BTS)</span>
         </button>
 
         <button
           type="button"
           onClick={() => setActiveTab('hero')}
-          className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-mono font-medium transition-all cursor-pointer ${
+          className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-mono font-medium transition-all cursor-pointer ${
             activeTab === 'hero'
               ? 'bg-[#5c3822] text-[#F8F4ED] shadow-sm font-bold'
               : 'text-[#7e7365] hover:text-[#1F1B16] hover:bg-white/60'
           }`}
         >
           <Sparkles className="w-3.5 h-3.5" />
-          <span>3. Hero & Taglines</span>
+          <span>4. Hero & Copy</span>
         </button>
 
         <button
           type="button"
           onClick={() => setActiveTab('general')}
-          className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-mono font-medium transition-all cursor-pointer ${
+          className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-mono font-medium transition-all cursor-pointer ${
             activeTab === 'general'
               ? 'bg-[#5c3822] text-[#F8F4ED] shadow-sm font-bold'
               : 'text-[#7e7365] hover:text-[#1F1B16] hover:bg-white/60'
           }`}
         >
           <Phone className="w-3.5 h-3.5" />
-          <span>4. Agency Contact Info</span>
+          <span>5. Office Contacts</span>
         </button>
       </div>
 
@@ -640,7 +716,209 @@ export function SiteContentEditorClient({ initialSettings }: { initialSettings: 
       )}
 
       {/* ======================================================== */}
-      {/* TAB 3: HERO & TAGLINES                                    */}
+      {/* TAB 3: KARACHI VALUATION ENGINE (BTS)                    */}
+      {/* ======================================================== */}
+      {activeTab === 'valuation' && (
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <div className="lg:col-span-7 space-y-6">
+            {/* Area Base Gaz Rates */}
+            <GlassCard variant="container" rounded="2rem" className="p-6 bg-[#fbf6f0] border border-[#d8cebe] space-y-4">
+              <div className="flex items-center justify-between border-b border-[#d8cebe]/60 pb-3">
+                <div className="flex items-center gap-2">
+                  <TrendingUp className="w-4 h-4 text-[#5c3822]" />
+                  <h2 className="font-display font-medium text-lg text-[#1F1B16]">
+                    Karachi Enclave Base Rate (PKR / Gaz)
+                  </h2>
+                </div>
+                <Badge variant="exclusive" size="sm">BTS Engine</Badge>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                <Input
+                  label="North Nazimabad (PKR / Gaz)"
+                  type="number"
+                  value={valRateNorthNazimabad}
+                  onChange={(e) => setValRateNorthNazimabad(e.target.value)}
+                />
+                <Input
+                  label="Gulshan-e-Iqbal (PKR / Gaz)"
+                  type="number"
+                  value={valRateGulshan}
+                  onChange={(e) => setValRateGulshan(e.target.value)}
+                />
+                <Input
+                  label="Federal B Area (PKR / Gaz)"
+                  type="number"
+                  value={valRateFbArea}
+                  onChange={(e) => setValRateFbArea(e.target.value)}
+                />
+                <Input
+                  label="Gulberg Karachi (PKR / Gaz)"
+                  type="number"
+                  value={valRateGulberg}
+                  onChange={(e) => setValRateGulberg(e.target.value)}
+                />
+                <Input
+                  label="Buffer Zone (PKR / Gaz)"
+                  type="number"
+                  value={valRateBufferZone}
+                  onChange={(e) => setValRateBufferZone(e.target.value)}
+                />
+                <Input
+                  label="Scheme 33 (PKR / Gaz)"
+                  type="number"
+                  value={valRateScheme33}
+                  onChange={(e) => setValRateScheme33(e.target.value)}
+                />
+                <Input
+                  label="North Karachi (PKR / Gaz)"
+                  type="number"
+                  value={valRateNorthKarachi}
+                  onChange={(e) => setValRateNorthKarachi(e.target.value)}
+                />
+                <Input
+                  label="Scheme 45 / Taiser (PKR / Gaz)"
+                  type="number"
+                  value={valRateScheme45}
+                  onChange={(e) => setValRateScheme45(e.target.value)}
+                />
+                <div className="sm:col-span-2">
+                  <Input
+                    label="Clifton & Sea View (PKR / Gaz)"
+                    type="number"
+                    value={valRateClifton}
+                    onChange={(e) => setValRateClifton(e.target.value)}
+                  />
+                </div>
+              </div>
+            </GlassCard>
+
+            {/* Category Multipliers */}
+            <GlassCard variant="container" rounded="2rem" className="p-6 bg-[#fbf6f0] border border-[#d8cebe] space-y-4">
+              <div className="flex items-center gap-2 border-b border-[#d8cebe]/60 pb-3">
+                <MapPin className="w-4 h-4 text-[#5c3822]" />
+                <h2 className="font-display font-medium text-lg text-[#1F1B16]">
+                  Property Category Multipliers
+                </h2>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <Input
+                  label="Bungalow / House"
+                  type="number"
+                  step="0.05"
+                  value={valMultHouse}
+                  onChange={(e) => setValMultHouse(e.target.value)}
+                />
+                <Input
+                  label="Residential Plot"
+                  type="number"
+                  step="0.05"
+                  value={valMultPlot}
+                  onChange={(e) => setValMultPlot(e.target.value)}
+                />
+                <Input
+                  label="Apartment / Flat"
+                  type="number"
+                  step="0.05"
+                  value={valMultApartment}
+                  onChange={(e) => setValMultApartment(e.target.value)}
+                />
+                <Input
+                  label="Penthouse"
+                  type="number"
+                  step="0.05"
+                  value={valMultPenthouse}
+                  onChange={(e) => setValMultPenthouse(e.target.value)}
+                />
+                <Input
+                  label="Townhouse / Duplex"
+                  type="number"
+                  step="0.05"
+                  value={valMultTownhouse}
+                  onChange={(e) => setValMultTownhouse(e.target.value)}
+                />
+              </div>
+            </GlassCard>
+
+            {/* Condition Multipliers */}
+            <GlassCard variant="container" rounded="2rem" className="p-6 bg-[#fbf6f0] border border-[#d8cebe] space-y-4">
+              <div className="flex items-center gap-2 border-b border-[#d8cebe]/60 pb-3">
+                <Sparkles className="w-4 h-4 text-[#5c3822]" />
+                <h2 className="font-display font-medium text-lg text-[#1F1B16]">
+                  Condition Weight Factors
+                </h2>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <Input
+                  label="Brand New / Luxury"
+                  type="number"
+                  step="0.05"
+                  value={valCondBrandNew}
+                  onChange={(e) => setValCondBrandNew(e.target.value)}
+                />
+                <Input
+                  label="Well-Maintained"
+                  type="number"
+                  step="0.05"
+                  value={valCondWellMaintained}
+                  onChange={(e) => setValCondWellMaintained(e.target.value)}
+                />
+                <Input
+                  label="Needs Renovation"
+                  type="number"
+                  step="0.05"
+                  value={valCondRenovation}
+                  onChange={(e) => setValCondRenovation(e.target.value)}
+                />
+              </div>
+            </GlassCard>
+          </div>
+
+          {/* Live Valuation Engine Preview */}
+          <div className="lg:col-span-5 space-y-3">
+            <div className="flex items-center gap-1.5 text-xs font-mono text-[#7e7365]">
+              <Eye className="w-3.5 h-3.5 text-[#5c3822]" />
+              <span>BTS Live Output (240 Gaz Brand New House in North Nazimabad):</span>
+            </div>
+
+            <GlassCard variant="card" rounded="2rem" className="p-6 space-y-4 bg-[#fbf6f0] border border-[#d8cebe] shadow-lg">
+              <div className="text-center space-y-1">
+                <span className="text-[10px] font-mono text-[#7e7365] uppercase tracking-widest block">
+                  CALCULATED VALUATION RANGE
+                </span>
+                <div className="text-2xl font-display font-medium text-[#1F1B16]">
+                  {formatCurrency(valPreview.low)} – {formatCurrency(valPreview.high)}
+                </div>
+                <div className="pt-1">
+                  <Badge variant="moss" size="sm">
+                    Average: {formatCurrency(valPreview.mid)}
+                  </Badge>
+                </div>
+              </div>
+
+              <div className="space-y-2 pt-2 border-t border-[#d8cebe]/60 text-xs font-mono text-[#7e7365]">
+                <div className="flex justify-between">
+                  <span>Base Rate:</span>
+                  <span className="font-semibold text-[#1F1B16]">PKR {Number(valRateNorthNazimabad).toLocaleString()} / Gaz</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Category Factor:</span>
+                  <span className="font-semibold text-[#1F1B16]">{valMultHouse}x</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Condition Factor:</span>
+                  <span className="font-semibold text-[#1F1B16]">{valCondBrandNew}x</span>
+                </div>
+              </div>
+            </GlassCard>
+          </div>
+        </div>
+      )}
+
+      {/* ======================================================== */}
+      {/* TAB 4: HERO & TAGLINES                                    */}
       {/* ======================================================== */}
       {activeTab === 'hero' && (
         <GlassCard variant="container" rounded="2rem" className="p-6 bg-[#fbf6f0] border border-[#d8cebe] space-y-4">
@@ -698,7 +976,7 @@ export function SiteContentEditorClient({ initialSettings }: { initialSettings: 
       )}
 
       {/* ======================================================== */}
-      {/* TAB 4: AGENCY CONTACT INFO                                */}
+      {/* TAB 5: AGENCY CONTACT INFO                                */}
       {/* ======================================================== */}
       {activeTab === 'general' && (
         <GlassCard variant="container" rounded="2rem" className="p-6 bg-[#fbf6f0] border border-[#d8cebe] space-y-4">

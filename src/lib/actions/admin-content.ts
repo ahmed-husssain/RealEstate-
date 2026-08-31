@@ -39,6 +39,27 @@ export interface SiteSettingsMap {
   mortgage_tax_rate?: string;
   mortgage_insurance_rate?: string;
   mortgage_disclaimer?: string;
+
+  // Karachi Valuation Engine Behind-The-Scenes (BTS)
+  val_rate_north_nazimabad?: string;
+  val_rate_gulshan?: string;
+  val_rate_fb_area?: string;
+  val_rate_gulberg?: string;
+  val_rate_buffer_zone?: string;
+  val_rate_scheme33?: string;
+  val_rate_north_karachi?: string;
+  val_rate_scheme45?: string;
+  val_rate_clifton?: string;
+
+  val_mult_house?: string;
+  val_mult_plot?: string;
+  val_mult_apartment?: string;
+  val_mult_penthouse?: string;
+  val_mult_townhouse?: string;
+
+  val_cond_brand_new?: string;
+  val_cond_well_maintained?: string;
+  val_cond_renovation?: string;
 }
 
 export async function getSiteSettingsAction(): Promise<{ success: boolean; data: SiteSettingsMap; error?: string }> {
@@ -96,7 +117,7 @@ export async function updateSiteSettingsAction(settings: Record<string, string>)
       (verifiedMap as any)[item.key] = item.value;
     }
 
-    // 4. Invalidate cache across all website routes including Root Layout & Property Details
+    // 4. Invalidate cache across all website routes
     revalidatePath('/', 'layout');
     revalidatePath('/');
     revalidatePath('/properties');

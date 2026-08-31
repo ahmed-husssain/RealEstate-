@@ -2,6 +2,7 @@ import React from 'react';
 import { notFound } from 'next/navigation';
 import { getPropertyBySlug, getProperties } from '@/lib/db/properties';
 import { mapDbPropertyToProperty } from '@/lib/db/mappers';
+import { getSiteSettingsAction } from '@/lib/actions/admin-content';
 import { PropertyDetailClient } from '@/components/properties/PropertyDetailClient';
 
 interface PageProps {
@@ -14,7 +15,10 @@ export default async function PropertyDetailPage(props: PageProps) {
   const resolvedParams = await props.params;
   const slug = resolvedParams.slug;
 
-  const dbProperty = await getPropertyBySlug(slug);
+  const [dbProperty, { data: siteSettings }] = await Promise.all([
+    getPropertyBySlug(slug),
+    getSiteSettingsAction(),
+  ]);
 
   if (!dbProperty) {
     notFound();
@@ -37,6 +41,7 @@ export default async function PropertyDetailPage(props: PageProps) {
     <PropertyDetailClient
       property={property}
       similarProperties={similarProperties}
+      siteSettings={siteSettings}
     />
   );
 }

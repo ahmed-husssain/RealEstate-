@@ -4,8 +4,10 @@ import prisma from '@/lib/prisma';
 import { requireAuthUser } from '@/lib/auth/admin';
 import { revalidatePath, updateTag } from 'next/cache';
 import { classifyAdminError } from '@/lib/errors/admin-errors';
+import { MediaService } from '@/lib/media/service';
 
 export interface SiteSettingsMap {
+  // Hero & General
   hero_headline?: string;
   hero_subtitle?: string;
   office_address?: string;
@@ -16,6 +18,27 @@ export interface SiteSettingsMap {
   office_timings?: string;
   announcement_banner?: string;
   announcement_active?: string;
+
+  // Senior Property Advisor Profile (Screenshot 1)
+  advisor_name?: string;
+  advisor_role?: string;
+  advisor_experience?: string;
+  advisor_avatar?: string;
+  advisor_avatar_public_id?: string;
+  advisor_phone?: string;
+  advisor_whatsapp?: string;
+  advisor_email?: string;
+  advisor_wa_msg?: string;
+
+  // Private Wealth Mortgage Estimator (Screenshot 2)
+  mortgage_title?: string;
+  mortgage_badge?: string;
+  mortgage_default_interest?: string;
+  mortgage_default_downpayment?: string;
+  mortgage_terms?: string;
+  mortgage_tax_rate?: string;
+  mortgage_insurance_rate?: string;
+  mortgage_disclaimer?: string;
 }
 
 export async function getSiteSettingsAction(): Promise<{ success: boolean; data: SiteSettingsMap; error?: string }> {
@@ -41,7 +64,7 @@ export async function updateSiteSettingsAction(settings: Record<string, string>)
   data?: SiteSettingsMap;
 }> {
   try {
-    // 1. Authenticate user
+    // 1. Authenticate user (Admins and Staff users)
     const user = await requireAuthUser();
     if (!user) {
       return { success: false, error: 'Unauthorized. Please log in to update website content.' };
@@ -73,10 +96,11 @@ export async function updateSiteSettingsAction(settings: Record<string, string>)
       (verifiedMap as any)[item.key] = item.value;
     }
 
-    // 4. Invalidate cache across all website routes including Root Layout (Navbar & Footer)
+    // 4. Invalidate cache across all website routes including Root Layout & Property Details
     revalidatePath('/', 'layout');
     revalidatePath('/');
     revalidatePath('/properties');
+    revalidatePath('/properties/[slug]', 'page');
     revalidatePath('/neighborhoods');
     revalidatePath('/contact');
     revalidatePath('/about');
@@ -86,6 +110,7 @@ export async function updateSiteSettingsAction(settings: Record<string, string>)
     revalidatePath('/admin');
     updateTag('site_settings');
     updateTag('admin-content');
+    updateTag('properties');
 
     return {
       success: true,
@@ -100,5 +125,33 @@ export async function updateSiteSettingsAction(settings: Record<string, string>)
       success: false,
       error: classified.message,
     };
+  }
+}
+
+export async function uploadAdvisorAvatarDirectAction(formData: FormData) {
+  try {
+    await requireAuthUser();
+
+    const file = formData.get('file') as File | null;
+    if (!file) {
+      return { success: false, error: 'No image file was provided for upload.' };
+    }
+
+    const arrayBuffer = await file.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
+
+    const uploaded = await MediaService.uploadAgentAvatar(buffer, file.type);
+
+    return {
+      success: true,
+      data: {
+        url: uploaded.url,
+        publicId: uploaded.publicId,
+      },
+    };
+  } catch (error: any) {
+    console.error('Error uploading advisor avatar:', error);
+    const classified = classifyAdminError(error, 'Failed to upload advisor avatar.');
+    return { success: false, error: classified.message };
   }
 }

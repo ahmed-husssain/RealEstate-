@@ -36,6 +36,21 @@ export class MediaService {
   }
 
   /**
+   * Validates and uploads an Advisor profile avatar photo to Cloudinary.
+   */
+  static async uploadAgentAvatar(
+    buffer: Buffer,
+    declaredMimeType?: string
+  ): Promise<UploadedMedia> {
+    const validation = validateImageBuffer(buffer, declaredMimeType);
+    if (!validation.valid) {
+      throw new Error(validation.error || 'Invalid image file.');
+    }
+
+    return await uploadToCloudinary(buffer, 'amber-property-corner/agents');
+  }
+
+  /**
    * Deletes an image from Cloudinary by its publicId.
    */
   static async deleteAsset(publicId: string | null | undefined): Promise<boolean> {

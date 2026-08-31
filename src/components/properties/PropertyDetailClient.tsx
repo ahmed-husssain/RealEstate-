@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Property } from '@/types';
+import { SiteSettingsMap } from '@/lib/actions/admin-content';
 import { PropertyGallery } from '@/components/properties/PropertyGallery';
 import { FloorPlanViewer } from '@/components/properties/FloorPlanViewer';
 import { MortgageCalculator } from '@/components/properties/MortgageCalculator';
@@ -35,11 +36,13 @@ import { formatNumber } from '@/lib/utils';
 export interface PropertyDetailClientProps {
   property: Property;
   similarProperties: Property[];
+  siteSettings?: SiteSettingsMap;
 }
 
 export function PropertyDetailClient({
   property,
   similarProperties,
+  siteSettings,
 }: PropertyDetailClientProps) {
   const [viewingModalOpen, setViewingModalOpen] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -55,6 +58,28 @@ export function PropertyDetailClient({
   const isRental = property.status === 'for-lease';
   const isPlot = property.specs.propertyType === 'residential-plot' || property.specs.rawPropertyType === 'PLOT';
   const isCommercial = property.specs.propertyType === 'commercial-property' || property.specs.rawPropertyType === 'COMMERCIAL';
+
+  // Dynamic Advisor Info from Site Settings or Property Agent fallback
+  const advisorName = siteSettings?.advisor_name || property.agent.name || 'Syed Sikander Waqar';
+  const advisorRole = siteSettings?.advisor_role || property.agent.title || 'Senior Managing Advisor | North Nazimabad & Construction';
+  const advisorExperience = siteSettings?.advisor_experience || (property.agent.experienceYears ? `${property.agent.experienceYears} Years Exp` : '15 Years Exp');
+  const advisorAvatar = siteSettings?.advisor_avatar || property.agent.avatarUrl || 'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=600&q=80';
+  const advisorPhone = siteSettings?.advisor_phone || property.agent.phone || '+92 300 822 4110';
+  const advisorWhatsapp = siteSettings?.advisor_whatsapp || property.agent.whatsapp || '+923008224110';
+  const advisorEmail = siteSettings?.advisor_email || property.agent.email || 'syedsikander1401@gmail.com';
+  const defaultWaMsg = siteSettings?.advisor_wa_msg
+    ? `${siteSettings.advisor_wa_msg} (${property.title} in ${property.location.neighborhood})`
+    : `Assalam o Alaikum, I want to inquire about ${property.title} in ${property.location.neighborhood}.`;
+
+  // Dynamic Mortgage Settings
+  const mortgageTitle = siteSettings?.mortgage_title || 'Private Wealth Mortgage Estimator';
+  const mortgageBadge = siteSettings?.mortgage_badge || 'Financial Modeling';
+  const mortgageInterest = siteSettings?.mortgage_default_interest ? Number(siteSettings.mortgage_default_interest) : 6.25;
+  const mortgageDownPayment = siteSettings?.mortgage_default_downpayment ? Number(siteSettings.mortgage_default_downpayment) : 20;
+  const mortgageTerms = siteSettings?.mortgage_terms
+    ? siteSettings.mortgage_terms.split(',').map((s) => Number(s.trim())).filter((n) => !isNaN(n) && n > 0)
+    : [15, 30];
+  const mortgageDisclaimer = siteSettings?.mortgage_disclaimer || '*Estimates provided for informational illustrative modeling. Subject to lender qualification and tax advisory review.';
 
   // Status Badge Label
   const getStatusBadge = () => {
@@ -158,9 +183,9 @@ export function PropertyDetailClient({
         title={property.title}
       />
 
-      {/* Adaptive Property Specs Ribbon (Render ONLY actual applicable specs) */}
+      {/* Adaptive Property Specs Ribbon */}
       <div className="flex flex-wrap gap-3">
-        {/* Total Area / Footprint (always present) */}
+        {/* Total Area / Footprint */}
         {property.specs.areaSize > 0 && (
           <div className="flex-1 min-w-[140px] bg-[#fbf6f0] border border-[#d8cebe] rounded-2xl p-3.5 text-center shadow-sm">
             <Maximize2 className="w-4 h-4 mx-auto text-[#5c3822] mb-1" />
@@ -256,7 +281,7 @@ export function PropertyDetailClient({
             </p>
           </div>
 
-          {/* Key Highlights (Render ONLY if real features exist) */}
+          {/* Key Highlights */}
           {property.features && property.features.length > 0 && (
             <div className="space-y-3">
               <h3 className="font-display font-medium text-lg text-[#1F1B16]">
@@ -280,7 +305,7 @@ export function PropertyDetailClient({
             </div>
           )}
 
-          {/* Features & Amenities (Render ONLY if real amenities were entered by admin) */}
+          {/* Features & Amenities */}
           {property.amenities && property.amenities.length > 0 && (
             <div className="space-y-3">
               <h3 className="font-display font-medium text-lg text-[#1F1B16]">
@@ -302,7 +327,7 @@ export function PropertyDetailClient({
             </div>
           )}
 
-          {/* Floor Plans Viewer (only if real floorplans are present) */}
+          {/* Floor Plans Viewer */}
           {property.images.floorPlans && property.images.floorPlans.length > 0 && (
             <FloorPlanViewer floorPlans={property.images.floorPlans} />
           )}
@@ -351,25 +376,32 @@ export function PropertyDetailClient({
               </div>
             </GlassCard>
           ) : (
-            <MortgageCalculator initialPrice={property.price} />
+            <MortgageCalculator
+              initialPrice={property.price}
+              title={mortgageTitle}
+              badge={mortgageBadge}
+              defaultInterestRate={mortgageInterest}
+              defaultDownPaymentPercent={mortgageDownPayment}
+              terms={mortgageTerms}
+              disclaimer={mortgageDisclaimer}
+            />
           )}
         </div>
 
-        {/* Right Sticky Sidebar: Advisor Card */}
+        {/* Right Sticky Sidebar: Dynamic Advisor Card (Screenshot 1) */}
         <div className="lg:col-span-4 space-y-5">
           <div className="lg:sticky lg:top-24 space-y-5">
-            {/* Agent Contact Card */}
-            <GlassCard variant="card" rounded="2rem" className="p-6 space-y-5 bg-[#fbf6f0]">
+            <GlassCard variant="card" rounded="2rem" className="p-6 space-y-5 bg-[#fbf6f0] border border-[#d8cebe] shadow-sm">
               <div className="flex items-center justify-between border-b border-[#d8cebe]/60 pb-3">
-                <Badge variant="exclusive" size="sm">Property Advisor</Badge>
-                <Badge variant="stone" size="sm">{property.agent.experienceYears} Years Exp</Badge>
+                <Badge variant="exclusive" size="sm">PROPERTY ADVISOR</Badge>
+                <Badge variant="stone" size="sm">{advisorExperience}</Badge>
               </div>
 
               <div className="flex items-center gap-3.5">
-                <div className="relative w-14 h-14 rounded-full overflow-hidden border-2 border-[#5c3822] shrink-0 bg-[#e5decb]">
+                <div className="relative w-14 h-14 rounded-full overflow-hidden border-2 border-[#5c3822] shrink-0 bg-[#e5decb] shadow-sm">
                   <Image
-                    src={property.agent.avatarUrl}
-                    alt={property.agent.name}
+                    src={advisorAvatar}
+                    alt={advisorName}
                     fill
                     sizes="56px"
                     className="object-cover"
@@ -377,17 +409,17 @@ export function PropertyDetailClient({
                 </div>
                 <div>
                   <h4 className="font-display font-medium text-base text-[#1F1B16]">
-                    {property.agent.name}
+                    {advisorName}
                   </h4>
                   <p className="text-xs text-[#7e7365]">
-                    {property.agent.title}
+                    {advisorRole}
                   </p>
                 </div>
               </div>
 
               <div className="space-y-2 pt-1 text-xs">
                 <a
-                  href={`https://wa.me/${(property.agent.whatsapp || '923008224110').replace(/[^0-9]/g, '')}?text=${encodeURIComponent(`Assalam o Alaikum, I want to inquire about ${property.title} in ${property.location.neighborhood}.`)}`}
+                  href={`https://wa.me/${advisorWhatsapp.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(defaultWaMsg)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-2.5 p-3 rounded-xl bg-[#22c55e]/15 border border-[#22c55e]/30 hover:bg-[#22c55e]/25 text-[#1F1B16] transition-colors group cursor-pointer"
@@ -407,18 +439,18 @@ export function PropertyDetailClient({
                   </span>
                 </a>
                 <a
-                  href={`tel:${property.agent.phone}`}
+                  href={`tel:${advisorPhone}`}
                   className="flex items-center gap-2.5 p-3 rounded-xl bg-white border border-[#d8cebe] hover:bg-[#f5efe6] text-[#1F1B16] transition-colors"
                 >
                   <Phone className="w-4 h-4 text-[#5c3822]" />
-                  <span className="font-mono">{property.agent.phone}</span>
+                  <span className="font-mono">{advisorPhone}</span>
                 </a>
                 <a
-                  href={`mailto:${property.agent.email}`}
+                  href={`mailto:${advisorEmail}`}
                   className="flex items-center gap-2.5 p-3 rounded-xl bg-white border border-[#d8cebe] hover:bg-[#f5efe6] text-[#1F1B16] transition-colors"
                 >
                   <Mail className="w-4 h-4 text-[#5c3822]" />
-                  <span className="font-mono truncate">{property.agent.email}</span>
+                  <span className="font-mono truncate">{advisorEmail}</span>
                 </a>
               </div>
 

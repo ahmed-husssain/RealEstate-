@@ -4,17 +4,31 @@ import React, { useState } from 'react';
 import { GlassCard } from '@/ui/GlassCard';
 import { Badge } from '@/ui/Badge';
 import { calculateMonthlyMortgage, formatCurrency } from '@/lib/utils';
-import { Calculator, DollarSign, Percent, Calendar } from 'lucide-react';
+import { Calculator } from 'lucide-react';
 
 export interface MortgageCalculatorProps {
   initialPrice: number;
+  title?: string;
+  badge?: string;
+  defaultInterestRate?: number;
+  defaultDownPaymentPercent?: number;
+  terms?: number[];
+  disclaimer?: string;
 }
 
-export function MortgageCalculator({ initialPrice }: MortgageCalculatorProps) {
+export function MortgageCalculator({
+  initialPrice,
+  title = 'Private Wealth Mortgage Estimator',
+  badge = 'Financial Modeling',
+  defaultInterestRate = 6.25,
+  defaultDownPaymentPercent = 20,
+  terms = [15, 30],
+  disclaimer = '*Estimates provided for informational illustrative modeling. Subject to lender qualification and tax advisory review.',
+}: MortgageCalculatorProps) {
   const [homePrice, setHomePrice] = useState(initialPrice);
-  const [downPaymentPercent, setDownPaymentPercent] = useState(20);
-  const [interestRate, setInterestRate] = useState(6.25);
-  const [loanTermYears, setLoanTermYears] = useState(30);
+  const [downPaymentPercent, setDownPaymentPercent] = useState(defaultDownPaymentPercent);
+  const [interestRate, setInterestRate] = useState(defaultInterestRate);
+  const [loanTermYears, setLoanTermYears] = useState(terms[terms.length - 1] || 30);
 
   const result = calculateMonthlyMortgage(
     homePrice,
@@ -29,10 +43,10 @@ export function MortgageCalculator({ initialPrice }: MortgageCalculatorProps) {
         <div className="flex items-center gap-2">
           <Calculator className="w-5 h-5 text-[#5c3822]" />
           <h3 className="font-display font-medium text-xl text-[#1F1B16]">
-            Private Wealth Mortgage Estimator
+            {title}
           </h3>
         </div>
-        <Badge variant="stone" size="sm">Financial Modeling</Badge>
+        <Badge variant="stone" size="sm">{badge}</Badge>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
@@ -47,7 +61,7 @@ export function MortgageCalculator({ initialPrice }: MortgageCalculatorProps) {
             <input
               type="range"
               min={1000000}
-              max={35000000}
+              max={Math.max(350000000, initialPrice * 2)}
               step={250000}
               value={homePrice}
               onChange={(e) => setHomePrice(Number(e.target.value))}
@@ -81,8 +95,8 @@ export function MortgageCalculator({ initialPrice }: MortgageCalculatorProps) {
             <input
               type="range"
               min={3.5}
-              max={9.5}
-              step={0.125}
+              max={22.0}
+              step={0.25}
               value={interestRate}
               onChange={(e) => setInterestRate(Number(e.target.value))}
               className="w-full accent-[#5c3822] cursor-pointer"
@@ -94,13 +108,13 @@ export function MortgageCalculator({ initialPrice }: MortgageCalculatorProps) {
             <span className="block text-xs font-mono text-[#7e7365] uppercase tracking-wider mb-2">
               Amortization Term
             </span>
-            <div className="flex gap-3">
-              {[15, 30].map((term) => (
+            <div className="flex flex-wrap gap-3">
+              {terms.map((term) => (
                 <button
                   key={term}
                   type="button"
                   onClick={() => setLoanTermYears(term)}
-                  className={`flex-1 py-2.5 rounded-full text-xs font-mono uppercase tracking-wider transition-all cursor-pointer ${
+                  className={`flex-1 min-w-[100px] py-2.5 rounded-full text-xs font-mono uppercase tracking-wider transition-all cursor-pointer ${
                     loanTermYears === term
                       ? 'bg-[#5c3822] text-[#F8F4ED] shadow-inset-highlight font-bold'
                       : 'bg-[#f5efe6] text-[#1F1B16] border border-[#d8cebe] hover:bg-white'
@@ -145,7 +159,7 @@ export function MortgageCalculator({ initialPrice }: MortgageCalculatorProps) {
           </div>
 
           <p className="text-[10px] text-[#7e7365] leading-tight">
-            *Estimates provided for informational illustrative modeling. Subject to lender qualification and tax advisory review.
+            {disclaimer}
           </p>
         </div>
       </div>

@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { Button } from '@/components/ui/Button';
 import { AlertTriangle, Trash2, X } from 'lucide-react';
 
@@ -27,6 +28,12 @@ export function DeleteConfirmModal({
   isLoading = false,
   error = null,
 }: DeleteConfirmModalProps) {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && !isLoading) onClose();
@@ -41,17 +48,17 @@ export function DeleteConfirmModal({
     };
   }, [isOpen, onClose, isLoading]);
 
-  if (!isOpen) return null;
+  if (!isOpen || !mounted) return null;
 
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 animate-in fade-in duration-200">
-      {/* Backdrop */}
+  return createPortal(
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 sm:p-6 animate-in fade-in duration-200">
+      {/* Backdrop covering the ENTIRE viewport */}
       <div
-        className="fixed inset-0 bg-[#1F1B16]/65 backdrop-blur-sm transition-opacity"
+        className="fixed inset-0 bg-[#1F1B16]/75 backdrop-blur-sm transition-opacity"
         onClick={() => !isLoading && onClose()}
       />
 
-      {/* Modal Dialog */}
+      {/* Modal Dialog centered on screen */}
       <div className="relative w-full max-w-md bg-gradient-to-br from-[#fbf6f0] to-[#f5efe6] border border-[#d8cebe] rounded-[2rem] shadow-2xl overflow-hidden z-10 animate-in zoom-in-95 duration-200 p-6 space-y-5">
         {/* Top subtle highlight */}
         <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-red-500/0 via-red-500/80 to-red-500/0" />
@@ -131,6 +138,7 @@ export function DeleteConfirmModal({
           </Button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }

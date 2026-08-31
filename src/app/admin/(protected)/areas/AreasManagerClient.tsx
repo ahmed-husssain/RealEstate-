@@ -1,14 +1,14 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { GlassCard } from '@/ui/GlassCard';
 import { Button } from '@/ui/Button';
 import { Input } from '@/ui/Input';
 import { Badge } from '@/ui/Badge';
-import { updateAreaAction, createAreaAction } from '@/lib/actions/admin-areas';
-import { Edit2, Plus, CheckCircle2, AlertCircle, MapPin, X } from 'lucide-react';
+import { updateAreaAction, createAreaAction, uploadAreaHeroDirectAction } from '@/lib/actions/admin-areas';
+import { Edit2, Plus, CheckCircle2, AlertCircle, MapPin, X, UploadCloud, Loader2 } from 'lucide-react';
 
 interface AreaData {
   id: string;
@@ -18,6 +18,7 @@ interface AreaData {
   tagline: string | null;
   description: string;
   heroImage: string;
+  heroImagePublicId?: string | null;
   avgPriceSqYd: string | null;
   annualGrowth: string | null;
   isPopular: boolean;
@@ -33,8 +34,12 @@ export function AreasManagerClient({ initialAreas }: { initialAreas: AreaData[] 
   const [tagline, setTagline] = useState('');
   const [description, setDescription] = useState('');
   const [heroImage, setHeroImage] = useState('');
+  const [heroImagePublicId, setHeroImagePublicId] = useState<string | null>(null);
   const [avgPriceSqYd, setAvgPriceSqYd] = useState('');
   const [annualGrowth, setAnnualGrowth] = useState('');
+
+  const [uploadingHero, setUploadingHero] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [loading, setLoading] = useState(false);
   const [statusMsg, setStatusMsg] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
@@ -46,6 +51,7 @@ export function AreasManagerClient({ initialAreas }: { initialAreas: AreaData[] 
     setTagline(area.tagline || '');
     setDescription(area.description);
     setHeroImage(area.heroImage);
+    setHeroImagePublicId(area.heroImagePublicId || null);
     setAvgPriceSqYd(area.avgPriceSqYd || 'PKR 150,000 / Sq Yd');
     setAnnualGrowth(area.annualGrowth || '+12.0%');
   };
@@ -57,8 +63,39 @@ export function AreasManagerClient({ initialAreas }: { initialAreas: AreaData[] 
     setTagline('');
     setDescription('');
     setHeroImage('https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1200&q=80');
+    setHeroImagePublicId(null);
     setAvgPriceSqYd('PKR 120,000 / Sq Yd');
     setAnnualGrowth('+10.0%');
+  };
+
+  const handleHeroFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > 10 * 1024 * 1024) {
+      setStatusMsg({ type: 'error', text: 'Image file size must be less than 10 MB.' });
+      return;
+    }
+
+    setUploadingHero(true);
+    setStatusMsg(null);
+
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const res = await uploadAreaHeroDirectAction(formData);
+      if (res.success && res.data) {
+        setHeroImage(res.data.url);
+        setHeroImagePublicId(res.data.publicId);
+      } else {
+        setStatusMsg({ type: 'error', text: res.error || 'Failed to upload hero image.' });
+      }
+    } catch (err: any) {
+      setStatusMsg({ type: 'error', text: err?.message || 'Error uploading file.' });
+    } finally {
+      setUploadingHero(false);
+    }
   };
 
   const handleSave = async (e: React.FormEvent) => {
@@ -70,11 +107,12 @@ export function AreasManagerClient({ initialAreas }: { initialAreas: AreaData[] 
       const payload = {
         name,
         city: 'Karachi',
-        tagline,
+        tagline: tagline || null,
         description,
         heroImage,
-        avgPriceSqYd,
-        annualGrowth,
+        heroImagePublicId: heroImagePublicId || null,
+        avgPriceSqYd: avgPriceSqYd || null,
+        annualGrowth: annualGrowth || null,
         isPopular: true,
       };
 
@@ -102,45 +140,58 @@ export function AreasManagerClient({ initialAreas }: { initialAreas: AreaData[] 
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-end">
-        <Button variant="primary" size="md" onClick={openAdd} className="text-xs">
-          <Plus className="w-4 h-4" />
-          <span>Add New Karachi Area</span>
-        </Button>
+      {/* Top Banner */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h1 className="font-display font-medium text-2xl sm:text-3xl text-[#1F1B16]">
+            Karachi Neighborhoods
+          </h1>
+          <p className="text-xs sm:text-sm text-[#7e7365]">
+            Manage covered enclaves, average gaz prices, appreciation metrics, and hero banners.
+          </p>
+        </div>
+
+        {!isAddingNew && !editingArea && (
+          <Button variant="primary" size="md" onClick={openAdd} className="shrink-0 text-xs">
+            <Plus className="w-4 h-4" />
+            <span>Add New Area</span>
+          </Button>
+        )}
       </div>
 
+      {/* Notification */}
       {statusMsg && (
         <div
-          className={`p-4 rounded-2xl border text-xs flex items-center gap-2 ${
+          className={`p-4 rounded-2xl border text-xs flex items-center gap-2.5 animate-in fade-in ${
             statusMsg.type === 'success'
-              ? 'bg-green-50 border-green-200 text-green-800'
+              ? 'bg-emerald-50 border-emerald-200 text-emerald-800'
               : 'bg-red-50 border-red-200 text-red-800'
           }`}
         >
           {statusMsg.type === 'success' ? (
-            <CheckCircle2 className="w-4 h-4 shrink-0" />
+            <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
           ) : (
-            <AlertCircle className="w-4 h-4 shrink-0" />
+            <AlertCircle className="w-4 h-4 text-red-600 shrink-0" />
           )}
           <span>{statusMsg.text}</span>
         </div>
       )}
 
-      {/* Edit/Add Modal or Form */}
-      {(editingArea || isAddingNew) && (
-        <GlassCard variant="container" rounded="2rem" className="p-6 bg-white border border-[#5c3822]/40 shadow-xl space-y-4">
+      {/* Form Card */}
+      {(isAddingNew || editingArea) && (
+        <GlassCard variant="container" rounded="2rem" className="p-6 bg-[#fbf6f0] border border-[#d8cebe] space-y-4">
           <div className="flex items-center justify-between border-b border-[#d8cebe]/60 pb-3">
             <h2 className="font-display font-medium text-lg text-[#1F1B16]">
-              {editingArea ? `Edit Market Rates for ${editingArea.name}` : 'Add New Karachi Area'}
+              {editingArea ? `Edit Area: ${editingArea.name}` : 'Create New Karachi Area'}
             </h2>
             <button
               onClick={() => {
                 setEditingArea(null);
                 setIsAddingNew(false);
               }}
-              className="p-1 rounded-full hover:bg-stone-100"
+              className="p-1 rounded-full text-[#7e7365] hover:text-[#1F1B16]"
             >
-              <X className="w-5 h-5 text-[#7e7365]" />
+              <X className="w-5 h-5" />
             </button>
           </div>
 
@@ -178,12 +229,52 @@ export function AreasManagerClient({ initialAreas }: { initialAreas: AreaData[] 
               />
             </div>
 
-            <Input
-              label="Hero Cover Image URL"
-              value={heroImage}
-              onChange={(e) => setHeroImage(e.target.value)}
-              required
-            />
+            {/* Hero Cover Photo Upload */}
+            <div className="space-y-2">
+              <label className="block text-xs font-mono font-medium text-[#7e7365]">
+                Hero Cover Image
+              </label>
+              <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center">
+                {heroImage && (
+                  <div className="relative w-28 h-16 rounded-xl overflow-hidden bg-[#e5decb] border border-[#d8cebe] shrink-0">
+                    <img src={heroImage} alt="Hero preview" className="w-full h-full object-cover" />
+                  </div>
+                )}
+
+                <div className="flex-1 w-full flex items-center gap-2">
+                  <input
+                    type="url"
+                    value={heroImage}
+                    onChange={(e) => setHeroImage(e.target.value)}
+                    required
+                    placeholder="https://images.unsplash.com/... or upload via button"
+                    className="flex-1 bg-white text-[#1F1B16] border border-[#d8cebe] rounded-full px-3.5 py-2 text-xs outline-none focus:border-[#5c3822]"
+                  />
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/jpeg,image/png,image/webp"
+                    className="hidden"
+                    onChange={handleHeroFileUpload}
+                  />
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    size="sm"
+                    disabled={uploadingHero}
+                    onClick={() => fileInputRef.current?.click()}
+                    className="shrink-0 text-xs"
+                  >
+                    {uploadingHero ? (
+                      <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                    ) : (
+                      <UploadCloud className="w-3.5 h-3.5" />
+                    )}
+                    <span>{uploadingHero ? 'Uploading...' : 'Upload'}</span>
+                  </Button>
+                </div>
+              </div>
+            </div>
 
             <div className="space-y-1">
               <label className="block text-xs font-mono font-medium text-[#7e7365]">
@@ -254,14 +345,13 @@ export function AreasManagerClient({ initialAreas }: { initialAreas: AreaData[] 
 
             <div className="p-4 pt-0">
               <Button
-                type="button"
                 variant="secondary"
                 size="sm"
                 className="w-full text-xs"
                 onClick={() => openEdit(area)}
               >
                 <Edit2 className="w-3.5 h-3.5" />
-                <span>Edit Market Rates</span>
+                <span>Edit Details</span>
               </Button>
             </div>
           </GlassCard>

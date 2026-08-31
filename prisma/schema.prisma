@@ -33,6 +33,7 @@ enum PropertyType {
   COMMERCIAL
   ESTATE
   TOWNHOUSE
+  PORTION
 }
 
 enum AreaUnit {
@@ -160,10 +161,12 @@ model PropertyImage {
   id           String   @id @default(cuid())
   propertyId   String
   url          String
+  publicId     String?
   alt          String?
   isHero       Boolean  @default(false)
   displayOrder Int      @default(0)
   createdAt    DateTime @default(now())
+  updatedAt    DateTime @default(now()) @updatedAt
 
   // Relationships
   property Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
@@ -174,18 +177,19 @@ model PropertyImage {
 }
 
 model Area {
-  id           String     @id @default(cuid())
-  slug         String     @unique
-  name         String
-  city         String     @default("Karachi")
-  tagline      String?
-  description  String     @db.Text
-  heroImage    String
-  avgPriceSqYd String?    @default("PKR 150,000 / Sq Yd")
-  annualGrowth String?    @default("+12.5%")
-  isPopular    Boolean    @default(true)
-  createdAt    DateTime   @default(now())
-  updatedAt    DateTime   @updatedAt
+  id                 String     @id @default(cuid())
+  slug               String     @unique
+  name               String
+  city               String     @default("Karachi")
+  tagline            String?
+  description        String     @db.Text
+  heroImage          String
+  heroImagePublicId  String?
+  avgPriceSqYd       String?    @default("PKR 150,000 / Sq Yd")
+  annualGrowth       String?    @default("+12.5%")
+  isPopular          Boolean    @default(true)
+  createdAt          DateTime   @default(now())
+  updatedAt          DateTime   @updatedAt
 
   // Relationships
   properties Property[]

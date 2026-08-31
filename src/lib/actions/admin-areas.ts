@@ -5,15 +5,17 @@ import { z } from 'zod';
 import { requireAuthUser } from '@/lib/auth/admin';
 import { revalidatePath, updateTag } from 'next/cache';
 import { classifyAdminError } from '@/lib/errors/admin-errors';
+import { MediaService } from '@/lib/media/service';
 
 const areaSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
   city: z.string().default('Karachi'),
-  tagline: z.string().optional(),
+  tagline: z.string().optional().nullable(),
   description: z.string().min(10, 'Description is required'),
   heroImage: z.string().url('Hero image must be a valid URL'),
-  avgPriceSqYd: z.string().optional(),
-  annualGrowth: z.string().optional(),
+  heroImagePublicId: z.string().optional().nullable(),
+  avgPriceSqYd: z.string().optional().nullable(),
+  annualGrowth: z.string().optional().nullable(),
   isPopular: z.boolean().default(true),
 });
 
@@ -56,6 +58,7 @@ export async function createAreaAction(rawData: any) {
         tagline: validated.tagline?.trim(),
         description: validated.description.trim(),
         heroImage: validated.heroImage,
+        heroImagePublicId: validated.heroImagePublicId || null,
         avgPriceSqYd: validated.avgPriceSqYd || 'PKR 150,000 / Sq Yd',
         annualGrowth: validated.annualGrowth || '+12.5%',
         isPopular: validated.isPopular,
@@ -83,6 +86,14 @@ export async function updateAreaAction(areaId: string, rawData: any) {
     await requireAuthUser();
     const validated = areaSchema.parse(rawData);
 
+    const existing = await prisma.area.findUnique({
+      where: { id: areaId },
+    });
+
+    if (!existing) {
+      return { success: false, error: 'Area not found' };
+    }
+
     const updated = await prisma.area.update({
       where: { id: areaId },
       data: {
@@ -91,11 +102,23 @@ export async function updateAreaAction(areaId: string, rawData: any) {
         tagline: validated.tagline?.trim(),
         description: validated.description.trim(),
         heroImage: validated.heroImage,
+        heroImagePublicId: validated.heroImagePublicId || existing.heroImagePublicId,
         avgPriceSqYd: validated.avgPriceSqYd,
         annualGrowth: validated.annualGrowth,
         isPopular: validated.isPopular,
       },
     });
+
+    // If hero image changed and old image had a publicId, delete old asset from Cloudinary
+    if (
+      existing.heroImagePublicId &&
+      validated.heroImagePublicId &&
+      existing.heroImagePublicId !== validated.heroImagePublicId
+    ) {
+      MediaService.deleteAsset(existing.heroImagePublicId).catch((err) =>
+        console.error('Failed to delete old area hero image from Cloudinary:', err)
+      );
+    }
 
     revalidatePath('/neighborhoods');
     revalidatePath(`/neighborhoods/${updated.slug}`);
@@ -141,6 +164,13 @@ export async function deleteAreaAction(areaId: string) {
       where: { id: areaId },
     });
 
+    // Cleanup hero image from Cloudinary
+    if (area.heroImagePublicId) {
+      MediaService.deleteAsset(area.heroImagePublicId).catch((err) =>
+        console.error('Failed to delete area hero from Cloudinary:', err)
+      );
+    }
+
     revalidatePath('/neighborhoods');
     revalidatePath('/admin/areas');
     revalidatePath('/admin');
@@ -153,6 +183,34 @@ export async function deleteAreaAction(areaId: string) {
   } catch (error: any) {
     console.error('Error deleting area:', error);
     const classified = classifyAdminError(error, 'Failed to delete area.');
+    return { success: false, error: classified.message };
+  }
+}
+
+export async function uploadAreaHeroDirectAction(formData: FormData) {
+  try {
+    await requireAuthUser();
+
+    const file = formData.get('file') as File | null;
+    if (!file) {
+      return { success: false, error: 'No file was provided for upload.' };
+    }
+
+    const arrayBuffer = await file.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
+
+    const uploaded = await MediaService.uploadAreaPhoto(buffer, file.type);
+
+    return {
+      success: true,
+      data: {
+        url: uploaded.url,
+        publicId: uploaded.publicId,
+      },
+    };
+  } catch (error: any) {
+    console.error('Error uploading area hero image:', error);
+    const classified = classifyAdminError(error, 'Failed to upload area image.');
     return { success: false, error: classified.message };
   }
 }

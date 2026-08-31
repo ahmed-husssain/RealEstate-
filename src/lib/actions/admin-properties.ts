@@ -6,14 +6,23 @@ import { requireAuthUser } from '@/lib/auth/admin';
 import { PropertyStatus, PropertyType, AreaUnit, PropertyCondition } from '@prisma/client';
 import { revalidatePath, updateTag } from 'next/cache';
 import { classifyAdminError } from '@/lib/errors/admin-errors';
+import { MediaService } from '@/lib/media/service';
+
+const propertyImageSchema = z.object({
+  url: z.string().url('Invalid image URL'),
+  publicId: z.string().optional().nullable(),
+  alt: z.string().optional().nullable(),
+  isHero: z.boolean().default(false),
+  displayOrder: z.number().default(0),
+});
 
 const propertyInputSchema = z.object({
   title: z.string().min(5, 'Title must be at least 5 characters'),
-  tagline: z.string().optional(),
+  tagline: z.string().optional().nullable(),
   description: z.string().min(10, 'Description must be at least 10 characters'),
   price: z.number().positive('Price must be greater than 0'),
-  priceFormatted: z.string().optional(),
-  priceSuffix: z.string().optional(),
+  priceFormatted: z.string().optional().nullable(),
+  priceSuffix: z.string().optional().nullable(),
   status: z.nativeEnum(PropertyStatus).default(PropertyStatus.FOR_SALE),
   isFeatured: z.boolean().default(false),
   propertyType: z.nativeEnum(PropertyType).default(PropertyType.HOUSE),
@@ -21,20 +30,16 @@ const propertyInputSchema = z.object({
   bathrooms: z.number().int().min(0),
   areaSize: z.number().positive('Area size must be greater than 0'),
   areaUnit: z.nativeEnum(AreaUnit).default(AreaUnit.SQYD),
-  yearBuilt: z.number().int().optional(),
+  yearBuilt: z.number().int().optional().nullable(),
   parkingSpaces: z.number().int().min(0).default(0),
   condition: z.nativeEnum(PropertyCondition).default(PropertyCondition.GOOD),
   address: z.string().min(3, 'Address is required'),
   areaId: z.string().min(1, 'Please select a Karachi Area'),
   amenities: z.array(z.string()).default([]),
-  images: z.array(
-    z.object({
-      url: z.string().url('Invalid image URL'),
-      alt: z.string().optional(),
-      isHero: z.boolean().default(false),
-      displayOrder: z.number().default(0),
-    })
-  ).min(1, 'At least one image is required'),
+  images: z
+    .array(propertyImageSchema)
+    .min(1, 'At least one image is required')
+    .max(5, 'Maximum 5 images allowed per property'),
 });
 
 // Collision-free slug generator
@@ -66,7 +71,7 @@ async function generateUniqueSlug(title: string, excludePropertyId?: string): Pr
 
 export async function createPropertyAction(rawData: any) {
   try {
-    const user = await requireAuthUser();
+    await requireAuthUser();
     const validated = propertyInputSchema.parse(rawData);
 
     const slug = await generateUniqueSlug(validated.title);
@@ -109,6 +114,7 @@ export async function createPropertyAction(rawData: any) {
           images: {
             create: validated.images.map((img, idx) => ({
               url: img.url,
+              publicId: img.publicId || null,
               alt: img.alt || validated.title,
               isHero: idx === 0 || img.isHero,
               displayOrder: img.displayOrder || idx,
@@ -150,6 +156,7 @@ export async function updatePropertyAction(propertyId: string, rawData: any) {
 
     const existing = await prisma.property.findUnique({
       where: { id: propertyId },
+      include: { images: true },
     });
 
     if (!existing) {
@@ -174,13 +181,19 @@ export async function updatePropertyAction(propertyId: string, rawData: any) {
       }
     }
 
+    // Identify old images that were removed in the update to delete from Cloudinary
+    const newPublicIds = new Set(validated.images.map((img) => img.publicId).filter(Boolean));
+    const removedImages = existing.images.filter(
+      (oldImg) => oldImg.publicId && !newPublicIds.has(oldImg.publicId)
+    );
+
     const updated = await prisma.$transaction(async (tx) => {
-      // Delete old images
+      // Delete old images from DB
       await tx.propertyImage.deleteMany({
         where: { propertyId },
       });
 
-      // Update property and recreate images
+      // Update property and recreate image records
       return tx.property.update({
         where: { id: propertyId },
         data: {
@@ -207,6 +220,7 @@ export async function updatePropertyAction(propertyId: string, rawData: any) {
           images: {
             create: validated.images.map((img, idx) => ({
               url: img.url,
+              publicId: img.publicId || null,
               alt: img.alt || validated.title,
               isHero: idx === 0 || img.isHero,
               displayOrder: img.displayOrder || idx,
@@ -219,6 +233,13 @@ export async function updatePropertyAction(propertyId: string, rawData: any) {
         },
       });
     });
+
+    // Cleanup removed assets from Cloudinary in background
+    if (removedImages.length > 0) {
+      Promise.all(removedImages.map((img) => MediaService.deleteAsset(img.publicId))).catch((err) =>
+        console.error('Background Cloudinary cleanup error:', err)
+      );
+    }
 
     revalidatePath('/properties');
     revalidatePath(`/properties/${existing.slug}`);
@@ -248,7 +269,7 @@ export async function deletePropertyAction(propertyId: string) {
 
     const property = await prisma.property.findUnique({
       where: { id: propertyId },
-      select: { slug: true, title: true },
+      include: { images: true },
     });
 
     if (!property) {
@@ -258,6 +279,13 @@ export async function deletePropertyAction(propertyId: string) {
     await prisma.property.delete({
       where: { id: propertyId },
     });
+
+    // Clean up all Cloudinary assets associated with this property
+    if (property.images && property.images.length > 0) {
+      Promise.all(property.images.map((img) => MediaService.deleteAsset(img.publicId))).catch((err) =>
+        console.error('Failed to cleanup Cloudinary assets on property delete:', err)
+      );
+    }
 
     revalidatePath('/properties');
     revalidatePath(`/properties/${property.slug}`);
@@ -276,51 +304,56 @@ export async function deletePropertyAction(propertyId: string) {
   }
 }
 
-export async function getAdminPropertiesAction(filters?: {
-  search?: string;
-  status?: string;
-  propertyType?: string;
-}) {
+/**
+ * Direct Image Upload Server Action for Property Gallery Uploader.
+ * Enforces strict max 5 images per property.
+ */
+export async function uploadPropertyImageDirectAction(formData: FormData) {
   try {
     await requireAuthUser();
 
-    const where: any = {};
-    if (filters?.search) {
-      where.OR = [
-        { title: { contains: filters.search, mode: 'insensitive' } },
-        { address: { contains: filters.search, mode: 'insensitive' } },
-        { area: { name: { contains: filters.search, mode: 'insensitive' } } },
-      ];
+    const file = formData.get('file') as File | null;
+    if (!file) {
+      return { success: false, error: 'No file was provided for upload.' };
     }
 
-    if (filters?.status && filters.status !== 'all') {
-      where.status = filters.status as PropertyStatus;
-    }
+    const arrayBuffer = await file.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
 
-    if (filters?.propertyType && filters.propertyType !== 'all') {
-      where.propertyType = filters.propertyType as PropertyType;
-    }
-
-    const properties = await prisma.property.findMany({
-      where,
-      orderBy: { createdAt: 'desc' },
-      include: {
-        area: true,
-        images: {
-          orderBy: { displayOrder: 'asc' },
-        },
-      },
-    });
+    // Upload to Cloudinary via MediaService
+    const uploaded = await MediaService.uploadPropertyPhoto(buffer, file.type);
 
     return {
       success: true,
-      data: properties.map((p) => ({
-        ...p,
-        price: Number(p.price),
-        areaSize: Number(p.areaSize),
-      })),
+      data: {
+        url: uploaded.url,
+        publicId: uploaded.publicId,
+        width: uploaded.width,
+        height: uploaded.height,
+        format: uploaded.format,
+      },
     };
   } catch (error: any) {
-    return { success: false, error: error.message };
+    console.error('Error uploading property image:', error);
+    const classified = classifyAdminError(error, 'Failed to upload image.');
+    return { success: false, error: classified.message };
+  }
+}
+
+/**
+ * Direct Image Deletion Action (removes asset from Cloudinary immediately).
+ */
+export async function deleteUploadedImageDirectAction(publicId: string) {
+  try {
+    await requireAuthUser();
+    if (!publicId) {
+      return { success: false, error: 'Asset publicId is required.' };
+    }
+
+    await MediaService.deleteAsset(publicId);
+    return { success: true };
+  } catch (error: any) {
+    console.error('Error deleting asset from Cloudinary:', error);
+    return { success: false, error: 'Failed to delete media asset.' };
   }
 }

@@ -4,23 +4,29 @@ import type { NextRequest } from 'next/server';
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Only guard /admin routes
-  if (pathname.startsWith('/admin')) {
+  // Only guard protected /admin routes (exclude /admin/login)
+  if (pathname.startsWith('/admin') && pathname !== '/admin/login') {
     const sessionCookie = request.cookies.get('amber_admin_session');
-    const isLoginPage = pathname === '/admin/login';
 
-    if (!sessionCookie?.value && !isLoginPage) {
+    if (!sessionCookie?.value) {
       const loginUrl = new URL('/admin/login', request.url);
       loginUrl.searchParams.set('from', pathname);
-      return NextResponse.redirect(loginUrl);
-    }
-
-    if (sessionCookie?.value && isLoginPage) {
-      return NextResponse.redirect(new URL('/admin', request.url));
+      const redirectResponse = NextResponse.redirect(loginUrl);
+      redirectResponse.headers.set('Cache-Control', 'private, no-store, max-age=0, must-revalidate');
+      redirectResponse.headers.set('Pragma', 'no-cache');
+      return redirectResponse;
     }
   }
 
-  return NextResponse.next();
+  const response = NextResponse.next();
+
+  // Apply strict private no-store headers exclusively to /admin routes (never to public pages)
+  if (pathname.startsWith('/admin')) {
+    response.headers.set('Cache-Control', 'private, no-store, max-age=0, must-revalidate');
+    response.headers.set('Pragma', 'no-cache');
+  }
+
+  return response;
 }
 
 export const config = {

@@ -12,6 +12,7 @@ import {
 } from '@/lib/auth/admin';
 import { checkRateLimit, resetRateLimit, getClientIp } from '@/lib/security/rate-limit';
 import { revalidatePath } from 'next/cache';
+import { classifyAdminError } from '@/lib/errors/admin-errors';
 
 const loginSchema = z.object({
   email: z
@@ -59,12 +60,12 @@ export async function loginAdminAction(data: { email: string; password: string }
 
     // Constant-time check mitigation: generic rejection for nonexistent or inactive user
     if (!user || !user.isActive) {
-      return { success: false, error: 'Invalid email or password. Access denied.' };
+      return { success: false, error: 'Invalid email or password.' };
     }
 
     const isValid = await verifyPassword(validated.password, user.passwordHash);
     if (!isValid) {
-      return { success: false, error: 'Invalid email or password. Access denied.' };
+      return { success: false, error: 'Invalid email or password.' };
     }
 
     // Reset rate limiter on successful authentication
@@ -95,10 +96,9 @@ export async function loginAdminAction(data: { email: string; password: string }
       },
     };
   } catch (error: any) {
-    if (error instanceof z.ZodError) {
-      return { success: false, error: error.issues[0]?.message || 'Validation failed' };
-    }
-    return { success: false, error: 'An error occurred during authentication. Access denied.' };
+    console.error('Error in loginAdminAction:', error);
+    const classified = classifyAdminError(error, 'An error occurred during authentication.');
+    return { success: false, error: classified.message };
   }
 }
 
@@ -107,7 +107,8 @@ export async function logoutAdminAction() {
     await clearAdminSessionCookie();
     return { success: true };
   } catch (error: any) {
-    return { success: false, error: error.message };
+    console.error('Error in logoutAdminAction:', error);
+    return { success: false, error: 'Failed to sign out cleanly.' };
   }
 }
 
@@ -126,7 +127,7 @@ export async function updateMyPasswordAction(data: {
     });
 
     if (!user) {
-      return { success: false, error: 'User not found' };
+      return { success: false, error: 'User account not found' };
     }
 
     const isCurrentValid = await verifyPassword(validated.currentPassword, user.passwordHash);
@@ -143,10 +144,9 @@ export async function updateMyPasswordAction(data: {
 
     return { success: true, message: 'Password updated successfully' };
   } catch (error: any) {
-    if (error instanceof z.ZodError) {
-      return { success: false, error: error.issues[0]?.message || 'Validation failed' };
-    }
-    return { success: false, error: error.message || 'Failed to update password' };
+    console.error('Error in updateMyPasswordAction:', error);
+    const classified = classifyAdminError(error, 'Failed to update password.');
+    return { success: false, error: classified.message };
   }
 }
 
@@ -165,6 +165,8 @@ export async function updateMyProfileAction(data: { name: string }) {
     revalidatePath('/admin');
     return { success: true, message: 'Profile updated successfully' };
   } catch (error: any) {
-    return { success: false, error: error.message || 'Failed to update profile' };
+    console.error('Error in updateMyProfileAction:', error);
+    const classified = classifyAdminError(error, 'Failed to update profile.');
+    return { success: false, error: classified.message };
   }
 }

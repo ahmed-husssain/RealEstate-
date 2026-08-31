@@ -4,6 +4,7 @@ import prisma from '@/lib/prisma';
 import { z } from 'zod';
 import { requireAuthUser } from '@/lib/auth/admin';
 import { revalidatePath, updateTag } from 'next/cache';
+import { classifyAdminError } from '@/lib/errors/admin-errors';
 
 const areaSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
@@ -71,10 +72,9 @@ export async function createAreaAction(rawData: any) {
 
     return { success: true, area, message: `Area "${area.name}" created successfully` };
   } catch (error: any) {
-    if (error instanceof z.ZodError) {
-      return { success: false, error: error.issues[0]?.message || 'Validation failed' };
-    }
-    return { success: false, error: error.message || 'Failed to create area' };
+    console.error('Error creating area:', error);
+    const classified = classifyAdminError(error, 'Failed to create area.');
+    return { success: false, error: classified.message };
   }
 }
 
@@ -109,10 +109,9 @@ export async function updateAreaAction(areaId: string, rawData: any) {
 
     return { success: true, area: updated, message: `Area "${updated.name}" updated successfully` };
   } catch (error: any) {
-    if (error instanceof z.ZodError) {
-      return { success: false, error: error.issues[0]?.message || 'Validation failed' };
-    }
-    return { success: false, error: error.message || 'Failed to update area' };
+    console.error('Error updating area:', error);
+    const classified = classifyAdminError(error, 'Failed to update area.');
+    return { success: false, error: classified.message };
   }
 }
 
@@ -152,6 +151,8 @@ export async function deleteAreaAction(areaId: string) {
 
     return { success: true, message: `Area "${area.name}" deleted` };
   } catch (error: any) {
-    return { success: false, error: error.message || 'Failed to delete area' };
+    console.error('Error deleting area:', error);
+    const classified = classifyAdminError(error, 'Failed to delete area.');
+    return { success: false, error: classified.message };
   }
 }

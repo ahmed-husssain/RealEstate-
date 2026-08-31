@@ -5,6 +5,7 @@ import { z } from 'zod';
 import { requireAuthUser } from '@/lib/auth/admin';
 import { PropertyStatus, PropertyType, AreaUnit, PropertyCondition } from '@prisma/client';
 import { revalidatePath, updateTag } from 'next/cache';
+import { classifyAdminError } from '@/lib/errors/admin-errors';
 
 const propertyInputSchema = z.object({
   title: z.string().min(5, 'Title must be at least 5 characters'),
@@ -137,10 +138,8 @@ export async function createPropertyAction(rawData: any) {
     };
   } catch (error: any) {
     console.error('Error creating property:', error);
-    if (error instanceof z.ZodError) {
-      return { success: false, error: error.issues[0]?.message || 'Validation failed' };
-    }
-    return { success: false, error: error.message || 'Failed to create property listing' };
+    const classified = classifyAdminError(error, 'Failed to create property listing.');
+    return { success: false, error: classified.message };
   }
 }
 
@@ -238,10 +237,8 @@ export async function updatePropertyAction(propertyId: string, rawData: any) {
     };
   } catch (error: any) {
     console.error('Error updating property:', error);
-    if (error instanceof z.ZodError) {
-      return { success: false, error: error.issues[0]?.message || 'Validation failed' };
-    }
-    return { success: false, error: error.message || 'Failed to update property listing' };
+    const classified = classifyAdminError(error, 'Failed to update property listing.');
+    return { success: false, error: classified.message };
   }
 }
 
@@ -273,7 +270,9 @@ export async function deletePropertyAction(propertyId: string) {
 
     return { success: true, message: `Property "${property.title}" deleted successfully` };
   } catch (error: any) {
-    return { success: false, error: error.message || 'Failed to delete property' };
+    console.error('Error deleting property:', error);
+    const classified = classifyAdminError(error, 'Failed to delete property.');
+    return { success: false, error: classified.message };
   }
 }
 

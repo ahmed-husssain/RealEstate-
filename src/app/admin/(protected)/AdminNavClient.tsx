@@ -53,8 +53,7 @@ export function AdminNavClient({ user }: AdminNavClientProps) {
   const handleLogout = async () => {
     setLoggingOut(true);
     await logoutAdminAction();
-    router.push('/admin/login');
-    router.refresh();
+    window.location.replace('/admin/login?loggedOut=1');
   };
 
   return (

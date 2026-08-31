@@ -3,6 +3,7 @@
 import prisma from '@/lib/prisma';
 import { requireAuthUser } from '@/lib/auth/admin';
 import { revalidatePath, updateTag } from 'next/cache';
+import { classifyAdminError } from '@/lib/errors/admin-errors';
 
 export interface SiteSettingsMap {
   hero_headline?: string;
@@ -27,7 +28,8 @@ export async function getSiteSettingsAction(): Promise<{ success: boolean; data:
     return { success: true, data: map };
   } catch (error: any) {
     console.error('Error in getSiteSettingsAction:', error);
-    return { success: false, data: {}, error: error.message || 'Database query error' };
+    const classified = classifyAdminError(error, 'Failed to load website settings.');
+    return { success: false, data: {}, error: classified.message };
   }
 }
 
@@ -93,9 +95,10 @@ export async function updateSiteSettingsAction(settings: Record<string, string>)
     };
   } catch (error: any) {
     console.error('Exception in updateSiteSettingsAction:', error);
+    const classified = classifyAdminError(error, 'An error occurred while saving website content.');
     return {
       success: false,
-      error: error.message || 'An unexpected database error occurred while saving settings.',
+      error: classified.message,
     };
   }
 }

@@ -156,10 +156,10 @@ export function Footer({ siteSettings = DEFAULT_SITE_SETTINGS }: FooterProps) {
               Contact Office
             </Link>
             <Link
-              href="/admin/login"
+              href="/admin"
               className="hover:text-[#F8F4ED] text-[#F8F4ED] font-semibold transition-colors inline-flex items-center gap-1.5 py-1 px-3 rounded-lg bg-[#2e261f] border border-[#6E7A67]/40 hover:border-[#D8CEBE] cursor-pointer shadow-sm"
             >
-              <span>Admin Login</span>
+              <span>Admin Portal</span>
               <ArrowUpRight className="w-3 h-3 text-[#D8CEBE]" />
             </Link>
           </div>

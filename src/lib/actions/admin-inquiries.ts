@@ -4,6 +4,7 @@ import prisma from '@/lib/prisma';
 import { requireAuthUser } from '@/lib/auth/admin';
 import { InquiryStatus, ValuationStatus } from '@prisma/client';
 import { revalidatePath, updateTag } from 'next/cache';
+import { classifyAdminError } from '@/lib/errors/admin-errors';
 
 export async function getAdminInquiriesAction() {
   try {
@@ -20,7 +21,9 @@ export async function getAdminInquiriesAction() {
 
     return { success: true, data: inquiries };
   } catch (error: any) {
-    return { success: false, error: error.message || 'Failed to load inquiries' };
+    console.error('Error in getAdminInquiriesAction:', error);
+    const classified = classifyAdminError(error, 'Failed to load inquiries.');
+    return { success: false, error: classified.message };
   }
 }
 
@@ -40,7 +43,9 @@ export async function updateInquiryStatusAction(inquiryId: string, status: Inqui
 
     return { success: true, message: `Inquiry status changed to ${status}` };
   } catch (error: any) {
-    return { success: false, error: error.message || 'Failed to update inquiry status' };
+    console.error('Error in updateInquiryStatusAction:', error);
+    const classified = classifyAdminError(error, 'Failed to update inquiry status.');
+    return { success: false, error: classified.message };
   }
 }
 
@@ -59,7 +64,9 @@ export async function deleteInquiryAction(inquiryId: string) {
 
     return { success: true, message: 'Inquiry record deleted' };
   } catch (error: any) {
-    return { success: false, error: error.message || 'Failed to delete inquiry' };
+    console.error('Error in deleteInquiryAction:', error);
+    const classified = classifyAdminError(error, 'Failed to delete inquiry.');
+    return { success: false, error: classified.message };
   }
 }
 
@@ -81,7 +88,9 @@ export async function getAdminValuationsAction() {
       })),
     };
   } catch (error: any) {
-    return { success: false, error: error.message || 'Failed to load valuations' };
+    console.error('Error in getAdminValuationsAction:', error);
+    const classified = classifyAdminError(error, 'Failed to load valuations.');
+    return { success: false, error: classified.message };
   }
 }
 
@@ -101,6 +110,8 @@ export async function updateValuationStatusAction(valuationId: string, status: V
 
     return { success: true, message: `Valuation status changed to ${status}` };
   } catch (error: any) {
-    return { success: false, error: error.message || 'Failed to update valuation status' };
+    console.error('Error in updateValuationStatusAction:', error);
+    const classified = classifyAdminError(error, 'Failed to update valuation status.');
+    return { success: false, error: classified.message };
   }
 }

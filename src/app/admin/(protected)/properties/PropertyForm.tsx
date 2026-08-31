@@ -150,7 +150,6 @@ export function PropertyForm({ initialData, areas, isEdit = false }: PropertyFor
         setSuccessMsg(res.message || 'Saved successfully');
         setTimeout(() => {
           router.push('/admin/properties');
-          router.refresh();
         }, 800);
       } else {
         setError(res.error || 'Failed to save property');

@@ -1,23 +1,22 @@
 import React from 'react';
-import { getCurrentAdminUser } from '@/lib/auth/admin';
+import { requireAuthUserPage } from '@/lib/auth/admin';
 import { AdminNavClient } from './AdminNavClient';
+import { AdminSessionGuard } from './AdminSessionGuard';
 
 export const dynamic = 'force-dynamic';
 
-export default async function AdminLayout({
+export default async function ProtectedAdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const user = await getCurrentAdminUser();
-
-  // If on login page or unauthenticated, render children directly (middleware will guard protected paths)
-  if (!user) {
-    return <>{children}</>;
-  }
+  const user = await requireAuthUserPage();
 
   return (
     <div className="min-h-screen bg-[#f5efe6] flex flex-col md:flex-row text-[#1F1B16]">
+      {/* Client-Side BFCache Recovery Guard */}
+      <AdminSessionGuard />
+
       {/* Sidebar Navigation */}
       <AdminNavClient user={user} />
 

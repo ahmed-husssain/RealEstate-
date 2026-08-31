@@ -5,6 +5,7 @@ import { z } from 'zod';
 import { requireSuperAdminRole, hashPassword } from '@/lib/auth/admin';
 import { AdminRole } from '@prisma/client';
 import { revalidatePath, updateTag } from 'next/cache';
+import { classifyAdminError } from '@/lib/errors/admin-errors';
 
 const createUserSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
@@ -32,7 +33,9 @@ export async function getTeamUsersAction() {
 
     return { success: true, data: users };
   } catch (error: any) {
-    return { success: false, error: error.message || 'Failed to load team users' };
+    console.error('Error in getTeamUsersAction:', error);
+    const classified = classifyAdminError(error, 'Failed to load team users.');
+    return { success: false, error: classified.message };
   }
 }
 
@@ -80,10 +83,9 @@ export async function createTeamUserAction(data: {
 
     return { success: true, user: newUser, message: `Account created for ${newUser.name}` };
   } catch (error: any) {
-    if (error instanceof z.ZodError) {
-      return { success: false, error: error.issues[0]?.message || 'Validation failed' };
-    }
-    return { success: false, error: error.message || 'Failed to create user account' };
+    console.error('Error in createTeamUserAction:', error);
+    const classified = classifyAdminError(error, 'Failed to create user account.');
+    return { success: false, error: classified.message };
   }
 }
 
@@ -118,7 +120,9 @@ export async function toggleUserActiveAction(userId: string) {
       message: `User ${updated.name} has been ${updated.isActive ? 'activated' : 'suspended'}`,
     };
   } catch (error: any) {
-    return { success: false, error: error.message || 'Failed to update user status' };
+    console.error('Error in toggleUserActiveAction:', error);
+    const classified = classifyAdminError(error, 'Failed to update user status.');
+    return { success: false, error: classified.message };
   }
 }
 
@@ -143,7 +147,9 @@ export async function resetUserPasswordAction(userId: string, newPassword: strin
 
     return { success: true, message: 'User password reset successfully' };
   } catch (error: any) {
-    return { success: false, error: error.message || 'Failed to reset password' };
+    console.error('Error in resetUserPasswordAction:', error);
+    const classified = classifyAdminError(error, 'Failed to reset password.');
+    return { success: false, error: classified.message };
   }
 }
 
@@ -166,6 +172,8 @@ export async function deleteTeamUserAction(userId: string) {
 
     return { success: true, message: 'User account deleted successfully' };
   } catch (error: any) {
-    return { success: false, error: error.message || 'Failed to delete user' };
+    console.error('Error in deleteTeamUserAction:', error);
+    const classified = classifyAdminError(error, 'Failed to delete user.');
+    return { success: false, error: classified.message };
   }
 }

@@ -73,13 +73,25 @@ export function PropertyForm({ initialData, areas, isEdit = false }: PropertyFor
   );
   const [isFeatured, setIsFeatured] = useState<boolean>(initialData?.isFeatured || false);
 
-  const [bedrooms, setBedrooms] = useState<number | string>(initialData?.bedrooms ?? (propertyType === PropertyType.PLOT ? '' : 4));
-  const [bathrooms, setBathrooms] = useState<number | string>(initialData?.bathrooms ?? (propertyType === PropertyType.PLOT ? '' : 4));
-  const [areaSize, setAreaSize] = useState<number | string>(initialData ? Number(initialData.areaSize) : 240);
+  const [bedrooms, setBedrooms] = useState<number | string>(
+    initialData?.bedrooms ?? (propertyType === PropertyType.PLOT ? '' : 4)
+  );
+  const [bathrooms, setBathrooms] = useState<number | string>(
+    initialData?.bathrooms ?? (propertyType === PropertyType.PLOT ? '' : 4)
+  );
+  const [areaSize, setAreaSize] = useState<number | string>(
+    initialData ? Number(initialData.areaSize) : 240
+  );
   const [areaUnit, setAreaUnit] = useState<AreaUnit>(initialData?.areaUnit || AreaUnit.SQYD);
-  const [yearBuilt, setYearBuilt] = useState<number | string>(initialData?.yearBuilt ?? (propertyType === PropertyType.PLOT ? '' : 2024));
-  const [parkingSpaces, setParkingSpaces] = useState<number | string>(initialData?.parkingSpaces ?? (propertyType === PropertyType.PLOT ? '' : 2));
-  const [condition, setCondition] = useState<PropertyCondition>(initialData?.condition || PropertyCondition.GOOD);
+  const [yearBuilt, setYearBuilt] = useState<number | string>(
+    initialData?.yearBuilt ?? (propertyType === PropertyType.PLOT ? '' : 2024)
+  );
+  const [parkingSpaces, setParkingSpaces] = useState<number | string>(
+    initialData?.parkingSpaces ?? (propertyType === PropertyType.PLOT ? '' : 2)
+  );
+  const [condition, setCondition] = useState<PropertyCondition>(
+    initialData?.condition || PropertyCondition.GOOD
+  );
 
   const [address, setAddress] = useState(initialData?.address || '');
   const [areaId, setAreaId] = useState(initialData?.areaId || (areas[0]?.id || ''));
@@ -109,6 +121,7 @@ export function PropertyForm({ initialData, areas, isEdit = false }: PropertyFor
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
 
   const isPlot = propertyType === PropertyType.PLOT;
   const isCommercial = propertyType === PropertyType.COMMERCIAL;
@@ -118,6 +131,29 @@ export function PropertyForm({ initialData, areas, isEdit = false }: PropertyFor
   const sanitizeNumberInput = (val: string): string => {
     if (val === '') return '';
     return val.replace(/^0+(?=\d)/, '');
+  };
+
+  const clearFieldError = (field: string) => {
+    if (fieldErrors[field]) {
+      setFieldErrors((prev) => {
+        const next = { ...prev };
+        delete next[field];
+        return next;
+      });
+    }
+  };
+
+  const scrollToElement = (id: string) => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      const input = el.querySelector('input, textarea, select') as HTMLElement | null;
+      if (input) {
+        input.focus();
+      } else {
+        el.focus();
+      }
+    }
   };
 
   const addAmenity = (text?: string) => {
@@ -144,31 +180,63 @@ export function PropertyForm({ initialData, areas, isEdit = false }: PropertyFor
     e.preventDefault();
     setError('');
     setSuccessMsg('');
+    setFieldErrors({});
 
-    if (images.length === 0) {
-      setError('Please upload at least one photo for this property listing.');
-      return;
+    const newErrors: Record<string, string> = {};
+
+    // 1. Title validation
+    if (!title.trim()) {
+      newErrors.title = 'Please enter a property listing title.';
+    } else if (title.trim().length < 5) {
+      newErrors.title = 'Listing title must be at least 5 characters.';
     }
 
-    if (images.length > 5) {
-      setError('Maximum 5 photos are allowed per property.');
-      return;
+    // 2. Description validation
+    if (!description.trim()) {
+      newErrors.description = 'Detailed property description is required.';
+    } else if (description.trim().length < 15) {
+      newErrors.description = 'Please provide a descriptive overview (at least 15 characters).';
     }
 
-    if (!areaId) {
-      setError('Please select a Karachi Area / Neighborhood.');
-      return;
-    }
-
+    // 3. Price validation
     const numericPrice = Number(price);
     if (!numericPrice || numericPrice <= 0) {
-      setError('Please enter a valid price greater than 0.');
-      return;
+      newErrors.price = 'Please enter a valid price/rent amount greater than 0.';
     }
 
+    // 4. Address validation
+    if (!address.trim()) {
+      newErrors.address = 'Street address or block details are required.';
+    }
+
+    // 5. Area / Neighborhood validation
+    if (!areaId) {
+      newErrors.areaId = 'Please select a Karachi Area / Neighborhood.';
+    }
+
+    // 6. Area size validation
     const numericAreaSize = Number(areaSize);
     if (!numericAreaSize || numericAreaSize <= 0) {
-      setError('Please enter a valid area size greater than 0.');
+      newErrors.areaSize = 'Please enter a valid land/covered area size greater than 0.';
+    }
+
+    // 7. Photos validation
+    if (images.length === 0) {
+      newErrors.images = 'Please upload at least one photo for this property listing.';
+    } else if (images.length > 5) {
+      newErrors.images = 'Maximum 5 photos are allowed per property.';
+    }
+
+    // If validation errors exist, slide to the first erroneous field
+    if (Object.keys(newErrors).length > 0) {
+      setFieldErrors(newErrors);
+      const firstErrorField = Object.keys(newErrors)[0];
+      const targetId = `field-${firstErrorField}`;
+
+      setError(`Please complete the required field: ${Object.values(newErrors)[0]}`);
+      setTimeout(() => {
+        scrollToElement(targetId);
+      }, 50);
       return;
     }
 
@@ -187,7 +255,7 @@ export function PropertyForm({ initialData, areas, isEdit = false }: PropertyFor
       bathrooms: isPlot ? 0 : Number(bathrooms) || 0,
       areaSize: numericAreaSize,
       areaUnit,
-      yearBuilt: isPlot ? null : (yearBuilt ? Number(yearBuilt) : null),
+      yearBuilt: isPlot ? null : yearBuilt ? Number(yearBuilt) : null,
       parkingSpaces: isPlot ? 0 : Number(parkingSpaces) || 0,
       condition: isPlot ? PropertyCondition.GOOD : condition,
       address,
@@ -211,23 +279,32 @@ export function PropertyForm({ initialData, areas, isEdit = false }: PropertyFor
       }
 
       if (res.success) {
-        setSuccessMsg(isEdit ? 'Property updated successfully!' : 'Property published successfully!');
+        setSuccessMsg(
+          isEdit
+            ? 'Property updated successfully! Returning to catalog...'
+            : 'Property published successfully! Returning to catalog...'
+        );
+
+        // Pre-refresh and navigate cleanly
+        router.refresh();
         setTimeout(() => {
           router.push('/admin/properties');
           router.refresh();
-        }, 1200);
+        }, 700);
       } else {
         setError(res.error || 'Failed to save property listing.');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       }
     } catch (err: any) {
       setError(err?.message || 'A network error occurred while submitting.');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-8 max-w-4xl pb-16">
+    <form onSubmit={handleSubmit} noValidate className="space-y-8 max-w-4xl pb-16">
       {/* Top Controls */}
       <div className="flex items-center justify-between">
         <Link
@@ -252,16 +329,16 @@ export function PropertyForm({ initialData, areas, isEdit = false }: PropertyFor
 
       {/* Alerts */}
       {error && (
-        <div className="p-4 rounded-2xl bg-red-50 border border-red-200 text-xs text-red-700 flex items-center gap-2.5 animate-in fade-in">
-          <AlertCircle className="w-4 h-4 shrink-0" />
-          <span>{error}</span>
+        <div className="p-4 rounded-2xl bg-red-50 border border-red-200 text-xs text-red-700 flex items-center gap-2.5 animate-in fade-in shadow-sm">
+          <AlertCircle className="w-4 h-4 shrink-0 text-red-600" />
+          <span className="font-medium">{error}</span>
         </div>
       )}
 
       {successMsg && (
-        <div className="p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-xs text-emerald-700 flex items-center gap-2.5 animate-in fade-in">
-          <CheckCircle2 className="w-4 h-4 shrink-0" />
-          <span>{successMsg}</span>
+        <div className="p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-xs text-emerald-700 flex items-center gap-2.5 animate-in fade-in shadow-sm">
+          <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-600" />
+          <span className="font-medium">{successMsg}</span>
         </div>
       )}
 
@@ -272,41 +349,60 @@ export function PropertyForm({ initialData, areas, isEdit = false }: PropertyFor
         </h2>
 
         <div className="grid grid-cols-1 gap-4">
-          <Input
-            label="Listing Title"
-            placeholder={
-              isPlot
-                ? 'e.g. 500 Sq Yd West Open Residential Plot in Block B'
-                : 'e.g. 500 Sq Yd Modern Minimalist Villa'
-            }
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            required
-          />
+          <div id="field-title">
+            <Input
+              label="Listing Title *"
+              placeholder={
+                isPlot
+                  ? 'e.g. 500 Sq Yd West Open Residential Plot in Block B'
+                  : 'e.g. 500 Sq Yd Modern Minimalist Villa'
+              }
+              value={title}
+              error={fieldErrors.title}
+              onChange={(e) => {
+                setTitle(e.target.value);
+                clearFieldError('title');
+              }}
+            />
+          </div>
 
-          <Input
-            label="Catchy Tagline / Subtitle"
-            placeholder={
-              isPlot
-                ? 'e.g. 100% Leased and Ready for Immediate Construction'
-                : 'e.g. Brand New Architect-Designed Residence in North Nazimabad'
-            }
-            value={tagline}
-            onChange={(e) => setTagline(e.target.value)}
-          />
+          <div id="field-tagline">
+            <Input
+              label="Catchy Tagline / Subtitle (Optional)"
+              placeholder={
+                isPlot
+                  ? 'e.g. 100% Leased and Ready for Immediate Construction'
+                  : 'e.g. Brand New Architect-Designed Residence in North Nazimabad'
+              }
+              value={tagline}
+              onChange={(e) => setTagline(e.target.value)}
+            />
+          </div>
 
-          <div>
+          <div id="field-description">
             <label className="block text-xs font-mono font-medium text-[#7e7365] mb-1">
-              Detailed Property Description
+              Detailed Property Description *
             </label>
             <textarea
-              required
               rows={4}
               value={description}
-              onChange={(e) => setDescription(e.target.value)}
+              onChange={(e) => {
+                setDescription(e.target.value);
+                clearFieldError('description');
+              }}
               placeholder="Provide complete details regarding the location, boundaries, access roads, fixtures, and lifestyle features..."
-              className="w-full bg-white text-[#1F1B16] border border-[#d8cebe] rounded-2xl p-3 text-xs outline-none focus:border-[#5c3822]"
+              className={`w-full bg-white text-[#1F1B16] border rounded-2xl p-3 text-xs outline-none transition-colors ${
+                fieldErrors.description
+                  ? 'border-red-500 bg-red-50/20 focus:border-red-600'
+                  : 'border-[#d8cebe] focus:border-[#5c3822]'
+              }`}
             />
+            {fieldErrors.description && (
+              <p className="text-xs text-red-600 font-sans mt-1 flex items-center gap-1">
+                <AlertCircle className="w-3 h-3" />
+                <span>{fieldErrors.description}</span>
+              </p>
+            )}
           </div>
         </div>
 
@@ -370,48 +466,67 @@ export function PropertyForm({ initialData, areas, isEdit = false }: PropertyFor
         </h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <Input
-            label={isRental ? 'Monthly Rental Demand (PKR)' : 'Price / Demand (PKR exact number)'}
-            type="number"
-            placeholder={
-              isRental
-                ? 'e.g. 150000 for 1.5 Lakh / Month'
-                : 'e.g. 145000000 for 14.50 Crore'
-            }
-            value={price}
-            onChange={(e) => setPrice(sanitizeNumberInput(e.target.value))}
-            required
-          />
+          <div id="field-price">
+            <Input
+              label={isRental ? 'Monthly Rental Demand (PKR) *' : 'Price / Demand (PKR exact number) *'}
+              type="number"
+              placeholder={
+                isRental
+                  ? 'e.g. 150000 for 1.5 Lakh / Month'
+                  : 'e.g. 145000000 for 14.50 Crore'
+              }
+              value={price}
+              error={fieldErrors.price}
+              onChange={(e) => {
+                setPrice(sanitizeNumberInput(e.target.value));
+                clearFieldError('price');
+              }}
+            />
+          </div>
 
-          <Input
-            label={isRental ? 'Custom Rental Display (Optional)' : 'Custom Display Price (Optional)'}
-            placeholder={
-              isRental
-                ? 'e.g. PKR 1.50 Lakh / Month'
-                : 'e.g. PKR 14.50 Crore / PKR 85 Lakh'
-            }
-            value={priceFormatted}
-            onChange={(e) => setPriceFormatted(e.target.value)}
-          />
+          <div id="field-priceFormatted">
+            <Input
+              label={isRental ? 'Custom Rental Display (Optional)' : 'Custom Display Price (Optional)'}
+              placeholder={
+                isRental
+                  ? 'e.g. PKR 1.50 Lakh / Month'
+                  : 'e.g. PKR 14.50 Crore / PKR 85 Lakh'
+              }
+              value={priceFormatted}
+              onChange={(e) => setPriceFormatted(e.target.value)}
+            />
+          </div>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <Input
-            label="Street Address / Block Details"
-            placeholder="e.g. Street 14, Block F"
-            value={address}
-            onChange={(e) => setAddress(e.target.value)}
-            required
-          />
+          <div id="field-address">
+            <Input
+              label="Street Address / Block Details *"
+              placeholder="e.g. Street 14, Block F"
+              value={address}
+              error={fieldErrors.address}
+              onChange={(e) => {
+                setAddress(e.target.value);
+                clearFieldError('address');
+              }}
+            />
+          </div>
 
-          <div>
+          <div id="field-areaId">
             <label className="block text-xs font-mono font-medium text-[#7e7365] mb-1">
-              Select Karachi Area / Enclave
+              Select Karachi Area / Enclave *
             </label>
             <select
               value={areaId}
-              onChange={(e) => setAreaId(e.target.value)}
-              className="w-full bg-white text-[#1F1B16] border border-[#d8cebe] rounded-full px-3.5 py-2 text-xs outline-none"
+              onChange={(e) => {
+                setAreaId(e.target.value);
+                clearFieldError('areaId');
+              }}
+              className={`w-full bg-white text-[#1F1B16] border rounded-full px-3.5 py-2 text-xs outline-none transition-colors ${
+                fieldErrors.areaId
+                  ? 'border-red-500 bg-red-50/20'
+                  : 'border-[#d8cebe] focus:border-[#5c3822]'
+              }`}
             >
               {areas.map((area) => (
                 <option key={area.id} value={area.id}>
@@ -419,6 +534,12 @@ export function PropertyForm({ initialData, areas, isEdit = false }: PropertyFor
                 </option>
               ))}
             </select>
+            {fieldErrors.areaId && (
+              <p className="text-xs text-red-600 font-sans mt-1 flex items-center gap-1">
+                <AlertCircle className="w-3 h-3" />
+                <span>{fieldErrors.areaId}</span>
+              </p>
+            )}
           </div>
         </div>
       </GlassCard>
@@ -437,14 +558,19 @@ export function PropertyForm({ initialData, areas, isEdit = false }: PropertyFor
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <Input
-            label="Land / Covered Area Size"
-            type="number"
-            placeholder="e.g. 240 or 500"
-            value={areaSize}
-            onChange={(e) => setAreaSize(sanitizeNumberInput(e.target.value))}
-            required
-          />
+          <div id="field-areaSize">
+            <Input
+              label="Land / Covered Area Size *"
+              type="number"
+              placeholder="e.g. 240 or 500"
+              value={areaSize}
+              error={fieldErrors.areaSize}
+              onChange={(e) => {
+                setAreaSize(sanitizeNumberInput(e.target.value));
+                clearFieldError('areaSize');
+              }}
+            />
+          </div>
 
           <div>
             <label className="block text-xs font-mono font-medium text-[#7e7365] mb-1">
@@ -523,13 +649,30 @@ export function PropertyForm({ initialData, areas, isEdit = false }: PropertyFor
       </GlassCard>
 
       {/* 4. Photo Gallery (Cloudinary Uploader with 5-Image Limit) */}
-      <GlassCard variant="container" rounded="2rem" className="p-6 space-y-4 bg-[#fbf6f0]">
-        <PropertyGalleryUploader
-          images={images}
-          onChange={setImages}
-          maxImages={5}
-        />
-      </GlassCard>
+      <div id="field-images">
+        <GlassCard
+          variant="container"
+          rounded="2rem"
+          className={`p-6 space-y-4 bg-[#fbf6f0] transition-colors ${
+            fieldErrors.images ? 'border-red-400 bg-red-50/10 ring-1 ring-red-400' : ''
+          }`}
+        >
+          <PropertyGalleryUploader
+            images={images}
+            onChange={(imgs) => {
+              setImages(imgs);
+              clearFieldError('images');
+            }}
+            maxImages={5}
+          />
+          {fieldErrors.images && (
+            <p className="text-xs text-red-600 font-sans mt-2 flex items-center gap-1 font-medium">
+              <AlertCircle className="w-3.5 h-3.5" />
+              <span>{fieldErrors.images}</span>
+            </p>
+          )}
+        </GlassCard>
+      </div>
 
       {/* 5. Features & Amenities with 1-Click Suggestions */}
       <GlassCard variant="container" rounded="2rem" className="p-6 space-y-4 bg-[#fbf6f0]">

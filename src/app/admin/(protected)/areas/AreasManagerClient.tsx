@@ -59,15 +59,40 @@ export function AreasManagerClient({ initialAreas }: { initialAreas: AreaData[] 
   const [avgPriceSqYd, setAvgPriceSqYd] = useState('');
   const [annualGrowth, setAnnualGrowth] = useState('');
 
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [uploadingHero, setUploadingHero] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [loading, setLoading] = useState(false);
   const [statusMsg, setStatusMsg] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 
+  const clearFieldError = (field: string) => {
+    if (fieldErrors[field]) {
+      setFieldErrors((prev) => {
+        const next = { ...prev };
+        delete next[field];
+        return next;
+      });
+    }
+  };
+
+  const scrollToElement = (id: string) => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      const input = el.querySelector('input, textarea, select') as HTMLElement | null;
+      if (input) {
+        input.focus();
+      } else {
+        el.focus();
+      }
+    }
+  };
+
   const openEdit = (area: AreaData) => {
     setIsAddingNew(false);
     setEditingArea(area);
+    setFieldErrors({});
     setName(area.name);
     setTagline(area.tagline || '');
     setDescription(area.description);
@@ -81,6 +106,7 @@ export function AreasManagerClient({ initialAreas }: { initialAreas: AreaData[] 
   const openAdd = () => {
     setEditingArea(null);
     setIsAddingNew(true);
+    setFieldErrors({});
     setName('');
     setTagline('');
     setDescription('');
@@ -97,6 +123,7 @@ export function AreasManagerClient({ initialAreas }: { initialAreas: AreaData[] 
 
     setUploadingHero(true);
     setStatusMsg(null);
+    clearFieldError('heroImage');
 
     try {
       const formData = new FormData();
@@ -118,8 +145,42 @@ export function AreasManagerClient({ initialAreas }: { initialAreas: AreaData[] 
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
     setStatusMsg(null);
+    setFieldErrors({});
+
+    const newErrors: Record<string, string> = {};
+
+    if (!name.trim()) {
+      newErrors.name = 'Area enclave name is required.';
+    } else if (name.trim().length < 2) {
+      newErrors.name = 'Name must be at least 2 characters.';
+    }
+
+    if (!description.trim()) {
+      newErrors.description = 'Area overview and guide description is required.';
+    } else if (description.trim().length < 10) {
+      newErrors.description = 'Please provide an overview of at least 10 characters.';
+    }
+
+    if (!heroImage.trim()) {
+      newErrors.heroImage = 'Please upload or provide a hero banner photo URL.';
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setFieldErrors(newErrors);
+      const firstField = Object.keys(newErrors)[0];
+      const targetId = `field-area-${firstField}`;
+      setStatusMsg({
+        type: 'error',
+        text: `Please complete the required field: ${Object.values(newErrors)[0]}`,
+      });
+      setTimeout(() => {
+        scrollToElement(targetId);
+      }, 50);
+      return;
+    }
+
+    setLoading(true);
 
     try {
       const payload = {
@@ -142,7 +203,7 @@ export function AreasManagerClient({ initialAreas }: { initialAreas: AreaData[] 
       }
 
       if (res.success) {
-        setStatusMsg({ type: 'success', text: res.message || 'Saved successfully' });
+        setStatusMsg({ type: 'success', text: res.message || 'Saved successfully!' });
         setEditingArea(null);
         setIsAddingNew(false);
         router.refresh();
@@ -199,24 +260,24 @@ export function AreasManagerClient({ initialAreas }: { initialAreas: AreaData[] 
 
       {statusMsg && (
         <div
-          className={`p-4 rounded-2xl border text-xs flex items-center gap-2 animate-in fade-in ${
+          className={`p-4 rounded-2xl border text-xs flex items-center gap-2 animate-in fade-in shadow-sm ${
             statusMsg.type === 'success'
               ? 'bg-green-50 border-green-200 text-green-800'
               : 'bg-red-50 border-red-200 text-red-800'
           }`}
         >
           {statusMsg.type === 'success' ? (
-            <CheckCircle2 className="w-4 h-4 shrink-0" />
+            <CheckCircle2 className="w-4 h-4 shrink-0 text-green-600" />
           ) : (
-            <AlertCircle className="w-4 h-4 shrink-0" />
+            <AlertCircle className="w-4 h-4 shrink-0 text-red-600" />
           )}
-          <span>{statusMsg.text}</span>
+          <span className="font-medium">{statusMsg.text}</span>
         </div>
       )}
 
       {/* Add / Edit Form Panel */}
       {(isAddingNew || editingArea) && (
-        <GlassCard variant="container" rounded="2rem" className="p-6 bg-[#fbf6f0] border border-[#d8cebe] space-y-4">
+        <GlassCard variant="container" rounded="2rem" className="p-6 bg-[#fbf6f0] border border-[#d8cebe] space-y-4 shadow-sm">
           <div className="flex items-center justify-between border-b border-[#d8cebe]/60 pb-3">
             <h2 className="font-display font-medium text-lg text-[#1F1B16]">
               {editingArea ? `Edit Area: ${editingArea.name}` : 'Add New Karachi Neighborhood'}
@@ -232,41 +293,52 @@ export function AreasManagerClient({ initialAreas }: { initialAreas: AreaData[] 
             </button>
           </div>
 
-          <form onSubmit={handleSave} className="space-y-4">
+          <form onSubmit={handleSave} noValidate className="space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <Input
-                label="Enclave / Area Name"
-                placeholder="e.g. North Nazimabad Block F"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-              />
-              <Input
-                label="Tagline (Optional)"
-                placeholder="e.g. Premier Residential & Architectural Sector"
-                value={tagline}
-                onChange={(e) => setTagline(e.target.value)}
-              />
+              <div id="field-area-name">
+                <Input
+                  label="Enclave / Area Name *"
+                  placeholder="e.g. North Nazimabad Block F"
+                  value={name}
+                  error={fieldErrors.name}
+                  onChange={(e) => {
+                    setName(e.target.value);
+                    clearFieldError('name');
+                  }}
+                />
+              </div>
+              <div id="field-area-tagline">
+                <Input
+                  label="Tagline (Optional)"
+                  placeholder="e.g. Premier Residential & Architectural Sector"
+                  value={tagline}
+                  onChange={(e) => setTagline(e.target.value)}
+                />
+              </div>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <Input
-                label="Avg Price / Gaz (Sq Yd)"
-                placeholder="e.g. PKR 220,000 / Sq Yd"
-                value={avgPriceSqYd}
-                onChange={(e) => setAvgPriceSqYd(e.target.value)}
-              />
-              <Input
-                label="Annual Appreciation Growth"
-                placeholder="e.g. +14.5% YoY"
-                value={annualGrowth}
-                onChange={(e) => setAnnualGrowth(e.target.value)}
-              />
+              <div id="field-area-avgPrice">
+                <Input
+                  label="Avg Price / Gaz (Sq Yd)"
+                  placeholder="e.g. PKR 220,000 / Sq Yd"
+                  value={avgPriceSqYd}
+                  onChange={(e) => setAvgPriceSqYd(e.target.value)}
+                />
+              </div>
+              <div id="field-area-annualGrowth">
+                <Input
+                  label="Annual Appreciation Growth"
+                  placeholder="e.g. +14.5% YoY"
+                  value={annualGrowth}
+                  onChange={(e) => setAnnualGrowth(e.target.value)}
+                />
+              </div>
             </div>
 
-            <div className="space-y-2">
+            <div id="field-area-heroImage" className="space-y-2">
               <label className="block text-xs font-mono font-medium text-[#7e7365]">
-                Hero Banner Photo
+                Hero Banner Photo *
               </label>
               <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center">
                 {heroImage && (
@@ -278,9 +350,16 @@ export function AreasManagerClient({ initialAreas }: { initialAreas: AreaData[] 
                   <input
                     type="url"
                     value={heroImage}
-                    onChange={(e) => setHeroImage(e.target.value)}
+                    onChange={(e) => {
+                      setHeroImage(e.target.value);
+                      clearFieldError('heroImage');
+                    }}
                     placeholder="https://res.cloudinary.com/... or upload via button"
-                    className="flex-1 bg-white text-[#1F1B16] border border-[#d8cebe] rounded-full px-3.5 py-2 text-xs outline-none focus:border-[#5c3822]"
+                    className={`flex-1 bg-white text-[#1F1B16] border rounded-full px-3.5 py-2 text-xs outline-none transition-colors ${
+                      fieldErrors.heroImage
+                        ? 'border-red-500 bg-red-50/20'
+                        : 'border-[#d8cebe] focus:border-[#5c3822]'
+                    }`}
                   />
                   <input
                     ref={fileInputRef}
@@ -306,19 +385,37 @@ export function AreasManagerClient({ initialAreas }: { initialAreas: AreaData[] 
                   </Button>
                 </div>
               </div>
+              {fieldErrors.heroImage && (
+                <p className="text-xs text-red-600 font-sans mt-1 flex items-center gap-1">
+                  <AlertCircle className="w-3 h-3" />
+                  <span>{fieldErrors.heroImage}</span>
+                </p>
+              )}
             </div>
 
-            <div className="space-y-1">
+            <div id="field-area-description" className="space-y-1">
               <label className="block text-xs font-mono font-medium text-[#7e7365]">
-                Area Guide & Living Overview
+                Area Guide & Living Overview *
               </label>
               <textarea
                 rows={3}
                 value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                required
-                className="w-full bg-white text-[#1F1B16] border border-[#d8cebe] rounded-2xl p-3 text-xs outline-none focus:border-[#5c3822] shadow-inner"
+                onChange={(e) => {
+                  setDescription(e.target.value);
+                  clearFieldError('description');
+                }}
+                className={`w-full bg-white text-[#1F1B16] border rounded-2xl p-3 text-xs outline-none transition-colors ${
+                  fieldErrors.description
+                    ? 'border-red-500 bg-red-50/20 focus:border-red-600'
+                    : 'border-[#d8cebe] focus:border-[#5c3822]'
+                }`}
               />
+              {fieldErrors.description && (
+                <p className="text-xs text-red-600 font-sans mt-1 flex items-center gap-1">
+                  <AlertCircle className="w-3 h-3" />
+                  <span>{fieldErrors.description}</span>
+                </p>
+              )}
             </div>
 
             <div className="flex justify-end gap-2 pt-2">

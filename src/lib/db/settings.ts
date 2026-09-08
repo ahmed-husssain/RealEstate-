@@ -17,15 +17,15 @@ export interface PublicSiteSettings {
 
 // Development and disaster recovery baseline structure
 export const DEFAULT_SITE_SETTINGS: PublicSiteSettings = {
-  hero_headline: 'Find Luxury Homes & Penthouses in Karachi',
+  hero_headline: 'Buy, Sell & Build Verified Properties in Karachi',
   hero_subtitle:
-    'Buy, sell, build, and renovate verified bangalows, houses, and plots across North Nazimabad, Gulshan-e-Iqbal, Federal B Area, Scheme 33, Buffer Zone, North Karachi, Gulberg, Scheme 45, and Clifton.',
+    'Verified houses (80 to 1000 Gaz), plots, SBCA building map approvals, turnkey house construction, and seepage (سیم) solutions in North Nazimabad, Gulshan, FB Area, and Scheme 33.',
   office_address: 'B 693, Block 13 Gulberg Town, Karachi, Pakistan',
-  phone_primary: '+92 300 822 4110',
+  phone_primary: '+92 332 7906034',
   phone_landline: '+92 21 3634 1100',
-  whatsapp_number: '+92 300 822 4110',
-  whatsapp_clean: '923008224110',
-  contact_email: 'info@amberproperty.com',
+  whatsapp_number: '+92 332 7906034',
+  whatsapp_clean: '923327906034',
+  contact_email: 'syedsikander1401@gmail.com',
   office_timings: 'Mon – Sat (10:30 AM to 8:00 PM)',
   announcement_banner: 'New North Nazimabad and Gulshan luxury listings now open for private viewings.',
   announcement_active: true,

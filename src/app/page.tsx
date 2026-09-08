@@ -12,11 +12,16 @@ import { mapDbPropertyToProperty, mapDbAreaToNeighborhood } from '@/lib/db/mappe
 import {
   ArrowUpRight,
   ShieldCheck,
-  Compass,
-  Hammer,
+  Building2,
+  HardHat,
+  Scale,
+  Sparkles,
+  Droplets,
   CheckCircle2,
+  Calculator,
+  Compass,
+  PhoneCall,
 } from 'lucide-react';
-
 import { getPublicSiteSettings } from '@/lib/db/settings';
 
 export const revalidate = 60;
@@ -36,81 +41,165 @@ export default async function HomePage() {
   const displayProperties = featuredProperties.length > 0 ? featuredProperties : properties.slice(0, 3);
 
   return (
-    <div className="space-y-20 sm:space-y-28">
-      {/* Announcement Banner (if active) */}
-      {siteSettings.announcement_active && siteSettings.announcement_banner && (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-2 mb-2">
-          <div className="bg-[#5c3822]/10 border border-[#5c3822]/20 rounded-full py-2 px-4 text-center text-xs font-medium text-[#5c3822] flex items-center justify-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-[#5c3822] animate-pulse shrink-0" />
-            <span>{siteSettings.announcement_banner}</span>
-          </div>
-        </div>
-      )}
-
-      {/* 1. Hero Section */}
-      <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-8 space-y-6">
-        <div className="text-center max-w-3xl mx-auto space-y-4">
-          {/* Label Chip */}
-          <div className="flex items-center justify-center gap-2">
-            <Badge variant="exclusive" size="md">
-              Amber Property Corner
-            </Badge>
-            <Badge variant="stone" size="md">
-              Real Estate & Construction
-            </Badge>
+    <div className="space-y-16 sm:space-y-24">
+      {/* 1. High-Converting Hero Section */}
+      <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-2 sm:pt-6 space-y-8">
+        {/* Above-The-Fold Value Header */}
+        <div className="text-center max-w-4xl mx-auto space-y-5">
+          {/* Trust Authority Badge */}
+          <div className="inline-flex items-center gap-2 bg-[#fbf6f0] border border-[#d8cebe] rounded-full py-1.5 px-4 shadow-xs">
+            <span className="w-2 h-2 rounded-full bg-[#2e3a2f]" />
+            <span className="text-xs font-mono font-medium text-[#5c3822] uppercase tracking-wider">
+              Amber Property Corner • Real Estate & Construction
+            </span>
           </div>
 
-          {/* Dynamic Direct Headline */}
-          <h1 className="font-display font-medium text-3xl sm:text-5xl lg:text-6xl leading-tight text-[#1F1B16] tracking-tight">
-            {siteSettings.hero_headline}
+          {/* High-Impact Outcome Headline */}
+          <h1 className="font-display font-semibold text-3xl sm:text-5xl lg:text-6xl leading-[1.12] text-[#1F1B16] tracking-tight">
+            {siteSettings.hero_headline || 'Buy, Sell & Build Verified Properties in Karachi'}
           </h1>
 
-          {/* Dynamic Subtitle */}
-          <p className="text-sm sm:text-base text-[#7e7365] max-w-2xl mx-auto font-sans leading-relaxed">
-            {siteSettings.hero_subtitle}
+          {/* Outcome & Risk-Reducer Subtitle */}
+          <p className="text-sm sm:text-lg text-[#7e7365] max-w-2xl mx-auto font-sans leading-relaxed">
+            {siteSettings.hero_subtitle || 'Verified houses (80 to 1000 Gaz), plots, SBCA map approvals, turnkey house construction, and seepage (سیم) solutions in North Nazimabad, Gulshan, FB Area, and Scheme 33.'}
           </p>
+
+          {/* Dual Action CTAs */}
+          <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
+            <Link href="/properties">
+              <Button variant="primary" size="lg" className="text-xs sm:text-sm shadow-md cursor-pointer">
+                <span>Browse Verified Properties</span>
+                <ArrowUpRight className="w-4 h-4 ml-1" />
+              </Button>
+            </Link>
+            <Link href="/valuation">
+              <Button variant="secondary" size="lg" className="text-xs sm:text-sm bg-white cursor-pointer">
+                <Calculator className="w-4 h-4 mr-1 text-[#5c3822]" />
+                <span>Free Property Price Calculator</span>
+              </Button>
+            </Link>
+          </div>
+
+          {/* Micro-Trust Signals */}
+          <div className="pt-2 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs font-mono text-[#7e7365]">
+            <span className="flex items-center gap-1.5">
+              <CheckCircle2 className="w-4 h-4 text-[#2e3a2f]" /> 100% Clean Registry Papers
+            </span>
+            <span className="flex items-center gap-1.5">
+              <CheckCircle2 className="w-4 h-4 text-[#2e3a2f]" /> SBCA Approved Building Maps
+            </span>
+            <span className="flex items-center gap-1.5">
+              <CheckCircle2 className="w-4 h-4 text-[#2e3a2f]" /> 15+ Years Karachi Experience
+            </span>
+          </div>
         </div>
 
-        {/* Search Filter Bar Component with full breathing room */}
+        {/* Primary Interactive Search Filter Bar */}
         <div className="max-w-5xl mx-auto text-left">
           <SearchFilterBar />
         </div>
 
-        {/* Trust Metrics Ribbon */}
-        <div className="max-w-4xl mx-auto pt-2 grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
-            <div className="bg-[#fbf6f0]/90 border border-[#d8cebe] rounded-2xl py-3 px-4 shadow-sm">
-              <span className="font-display font-medium text-lg sm:text-xl text-[#1F1B16]">
-                500+ Sq Yd
+        {/* Above-The-Fold Quick Services Navigation Matrix */}
+        <div className="max-w-5xl mx-auto">
+          <div className="bg-[#fbf6f0]/95 border border-[#d8cebe] rounded-2xl p-4 sm:p-5 shadow-sm">
+            <div className="flex items-center justify-between pb-3 border-b border-[#d8cebe]/60 mb-3">
+              <span className="text-xs font-mono font-medium text-[#1F1B16] uppercase tracking-wider flex items-center gap-2">
+                <Compass className="w-4 h-4 text-[#5c3822]" />
+                Quick Services
               </span>
-              <p className="text-[11px] font-mono text-[#7e7365] mt-0.5">
-                Luxury Houses
-              </p>
+              <Link href="/services" className="text-xs font-mono text-[#5c3822] hover:underline flex items-center gap-1">
+                View All 5 Departments <ArrowUpRight className="w-3.5 h-3.5" />
+              </Link>
             </div>
-            <div className="bg-[#fbf6f0]/90 border border-[#d8cebe] rounded-2xl py-3 px-4 shadow-sm">
-              <span className="font-display font-medium text-lg sm:text-xl text-[#1F1B16]">
-                North & Central
-              </span>
-              <p className="text-[11px] font-mono text-[#7e7365] mt-0.5">
-                Prime Sectors
-              </p>
-            </div>
-            <div className="bg-[#fbf6f0]/90 border border-[#d8cebe] rounded-2xl py-3 px-4 shadow-sm">
-              <span className="font-display font-medium text-lg sm:text-xl text-[#2e3a2f]">
-                100% Verified
-              </span>
-              <p className="text-[11px] font-mono text-[#7e7365] mt-0.5">
-                Clean Title Deeds
-              </p>
-            </div>
-            <div className="bg-[#fbf6f0]/90 border border-[#d8cebe] rounded-2xl py-3 px-4 shadow-sm">
-              <span className="font-display font-medium text-lg sm:text-xl text-[#5c3822]">
-                Full Service
-              </span>
-              <p className="text-[11px] font-mono text-[#7e7365] mt-0.5">
-                Build & Renovate
-              </p>
+
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2.5">
+              <Link
+                href="/services"
+                className="group p-3 rounded-xl bg-white border border-[#d8cebe] hover:border-[#5c3822] hover:shadow-sm transition-all text-left flex flex-col justify-between"
+              >
+                <div className="space-y-1.5">
+                  <div className="w-7 h-7 rounded-lg bg-[#5c3822]/10 text-[#5c3822] flex items-center justify-center">
+                    <Building2 className="w-4 h-4" />
+                  </div>
+                  <h4 className="font-display font-medium text-xs text-[#1F1B16] group-hover:text-[#5c3822] transition-colors leading-snug">
+                    Houses & Plots for Sale
+                  </h4>
+                </div>
+                <span className="text-[10px] font-mono text-[#7e7365] group-hover:text-[#5c3822] mt-2 block">
+                  80–1000 Gaz →
+                </span>
+              </Link>
+
+              <Link
+                href="/services"
+                className="group p-3 rounded-xl bg-white border border-[#d8cebe] hover:border-[#2e3a2f] hover:shadow-sm transition-all text-left flex flex-col justify-between"
+              >
+                <div className="space-y-1.5">
+                  <div className="w-7 h-7 rounded-lg bg-[#2e3a2f]/10 text-[#2e3a2f] flex items-center justify-center">
+                    <Scale className="w-4 h-4" />
+                  </div>
+                  <h4 className="font-display font-medium text-xs text-[#1F1B16] group-hover:text-[#2e3a2f] transition-colors leading-snug">
+                    SBCA Map & Registry Check
+                  </h4>
+                </div>
+                <span className="text-[10px] font-mono text-[#7e7365] group-hover:text-[#2e3a2f] mt-2 block">
+                  Legal Approvals →
+                </span>
+              </Link>
+
+              <Link
+                href="/services"
+                className="group p-3 rounded-xl bg-white border border-[#d8cebe] hover:border-[#5c3822] hover:shadow-sm transition-all text-left flex flex-col justify-between"
+              >
+                <div className="space-y-1.5">
+                  <div className="w-7 h-7 rounded-lg bg-[#5c3822]/10 text-[#5c3822] flex items-center justify-center">
+                    <HardHat className="w-4 h-4" />
+                  </div>
+                  <h4 className="font-display font-medium text-xs text-[#1F1B16] group-hover:text-[#5c3822] transition-colors leading-snug">
+                    House Construction
+                  </h4>
+                </div>
+                <span className="text-[10px] font-mono text-[#7e7365] group-hover:text-[#5c3822] mt-2 block">
+                  Gray & Finish →
+                </span>
+              </Link>
+
+              <Link
+                href="/services"
+                className="group p-3 rounded-xl bg-white border border-[#d8cebe] hover:border-[#847666] hover:shadow-sm transition-all text-left flex flex-col justify-between"
+              >
+                <div className="space-y-1.5">
+                  <div className="w-7 h-7 rounded-lg bg-[#847666]/15 text-[#1F1B16] flex items-center justify-center">
+                    <Sparkles className="w-4 h-4" />
+                  </div>
+                  <h4 className="font-display font-medium text-xs text-[#1F1B16] group-hover:text-[#5c3822] transition-colors leading-snug">
+                    Kitchen & Bath Renovation
+                  </h4>
+                </div>
+                <span className="text-[10px] font-mono text-[#7e7365] group-hover:text-[#5c3822] mt-2 block">
+                  Modern Interiors →
+                </span>
+              </Link>
+
+              <Link
+                href="/services"
+                className="group p-3 rounded-xl bg-white border border-[#d8cebe] hover:border-[#2e3a2f] hover:shadow-sm transition-all text-left flex flex-col justify-between col-span-2 sm:col-span-1"
+              >
+                <div className="space-y-1.5">
+                  <div className="w-7 h-7 rounded-lg bg-[#2e3a2f]/10 text-[#2e3a2f] flex items-center justify-center">
+                    <Droplets className="w-4 h-4" />
+                  </div>
+                  <h4 className="font-display font-medium text-xs text-[#1F1B16] group-hover:text-[#2e3a2f] transition-colors leading-snug">
+                    Waterproofing & Seepage (سیم)
+                  </h4>
+                </div>
+                <span className="text-[10px] font-mono text-[#7e7365] group-hover:text-[#2e3a2f] mt-2 block">
+                  Permanent Fix →
+                </span>
+              </Link>
             </div>
           </div>
+        </div>
       </section>
 
       {/* 2. Featured Exclusive Residences */}
@@ -124,13 +213,13 @@ export default async function HomePage() {
               Featured Properties in Karachi
             </h2>
             <p className="text-xs sm:text-sm text-[#7e7365]">
-              Handpicked luxury houses and apartments with complete details and verified documents.
+              Handpicked houses, flats, and plots with complete details and clean ownership papers.
             </p>
           </div>
           <Link href="/properties">
-            <Button variant="secondary" size="md">
+            <Button variant="secondary" size="md" className="cursor-pointer">
               <span>View All Properties ({properties.length})</span>
-              <ArrowUpRight className="w-4 h-4" />
+              <ArrowUpRight className="w-4 h-4 ml-1" />
             </Button>
           </Link>
         </div>
@@ -144,12 +233,12 @@ export default async function HomePage() {
           </div>
         ) : (
           <div className="p-8 text-center bg-[#fbf6f0] border border-[#d8cebe] rounded-2xl text-xs text-[#7e7365]">
-            Currently updating verified luxury listings in North Nazimabad, Gulshan, and Scheme 33.
+            Currently updating verified listings in North Nazimabad, Gulshan, and Scheme 33.
           </div>
         )}
       </section>
 
-      {/* 3. Five Core Service Departments */}
+      {/* 3. Comprehensive Five Service Wings (Detailed Bento Section) */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <GlassCard
           variant="container"
@@ -159,113 +248,128 @@ export default async function HomePage() {
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
             <div className="max-w-2xl space-y-2">
               <Badge variant="exclusive" size="sm">
-                Amber Property Corner
+                All-in-One Real Estate Services
               </Badge>
               <h2 className="font-display font-medium text-2xl sm:text-3xl text-[#1F1B16]">
-                5 Complete Real Estate & Construction Wings
+                5 Complete Real Estate & Construction Departments
               </h2>
               <p className="text-xs sm:text-sm text-[#7e7365]">
-                From verified land acquisition and SBCA map approvals to turnkey construction and permanent seepage solutions.
+                From verified land purchasing and SBCA map approvals to full house construction, room renovation, and permanent seepage solutions.
               </p>
             </div>
             <Link href="/services">
-              <Button variant="secondary" size="md">
-                <span>View Full Service Scope</span>
-                <ArrowUpRight className="w-4 h-4" />
+              <Button variant="secondary" size="md" className="cursor-pointer">
+                <span>View All Services</span>
+                <ArrowUpRight className="w-4 h-4 ml-1" />
               </Button>
             </Link>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 pt-4 border-t border-[#d8cebe]/60">
             <Link href="/services" className="group">
-              <div className="bg-white/80 hover:bg-white border border-[#d8cebe] group-hover:border-[#5c3822] rounded-2xl p-5 space-y-2 shadow-sm transition-all h-full flex flex-col justify-between">
+              <div className="bg-white hover:border-[#5c3822] border border-[#d8cebe] rounded-2xl p-5 space-y-3 shadow-xs hover:shadow-md transition-all h-full flex flex-col justify-between">
                 <div className="space-y-2">
-                  <div className="w-8 h-8 rounded-xl bg-[#5c3822]/10 text-[#5c3822] flex items-center justify-center font-mono font-bold text-xs">
-                    01
+                  <div className="flex items-center justify-between">
+                    <div className="w-9 h-9 rounded-xl bg-[#5c3822]/10 text-[#5c3822] flex items-center justify-center">
+                      <Building2 className="w-5 h-5" />
+                    </div>
+                    <span className="font-mono text-xs font-semibold text-[#7e7365]">01</span>
                   </div>
                   <h3 className="font-display font-medium text-base text-[#1F1B16] group-hover:text-[#5c3822] transition-colors">
-                    Sales & Commercial Investments
+                    Property Buying, Selling & Plots
                   </h3>
                   <p className="text-xs text-[#7e7365] leading-relaxed">
-                    Houses (80–1000 Gaz), residential/commercial plots, apartments, and high-yield commercial assets in Karachi.
+                    Houses (80–1000 Gaz), open plots, apartments, and commercial shops across prime areas in Karachi.
                   </p>
                 </div>
-                <span className="text-[11px] font-mono text-[#5c3822] pt-2 block">Learn more &rarr;</span>
+                <span className="text-[11px] font-mono text-[#5c3822] pt-2 block font-medium">Learn More &rarr;</span>
               </div>
             </Link>
 
             <Link href="/services" className="group">
-              <div className="bg-white/80 hover:bg-white border border-[#d8cebe] group-hover:border-[#2e3a2f] rounded-2xl p-5 space-y-2 shadow-sm transition-all h-full flex flex-col justify-between">
+              <div className="bg-white hover:border-[#2e3a2f] border border-[#d8cebe] rounded-2xl p-5 space-y-3 shadow-xs hover:shadow-md transition-all h-full flex flex-col justify-between">
                 <div className="space-y-2">
-                  <div className="w-8 h-8 rounded-xl bg-[#2e3a2f]/10 text-[#2e3a2f] flex items-center justify-center font-mono font-bold text-xs">
-                    02
+                  <div className="flex items-center justify-between">
+                    <div className="w-9 h-9 rounded-xl bg-[#2e3a2f]/10 text-[#2e3a2f] flex items-center justify-center">
+                      <Scale className="w-5 h-5" />
+                    </div>
+                    <span className="font-mono text-xs font-semibold text-[#7e7365]">02</span>
                   </div>
                   <h3 className="font-display font-medium text-base text-[#1F1B16] group-hover:text-[#2e3a2f] transition-colors">
-                    Legal Vetting & Map Approvals
+                    SBCA Map Approvals & Registry Check
                   </h3>
                   <p className="text-xs text-[#7e7365] leading-relaxed">
-                    Title check (Registry, Mutation), SBCA layout sanctioning, demolition NOCs, and Cantonment Board clearances.
+                    Registry and file verification, SBCA layout map approval, demolition NOCs, and transfer clearances.
                   </p>
                 </div>
-                <span className="text-[11px] font-mono text-[#2e3a2f] pt-2 block">Learn more &rarr;</span>
+                <span className="text-[11px] font-mono text-[#2e3a2f] pt-2 block font-medium">Learn More &rarr;</span>
               </div>
             </Link>
 
             <Link href="/services" className="group">
-              <div className="bg-white/80 hover:bg-white border border-[#d8cebe] group-hover:border-[#5c3822] rounded-2xl p-5 space-y-2 shadow-sm transition-all h-full flex flex-col justify-between">
+              <div className="bg-white hover:border-[#5c3822] border border-[#d8cebe] rounded-2xl p-5 space-y-3 shadow-xs hover:shadow-md transition-all h-full flex flex-col justify-between">
                 <div className="space-y-2">
-                  <div className="w-8 h-8 rounded-xl bg-[#5c3822]/10 text-[#5c3822] flex items-center justify-center font-mono font-bold text-xs">
-                    03
+                  <div className="flex items-center justify-between">
+                    <div className="w-9 h-9 rounded-xl bg-[#5c3822]/10 text-[#5c3822] flex items-center justify-center">
+                      <HardHat className="w-5 h-5" />
+                    </div>
+                    <span className="font-mono text-xs font-semibold text-[#7e7365]">03</span>
                   </div>
                   <h3 className="font-display font-medium text-base text-[#1F1B16] group-hover:text-[#5c3822] transition-colors">
                     Turnkey House Construction
                   </h3>
                   <p className="text-xs text-[#7e7365] leading-relaxed">
-                    Turnkey bungalow rebuilds (80 to 1000 Gaz), gray structure, controlled demolition, and modern facade redesign.
+                    Complete house construction (80 to 1000 Gaz), gray structure, safe building demolition, Grade-60 steel, and modern front elevations.
                   </p>
                 </div>
-                <span className="text-[11px] font-mono text-[#5c3822] pt-2 block">Learn more &rarr;</span>
+                <span className="text-[11px] font-mono text-[#5c3822] pt-2 block font-medium">Learn More &rarr;</span>
               </div>
             </Link>
 
             <Link href="/services" className="group">
-              <div className="bg-white/80 hover:bg-white border border-[#d8cebe] group-hover:border-[#847666] rounded-2xl p-5 space-y-2 shadow-sm transition-all h-full flex flex-col justify-between">
+              <div className="bg-white hover:border-[#847666] border border-[#d8cebe] rounded-2xl p-5 space-y-3 shadow-xs hover:shadow-md transition-all h-full flex flex-col justify-between">
                 <div className="space-y-2">
-                  <div className="w-8 h-8 rounded-xl bg-[#847666]/15 text-[#1F1B16] flex items-center justify-center font-mono font-bold text-xs">
-                    04
+                  <div className="flex items-center justify-between">
+                    <div className="w-9 h-9 rounded-xl bg-[#847666]/15 text-[#1F1B16] flex items-center justify-center">
+                      <Sparkles className="w-5 h-5" />
+                    </div>
+                    <span className="font-mono text-xs font-semibold text-[#7e7365]">04</span>
                   </div>
                   <h3 className="font-display font-medium text-base text-[#1F1B16] group-hover:text-[#5c3822] transition-colors">
-                    Room-by-Room Interior Remodel
+                    Kitchen, Bathroom & Room Renovation
                   </h3>
                   <p className="text-xs text-[#7e7365] leading-relaxed">
-                    Modular German-style kitchens, executive Italian-tiled bathrooms, false ceiling lighting, and media walls.
+                    Modern modular kitchens, executive Italian tile bathrooms, gypsum false ceilings, and wooden media walls.
                   </p>
                 </div>
-                <span className="text-[11px] font-mono text-[#847666] pt-2 block">Learn more &rarr;</span>
+                <span className="text-[11px] font-mono text-[#847666] pt-2 block font-medium">Learn More &rarr;</span>
               </div>
             </Link>
 
             <Link href="/services" className="group sm:col-span-2 lg:col-span-2">
-              <div className="bg-white/80 hover:bg-white border border-[#d8cebe] group-hover:border-[#2e3a2f] rounded-2xl p-5 space-y-2 shadow-sm transition-all h-full flex flex-col justify-between">
+              <div className="bg-white hover:border-[#2e3a2f] border border-[#d8cebe] rounded-2xl p-5 space-y-3 shadow-xs hover:shadow-md transition-all h-full flex flex-col justify-between">
                 <div className="space-y-2">
-                  <div className="w-8 h-8 rounded-xl bg-[#2e3a2f]/10 text-[#2e3a2f] flex items-center justify-center font-mono font-bold text-xs">
-                    05
+                  <div className="flex items-center justify-between">
+                    <div className="w-9 h-9 rounded-xl bg-[#2e3a2f]/10 text-[#2e3a2f] flex items-center justify-center">
+                      <Droplets className="w-5 h-5" />
+                    </div>
+                    <span className="font-mono text-xs font-semibold text-[#7e7365]">05</span>
                   </div>
                   <h3 className="font-display font-medium text-base text-[#1F1B16] group-hover:text-[#2e3a2f] transition-colors">
-                    Specialized Remedial & Infrastructure Solutions
+                    Waterproofing, Seepage (سیم) & Tank Repair
                   </h3>
                   <p className="text-xs text-[#7e7365] leading-relaxed">
-                    Roof and wall seepage (*seem*) chemical waterproofing, RCC underground water tank relining, solar wiring, PPRC plumbing replacement, and termite (*deemak*) barriers.
+                    Permanent roof and wall chemical waterproofing (*seem* solution), water tank crack repair, solar wiring, plumbing line replacement, and termite (*deemak*) treatment.
                   </p>
                 </div>
-                <span className="text-[11px] font-mono text-[#2e3a2f] pt-2 block">Learn more &rarr;</span>
+                <span className="text-[11px] font-mono text-[#2e3a2f] pt-2 block font-medium">Learn More &rarr;</span>
               </div>
             </Link>
           </div>
         </GlassCard>
       </section>
 
-      {/* 4. Popular Areas & Enclaves */}
+      {/* 4. Popular Karachi Neighborhoods */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-[#d8cebe]/60 pb-5">
           <div className="space-y-1">
@@ -276,13 +380,13 @@ export default async function HomePage() {
               Popular Karachi Areas
             </h2>
             <p className="text-xs sm:text-sm text-[#7e7365]">
-              Explore top neighborhoods, average market rates, and available homes.
+              Explore top neighborhoods, average market rates, and available properties.
             </p>
           </div>
           <Link href="/neighborhoods">
-            <Button variant="secondary" size="md">
+            <Button variant="secondary" size="md" className="cursor-pointer">
               <span>View All Areas</span>
-              <ArrowUpRight className="w-4 h-4" />
+              <ArrowUpRight className="w-4 h-4 ml-1" />
             </Button>
           </Link>
         </div>
@@ -363,7 +467,7 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* 6. Valuation & Contact Banner */}
+      {/* 6. Valuation & Direct Advisory Conversion Banner */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <GlassCard
           variant="card"
@@ -376,22 +480,24 @@ export default async function HomePage() {
                 Free Price Estimate
               </Badge>
               <h2 className="font-display font-medium text-2xl sm:text-3xl text-[#1F1B16]">
-                Want to know the current market value of your property?
+                Want to Know the Current Market Price of Your Property?
               </h2>
               <p className="text-xs sm:text-sm text-[#7e7365] max-w-xl leading-relaxed">
-                Use our quick online calculator or get in touch with our team for an on-site property evaluation.
+                Calculate your house, flat, or plot value based on real Karachi area rates, or speak directly with our senior advisor for a free on-site visit.
               </p>
             </div>
 
             <div className="lg:col-span-4 flex flex-col sm:flex-row lg:flex-col gap-2.5">
               <Link href="/valuation" className="w-full">
-                <Button variant="primary" size="lg" className="w-full text-xs sm:text-sm">
-                  Calculate Property Price
+                <Button variant="primary" size="lg" className="w-full text-xs sm:text-sm cursor-pointer shadow-sm">
+                  <Calculator className="w-4 h-4 mr-1.5" />
+                  <span>Calculate Property Price</span>
                 </Button>
               </Link>
               <Link href="/contact" className="w-full">
-                <Button variant="secondary" size="lg" className="w-full text-xs sm:text-sm">
-                  Contact Our Office
+                <Button variant="secondary" size="lg" className="w-full text-xs sm:text-sm bg-white cursor-pointer">
+                  <PhoneCall className="w-4 h-4 mr-1.5 text-[#5c3822]" />
+                  <span>Speak With Senior Advisor</span>
                 </Button>
               </Link>
             </div>

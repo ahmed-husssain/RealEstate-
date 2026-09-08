@@ -21,172 +21,172 @@ export default function ServicesPage() {
   const pillars = [
     {
       id: 0,
-      title: '1. Real Estate Sales & Commercial Investments',
+      title: '1. Property Buying, Selling & Investments',
       shortTitle: 'Property & Investments',
       icon: <Building2 className="w-5 h-5 text-[#5c3822]" />,
-      tagline: 'Prime residential, commercial, and high-yield investment properties across Karachi',
+      tagline: 'Verified houses, bangalows, flats, and plots across prime Karachi locations',
       description:
-        'Whether you are looking to acquire a luxury bungalow in North Nazimabad or Gulshan, invest in commercial assets, or book installment projects, our advisory ensures verified files, transparent dealings, and maximum capital growth.',
+        'Whether you want to buy a ready house in North Nazimabad or Gulshan, sell your property, invest in commercial assets, or book on easy installments, we ensure 100% verified documents, safe transactions, and transparent pricing.',
       services: [
         {
-          name: 'Residential Bangalows & Houses',
-          details: '80, 120, 240, 400, 500 & 1000 Gaz houses across North Nazimabad, Gulshan-e-Iqbal, FB Area, Scheme 33, and prime enclaves.',
+          name: 'Bungalows & Houses (80 to 1000 Gaz)',
+          details: 'Single & double storey houses in North Nazimabad, Gulshan-e-Iqbal, FB Area, Scheme 33, and Buffer Zone with verified registry documents.',
         },
         {
           name: 'Residential & Commercial Plots',
-          details: 'Ready-to-build residential and commercial open plots in all prime sizes with 100% verified documentation.',
+          details: 'Open plots in 80, 120, 240, 400, 500 & 1000 Gaz ready for immediate construction with clear utility & transfer status.',
         },
         {
-          name: 'High-Rise Towers & Luxury Apartments',
-          details: 'Ready and off-plan high-end apartments, duplex penthouses, and executive suites in prestigious beachfront & urban towers.',
+          name: 'Apartments, Flats & Penthouses',
+          details: 'Ready and under-construction 2, 3 & 4-bed family flats with lifts, standby generator, designated parking, and 24/7 security.',
         },
         {
-          name: 'Commercial High-Yield Assets',
-          details: 'Banquets, Marriage Halls, Bank-Leased commercial spaces, and multi-story commercial plazas generating stable monthly rental returns.',
+          name: 'Commercial Properties & High Rental Assets',
+          details: 'Banquets, Marriage Halls, shops, bank-leased buildings, and commercial plots with solid monthly rental income.',
         },
         {
-          name: 'Installment Project Bookings',
-          details: 'Easy 1 to 4-year installment plans for residential plots, luxury apartments, and commercial shops across approved master plans.',
+          name: 'Easy Monthly & Yearly Installment Projects',
+          details: 'Affordable 1 to 4-year installment plans for residential plots and brand new apartments in SBCA approved schemes.',
         },
         {
-          name: 'High-ROI Flip Deals & Distressed Asset Sourcing',
-          details: 'Identifying undervalued and distressed properties for investors looking for rapid capital gains through value enhancement.',
+          name: 'Profitable Property Flip & Urgent Deals',
+          details: 'Sourcing under-market price houses and plots for investors looking for quick capital growth and safe returns.',
         },
         {
-          name: '“Renovate Before Selling” Program',
-          details: 'Strategic cosmetic and structural modernization for sellers to significantly boost property valuation prior to market listing.',
+          name: 'Renovate Before Selling Service',
+          details: 'We repair, paint, and modernize your old house before listing to help you get the maximum market price from buyers.',
         },
       ],
     },
     {
       id: 1,
-      title: '2. Complete Legal Due Diligence, Map Approvals & Documentation Wing',
+      title: '2. SBCA Map Approvals, Registry & Legal Verification',
       shortTitle: 'Legal & Map Approvals',
       icon: <FileCheck2 className="w-5 h-5 text-[#2e3a2f]" />,
-      tagline: '100% safe property ownership, municipal approvals, and legal verification',
+      tagline: '100% safe ownership, building map sanctioning, and municipal NOCs',
       description:
-        'We protect our clients against land disputes, illegal constructions, and encumbrances through meticulous legal vetting and direct liaison with all governing authorities in Karachi.',
+        'We protect you from property fraud, disputed lands, and illegal construction. Our legal experts check official records directly with KDA, MDA, SBCA, and the Sub-Registrar office.',
       services: [
         {
-          name: 'Title & Ownership Verification',
-          details: 'Exhaustive verification of Registry, Mutation, Intiqal, Sanad, and Sub-Registrar official records to confirm legitimate ownership.',
+          name: 'Registry & File Verification',
+          details: 'Complete check of Registry, Mutation, Intiqal, Sanad, and Sub-Registrar files to verify original ownership.',
         },
         {
-          name: 'Authority Approvals & Clearances',
-          details: 'Official NOCs and transfer clearances from KDA, MDA, LDA, SBCA, KMC, and Cantonment Boards (CBC, Clifton, Faisal, Malir).',
+          name: 'KDA, MDA & Cantonment Clearances',
+          details: 'Transfer papers, official NOCs, and clearance letters from KDA, MDA, LDA, SBCA, and Cantonment Boards (CBC, Faisal, Malir).',
         },
         {
-          name: 'Building Map Approvals & Architectural Vetting',
-          details: 'Preparation, submission, and sanctioning of SBCA-approved architectural layout drawings, structural drawings, and MEP plans.',
+          name: 'SBCA Building Map Approval (نقشہ پاس)',
+          details: 'Designing, submitting, and getting official SBCA approvals for architectural layout maps, structural drawings, and floor plans.',
         },
         {
-          name: 'Demolition & Reconstruction NOCs',
-          details: 'Controlled demolition approvals, municipal safety certificates, and reconstruction permissions for old structures.',
+          name: 'Demolition & Reconstruction NOC (توڑ پھوڑ)',
+          details: 'Official government permission and safety NOCs to safely demolish old buildings and construct new houses.',
         },
         {
-          name: 'Non-Encumbrance & Clear Title Certificates (NEC)',
-          details: 'Issuance of official Non-Encumbrance Certificates verifying freedom from court stays, bank mortgages, or legal liens.',
+          name: 'Non-Encumbrance Certificate (NEC)',
+          details: 'Official government certificate proving the property is free from court cases, bank mortgages, and legal disputes.',
         },
         {
-          name: 'Utility Verification & Clearances',
-          details: 'No-Objection Certificates (NOCs) and billing clearance from K-Electric, Sui Gas (SSGC), and KW&SC.',
+          name: 'Electricity, Gas & Water Clearances (NOC)',
+          details: 'Bill verification, meter transfer, and new connection clearances from K-Electric, Sui Gas (SSGC), and Water Board (KW&SC).',
         },
         {
-          name: 'Legal Drafting & Agreement Execution',
-          details: 'Professional drafting of Sale Agreements, Irrevocable General Power of Attorney (GPA), and registered Lease Deeds.',
+          name: 'Sale Agreement & Power of Attorney Drafting',
+          details: 'Professional legal drafting of Biyana Agreements, Sale Deeds, General Power of Attorney (GPA), and registered Lease Deeds.',
         },
       ],
     },
     {
       id: 2,
-      title: '3. Full House & Structural Construction',
+      title: '3. Turnkey House Construction & Gray Structure',
       shortTitle: 'Turnkey Construction',
       icon: <Hammer className="w-5 h-5 text-[#5c3822]" />,
-      tagline: 'Turnkey residential construction, gray structure rebuilds, and structural remodeling',
+      tagline: 'Full house construction, gray structure builds, and modern front elevations',
       description:
-        'Our engineering team builds modern, durable, and architecturally refined houses from foundation excavation to final paint, using Grade-A materials and strict quality controls.',
+        'Our construction team builds strong, modern, and high-quality houses from foundation to final paint. We use Grade-60 steel, solid concrete blocks, and deliver projects on committed deadlines.',
       services: [
         {
-          name: 'Turnkey Bangalow Rebuilds (80 to 1000 Gaz)',
-          details: 'Complete end-to-end house construction from foundation to luxury turnkey handover on committed delivery milestones.',
+          name: 'Complete Turnkey House Construction (80 to 1000 Gaz)',
+          details: 'Complete construction from foundation excavation to final luxury keys handover with complete material warranty.',
         },
         {
-          name: 'New Grey Structure Construction',
-          details: 'RCC columns, solid concrete blocks, Grade-60 deformed steel, termite-proofed plinth, and premium MEP conduit infrastructure.',
+          name: 'Gray Structure Construction',
+          details: 'RCC pillars, solid block masonry, Grade-60 deformed steel, underground water tank, plumbing conduits, and electrical piping.',
         },
         {
-          name: 'Controlled Demolition & Malba Removal',
-          details: 'Safe, municipal-compliant building demolition and rapid debris (malba) removal with protective perimeter scaffolding.',
+          name: 'Safe Demolition & Debris (Malba) Removal',
+          details: 'Controlled building demolition with protective scaffolding and fast removal of malba according to city safety rules.',
         },
         {
-          name: 'Exterior Elevation & Modern Facade Redesign',
-          details: 'Transforming outdated bungalow facades with imported Travertine stone, HPL cladding, louvers, and architectural exterior lighting.',
+          name: 'Front Elevation & Modern Facade Redesign',
+          details: 'Giving old houses a modern exterior look using Travertine stone, weather-resistant paint, wooden louvers, and stylish exterior lights.',
         },
         {
-          name: 'Commercial & Banquet Hall Refurbishment',
-          details: 'Heavy-duty structural redesign, acoustic wall panelling, and high-capacity space planning for commercial banquet venues.',
+          name: 'Commercial Plazas & Banquet Construction',
+          details: 'Heavy-duty construction for commercial halls, shops, and multi-storey office buildings.',
         },
       ],
     },
     {
       id: 3,
-      title: '4. Room-by-Room & Interior Remodeling',
-      shortTitle: 'Interior Remodeling',
+      title: '4. Room-by-Room Interior Renovation',
+      shortTitle: 'Interior Renovation',
       icon: <Paintbrush className="w-5 h-5 text-[#847666]" />,
-      tagline: 'Modern luxury interior design, modular kitchens, and executive bathroom upgrades',
+      tagline: 'Modern modular kitchens, executive bathrooms, and false ceiling lighting',
       description:
-        'Upgrade your living space with bespoke interiors, imported Italian tiles, custom German-style kitchens, and smart ambient ceiling lighting tailored to your lifestyle.',
+        'Modernize your house or flat with customized German-style kitchens, imported Italian tile bathrooms, false ceilings, and stylish media walls.',
       services: [
         {
-          name: 'Modular Kitchen Transformations',
-          details: 'UV/Acrylic and Matte soft-close cabinets, quartz and polished granite countertops, built-in islands, and German kitchen hardware.',
+          name: 'Modern Kitchen Renovation',
+          details: 'UV/Acrylic waterproof cabinets, granite & quartz slabs, soft-close drawers, and built-in stove & hood installations.',
         },
         {
-          name: 'Executive Bathroom Modernization',
-          details: 'Imported Spanish/Italian porcelain tiles, concealed Grohe/Kohler sanitary fittings, frameless glass shower cabins, and floating vanities.',
+          name: 'Modern Bathroom Upgrades',
+          details: 'Spanish & Italian tiles, concealed Grohe/Master sanitary fittings, glass shower partitions, and vanity mirrors.',
         },
         {
-          name: 'Drawing Room & Living Lounge Redesign',
-          details: 'False ceilings with cove and magnetic track lighting, fluted charcoal media walls, marble feature accents, and wall paneling.',
+          name: 'Drawing Room & TV Lounge Renovation',
+          details: 'Gypsum false ceilings with warm LED strip lights, fluted wooden media walls, and marble feature walls.',
         },
         {
-          name: 'Master Bedroom Suites & Walk-in Closets',
-          details: 'Custom wardrobe suites with integrated LED shelving, upholstered headboard walls, and ergonomic space optimization.',
+          name: 'Master Bedroom & Wardrobes',
+          details: 'Full-height wooden wardrobes with sliding doors, internal LED lights, and custom headboard wall designs.',
         },
         {
-          name: 'Apartment & Penthouse Interior Overhauls',
-          details: 'Turnkey modernization of vertical residences including space remodeling, soundproofing, and designer finishes.',
+          name: 'Apartment & Flat Renovation',
+          details: 'Complete makeover for old apartments including floor tiling, paint, plumbing renewal, and door replacements.',
         },
       ],
     },
     {
       id: 4,
-      title: '5. Specialized Infrastructure & Remedial Solutions',
-      shortTitle: 'Remedial & Infrastructure',
+      title: '5. Waterproofing, Seepage (Seem) & Tank Repair',
+      shortTitle: 'Seepage & Waterproofing',
       icon: <Droplets className="w-5 h-5 text-[#2e3a2f]" />,
-      tagline: 'Solving Karachi’s critical home maintenance challenges: Seepage, tanks, plumbing & solar',
+      tagline: 'Permanent solutions for wall seepage (سیم), tank leakage, plumbing & solar',
       description:
-        'Permanent engineering solutions for water seepage, underground tank leakage, electrical overload, and termite infestation, saving your property from long-term damage.',
+        'Permanent chemical solutions to stop water seepage, underground water tank leakage, hidden pipe leaks, and termite (deemak) attacks before they ruin your walls.',
       services: [
         {
-          name: 'Seepage, Dampness (Seem) & Roof Waterproofing',
-          details: 'Pressure chemical injection, elastomeric polymer membrane coatings, and roof screed thermal-waterproofing treatments.',
+          name: 'Roof & Wall Seepage (Seem) Waterproofing',
+          details: 'Chemical pressure injection and multi-layer chemical polymer coatings to stop moisture and wall peeling permanently.',
         },
         {
-          name: 'RCC Underground & Overhead Water Tank Rehabilitation',
-          details: 'Crack sealing, food-grade chemical waterproofing, and porcelain tile relining to prevent water contamination and leakage.',
+          name: 'Underground & Overhead Water Tank Repair',
+          details: 'Waterproofing chemical crack filling and tile relining to prevent water loss and contaminated drinking water.',
         },
         {
-          name: 'Electrical Rewiring & Solar / Net-Metering Infrastructure',
-          details: 'Load calculation, Pakistan Cables wiring overhaul, solar inverter hybrid setup, and 3-phase net-metering integration.',
+          name: 'Solar Panel Setup & Electrical Rewiring',
+          details: 'Complete Pakistan Cables wiring, 3-phase load distribution, and solar hybrid inverter net-metering installations.',
         },
         {
-          name: 'Complete Internal Plumbing & Sewerage Overhaul',
-          details: 'Replacing corroded GI pipes with premium PPRC water lines and UPVC drainage systems to eliminate hidden wall leaks.',
+          name: 'Complete Plumbing & Sewerage Replacement',
+          details: 'Replacing old rusted GI pipes with durable PPRC water pipes and UPVC drainage to eliminate wall leaks.',
         },
         {
-          name: 'Termite (Deemak) Treatment & Woodwork Restoration',
-          details: 'Pre-construction and post-construction chemical soil barriers and localized micro-injection for wooden doorframes and wardrobes.',
+          name: 'Termite (Deemak) Chemical Treatment',
+          details: 'Deep soil chemical barriers and wood injection to protect doors, wardrobes, and kitchen cabinets from termite damage.',
         },
       ],
     },
@@ -201,13 +201,13 @@ export default function ServicesPage() {
       <div className="text-center max-w-3xl mx-auto space-y-3">
         <div className="flex items-center justify-center gap-2">
           <Badge variant="exclusive" size="sm">Amber Property Corner</Badge>
-          <Badge variant="stone" size="sm">Complete Scope of Services</Badge>
+          <Badge variant="stone" size="sm">All Services in One Place</Badge>
         </div>
         <h1 className="font-display font-medium text-3xl sm:text-5xl text-[#1F1B16] tracking-tight">
-          Real Estate, Construction & Renovation
+          Real Estate, Construction & Renovation Services
         </h1>
         <p className="text-xs sm:text-sm text-[#7e7365] leading-relaxed">
-          From verified property acquisition and SBCA map approvals to turnkey construction, interior remodeling, and permanent seepage solutions in Karachi.
+          From verified property buying and SBCA map approvals to full house construction, room remodeling, and permanent seepage solutions across Karachi.
         </p>
       </div>
 
@@ -235,7 +235,7 @@ export default function ServicesPage() {
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-6 border-b border-[#d8cebe]/60">
             <div className="space-y-2 max-w-3xl">
               <div className="flex items-center gap-2">
-                <Badge variant="exclusive" size="sm">Wing 0{currentIdx + 1}</Badge>
+                <Badge variant="exclusive" size="sm">Department 0{currentIdx + 1}</Badge>
                 <span className="text-xs font-mono text-[#7e7365]">{current.tagline}</span>
               </div>
               <h2 className="font-display font-medium text-2xl sm:text-4xl text-[#1F1B16]">
@@ -248,17 +248,17 @@ export default function ServicesPage() {
 
             <div className="shrink-0 flex flex-col sm:flex-row lg:flex-col gap-2">
               <a
-                href={`https://wa.me/923008224110?text=${encodeURIComponent(`Assalam o Alaikum, I want to inquire regarding: ${current.title}`)}`}
+                href={`https://wa.me/923327906034?text=${encodeURIComponent(`Assalam o Alaikum, I want to inquire regarding: ${current.title}`)}`}
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 <Button variant="primary" size="md" className="w-full text-xs">
-                  Request Quotation on WhatsApp
+                  Get Free Quote on WhatsApp
                 </Button>
               </a>
               <Link href="/contact">
                 <Button variant="secondary" size="md" className="w-full text-xs">
-                  Book In-Person Consultation
+                  Book In-Person Office Visit
                 </Button>
               </Link>
             </div>
@@ -292,7 +292,7 @@ export default function ServicesPage() {
               All 5 Specialized Departments
             </h3>
             <p className="text-xs text-[#7e7365]">
-              Click any department to view complete capabilities and request assistance.
+              Click any department to view complete details and get in touch.
             </p>
           </div>
 
@@ -328,8 +328,8 @@ export default function ServicesPage() {
                   </p>
                 </div>
 
-                <div className="pt-2 text-xs font-mono text-[#5c3822] flex items-center gap-1">
-                  <span>Explore Wing &rarr;</span>
+                <div className="pt-2 text-xs font-mono text-[#5c3822] flex items-center gap-1 font-medium">
+                  <span>View Details &rarr;</span>
                 </div>
               </button>
             ))}
@@ -343,24 +343,24 @@ export default function ServicesPage() {
           <ShieldCheck className="w-6 h-6" />
         </div>
         <h2 className="font-display font-medium text-2xl sm:text-3xl text-[#1F1B16]">
-          Need a Custom Estimate or Site Inspection?
+          Need a Free Price Estimate or Site Visit?
         </h2>
         <p className="text-xs sm:text-sm text-[#7e7365] max-w-lg mx-auto">
-          Our senior engineers and real estate advisors are available for on-site visits across Karachi.
+          Our senior engineers and real estate advisors are available for direct site visits across Karachi.
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
           <a
-            href="https://wa.me/923008224110?text=Assalam%20o%20Alaikum%20Amber%20Property%20Corner,%20I%20would%20like%20to%20request%20a%20site%20visit%20and%20quotation."
+            href="https://wa.me/923327906034?text=Assalam%20o%20Alaikum%20Amber%20Property%20Corner,%20I%20would%20like%20to%20request%20a%20site%20visit%20and%20quotation."
             target="_blank"
             rel="noopener noreferrer"
           >
             <Button variant="primary" size="lg" className="text-xs sm:text-sm">
-              WhatsApp for Quick Quote
+              WhatsApp for Quick Estimate
             </Button>
           </a>
           <Link href="/contact">
             <Button variant="secondary" size="lg" className="text-xs sm:text-sm">
-              Submit Inquiry Form
+              Contact Our Office
             </Button>
           </Link>
         </div>

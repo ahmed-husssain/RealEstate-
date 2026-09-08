@@ -231,19 +231,19 @@ export function ValuationClient({ siteSettings }: ValuationClientProps) {
             {/* Analysis Breakdown */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
               <div className="p-3.5 rounded-xl bg-white border border-[#d8cebe]/60 space-y-1">
-                <span className="text-[#7e7365] block font-mono">Location Benchmark</span>
+                <span className="text-[#7e7365] block font-mono">Selected Location</span>
                 <span className="font-semibold text-[#1F1B16]">{city}</span>
-                <p className="text-[11px] text-[#7e7365]">Active market transaction demand index.</p>
+                <p className="text-[11px] text-[#7e7365]">Current market demand in this sector.</p>
               </div>
               <div className="p-3.5 rounded-xl bg-white border border-[#d8cebe]/60 space-y-1">
-                <span className="text-[#7e7365] block font-mono">Algorithm Accuracy</span>
-                <span className="font-semibold text-[#2e3a2f]">Live BTS DB Model</span>
-                <p className="text-[11px] text-[#7e7365]">Verified against Amber Property Corner rates.</p>
+                <span className="text-[#7e7365] block font-mono">Rate Verification</span>
+                <span className="font-semibold text-[#2e3a2f]">Live Market Data</span>
+                <p className="text-[11px] text-[#7e7365]">Calculated from verified Karachi property rates.</p>
               </div>
               <div className="p-3.5 rounded-xl bg-white border border-[#d8cebe]/60 space-y-1">
-                <span className="text-[#7e7365] block font-mono">Market Trend</span>
-                <span className="font-semibold text-[#1F1B16]">Appreciating Steady</span>
-                <p className="text-[11px] text-[#7e7365]">High capital growth in central Karachi.</p>
+                <span className="text-[#7e7365] block font-mono">Property Status</span>
+                <span className="font-semibold text-[#1F1B16]">High Demand</span>
+                <p className="text-[11px] text-[#7e7365]">Active buying & selling in this area.</p>
               </div>
             </div>
 

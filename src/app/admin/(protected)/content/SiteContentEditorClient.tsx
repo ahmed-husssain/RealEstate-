@@ -51,10 +51,10 @@ export function SiteContentEditorClient({ initialSettings }: { initialSettings: 
   const [advisorExperience, setAdvisorExperience] = useState(initialSettings.advisor_experience || '15 Years Exp');
   const [advisorAvatar, setAdvisorAvatar] = useState(
     initialSettings.advisor_avatar ||
-      'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=600&q=80'
+    'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=600&q=80'
   );
-  const [advisorPhone, setAdvisorPhone] = useState(initialSettings.advisor_phone || '+92 300 822 4110');
-  const [advisorWhatsapp, setAdvisorWhatsapp] = useState(initialSettings.advisor_whatsapp || '+923008224110');
+  const [advisorPhone, setAdvisorPhone] = useState(initialSettings.advisor_phone || '+92 332 7906034');
+  const [advisorWhatsapp, setAdvisorWhatsapp] = useState(initialSettings.advisor_whatsapp || '+923327906034');
   const [advisorEmail, setAdvisorEmail] = useState(initialSettings.advisor_email || 'syedsikander1401@gmail.com');
   const [advisorWaMsg, setAdvisorWaMsg] = useState(
     initialSettings.advisor_wa_msg || 'Assalam o Alaikum, I would like to inquire about properties in Karachi.'
@@ -82,7 +82,7 @@ export function SiteContentEditorClient({ initialSettings }: { initialSettings: 
   );
   const [mortgageDisclaimer, setMortgageDisclaimer] = useState(
     initialSettings.mortgage_disclaimer ||
-      '*Estimates provided for informational illustrative modeling. Subject to lender qualification and tax advisory review.'
+    '*Estimates provided for informational illustrative modeling. Subject to lender qualification and tax advisory review.'
   );
 
   // --- 3. Karachi Valuation Engine Behind-The-Scenes (BTS) ---
@@ -152,11 +152,11 @@ export function SiteContentEditorClient({ initialSettings }: { initialSettings: 
   );
   const [heroSubtitle, setHeroSubtitle] = useState(
     initialSettings.hero_subtitle ||
-      'Buy, sell, build, and renovate verified bangalows, houses, and plots across North Nazimabad, Gulshan-e-Iqbal, Federal B Area, Scheme 33, Buffer Zone, North Karachi, Gulberg, Scheme 45, and Clifton.'
+    'Buy, sell, build, and renovate verified bangalows, houses, and plots across North Nazimabad, Gulshan-e-Iqbal, Federal B Area, Scheme 33, Buffer Zone, North Karachi, Gulberg, Scheme 45, and Clifton.'
   );
-  const [phonePrimary, setPhonePrimary] = useState(initialSettings.phone_primary || '+92 300 822 4110');
+  const [phonePrimary, setPhonePrimary] = useState(initialSettings.phone_primary || '+92 332 7906034');
   const [phoneLandline, setPhoneLandline] = useState(initialSettings.phone_landline || '+92 21 3634 1100');
-  const [whatsappNumber, setWhatsappNumber] = useState(initialSettings.whatsapp_number || '+92 300 822 4110');
+  const [whatsappNumber, setWhatsappNumber] = useState(initialSettings.whatsapp_number || '+92 332 7906034');
   const [contactEmail, setContactEmail] = useState(initialSettings.contact_email || 'syedsikander1401@gmail.com');
   const [officeAddress, setOfficeAddress] = useState(
     initialSettings.office_address || 'B 693, Block 13 Gulberg Town, Karachi, Pakistan'
@@ -166,7 +166,7 @@ export function SiteContentEditorClient({ initialSettings }: { initialSettings: 
   );
   const [announcementBanner, setAnnouncementBanner] = useState(
     initialSettings.announcement_banner ||
-      'New North Nazimabad and Gulshan luxury listings now open for private viewings.'
+    'New North Nazimabad and Gulshan luxury listings now open for private viewings.'
   );
   const [announcementActive, setAnnouncementActive] = useState(
     initialSettings.announcement_active !== undefined ? initialSettings.announcement_active === 'true' : true
@@ -361,11 +361,10 @@ export function SiteContentEditorClient({ initialSettings }: { initialSettings: 
         <button
           type="button"
           onClick={() => setActiveTab('valuation')}
-          className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-mono font-medium transition-all cursor-pointer ${
-            activeTab === 'valuation'
+          className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-mono font-medium transition-all cursor-pointer ${activeTab === 'valuation'
               ? 'bg-[#5c3822] text-[#F8F4ED] shadow-sm font-bold'
               : 'text-[#7e7365] hover:text-[#1F1B16] hover:bg-white/60'
-          }`}
+            }`}
         >
           <TrendingUp className="w-3.5 h-3.5" />
           <span>1. Karachi Valuation Engine (BTS)</span>
@@ -374,11 +373,10 @@ export function SiteContentEditorClient({ initialSettings }: { initialSettings: 
         <button
           type="button"
           onClick={() => setActiveTab('advisor')}
-          className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-mono font-medium transition-all cursor-pointer ${
-            activeTab === 'advisor'
+          className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-mono font-medium transition-all cursor-pointer ${activeTab === 'advisor'
               ? 'bg-[#5c3822] text-[#F8F4ED] shadow-sm font-bold'
               : 'text-[#7e7365] hover:text-[#1F1B16] hover:bg-white/60'
-          }`}
+            }`}
         >
           <UserCheck className="w-3.5 h-3.5" />
           <span>2. Property Advisor Profile</span>
@@ -387,11 +385,10 @@ export function SiteContentEditorClient({ initialSettings }: { initialSettings: 
         <button
           type="button"
           onClick={() => setActiveTab('mortgage')}
-          className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-mono font-medium transition-all cursor-pointer ${
-            activeTab === 'mortgage'
+          className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-mono font-medium transition-all cursor-pointer ${activeTab === 'mortgage'
               ? 'bg-[#5c3822] text-[#F8F4ED] shadow-sm font-bold'
               : 'text-[#7e7365] hover:text-[#1F1B16] hover:bg-white/60'
-          }`}
+            }`}
         >
           <Calculator className="w-3.5 h-3.5" />
           <span>3. Mortgage Estimator</span>
@@ -400,11 +397,10 @@ export function SiteContentEditorClient({ initialSettings }: { initialSettings: 
         <button
           type="button"
           onClick={() => setActiveTab('hero')}
-          className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-mono font-medium transition-all cursor-pointer ${
-            activeTab === 'hero'
+          className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-mono font-medium transition-all cursor-pointer ${activeTab === 'hero'
               ? 'bg-[#5c3822] text-[#F8F4ED] shadow-sm font-bold'
               : 'text-[#7e7365] hover:text-[#1F1B16] hover:bg-white/60'
-          }`}
+            }`}
         >
           <Sparkles className="w-3.5 h-3.5" />
           <span>4. Hero & Taglines</span>
@@ -413,11 +409,10 @@ export function SiteContentEditorClient({ initialSettings }: { initialSettings: 
         <button
           type="button"
           onClick={() => setActiveTab('general')}
-          className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-mono font-medium transition-all cursor-pointer ${
-            activeTab === 'general'
+          className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-mono font-medium transition-all cursor-pointer ${activeTab === 'general'
               ? 'bg-[#5c3822] text-[#F8F4ED] shadow-sm font-bold'
               : 'text-[#7e7365] hover:text-[#1F1B16] hover:bg-white/60'
-          }`}
+            }`}
         >
           <Phone className="w-3.5 h-3.5" />
           <span>5. Office Contacts</span>
@@ -427,11 +422,10 @@ export function SiteContentEditorClient({ initialSettings }: { initialSettings: 
       {/* Status Alerts */}
       {statusMsg && (
         <div
-          className={`p-4 rounded-2xl border text-xs space-y-1.5 animate-in fade-in shadow-sm ${
-            statusMsg.type === 'success'
+          className={`p-4 rounded-2xl border text-xs space-y-1.5 animate-in fade-in shadow-sm ${statusMsg.type === 'success'
               ? 'bg-green-50 border-green-200 text-green-800'
               : 'bg-red-50 border-red-200 text-red-800'
-          }`}
+            }`}
         >
           <div className="flex items-center gap-2 font-bold">
             {statusMsg.type === 'success' ? (
@@ -551,9 +545,8 @@ export function SiteContentEditorClient({ initialSettings }: { initialSettings: 
                   return (
                     <div
                       key={idx}
-                      className={`p-3.5 rounded-2xl bg-white border border-[#d8cebe] space-y-2 shadow-sm ${
-                        idx === 8 ? 'sm:col-span-2' : ''
-                      }`}
+                      className={`p-3.5 rounded-2xl bg-white border border-[#d8cebe] space-y-2 shadow-sm ${idx === 8 ? 'sm:col-span-2' : ''
+                        }`}
                     >
                       <div className="flex items-start justify-between gap-2">
                         <div>
@@ -646,9 +639,8 @@ export function SiteContentEditorClient({ initialSettings }: { initialSettings: 
                 ].map((item, idx) => (
                   <div
                     key={idx}
-                    className={`p-3.5 rounded-2xl bg-white border border-[#d8cebe] space-y-2 shadow-sm ${
-                      idx === 4 ? 'sm:col-span-2' : ''
-                    }`}
+                    className={`p-3.5 rounded-2xl bg-white border border-[#d8cebe] space-y-2 shadow-sm ${idx === 4 ? 'sm:col-span-2' : ''
+                      }`}
                   >
                     <div className="flex items-start justify-between gap-2">
                       <div>

@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { PropertyCard } from '@/components/properties/PropertyCard';
 import { SearchFilterBar } from '@/components/properties/SearchFilterBar';
+import { BrowsePropertiesMatrix } from '@/components/properties/BrowsePropertiesMatrix';
 import { Button } from '@/ui/Button';
 import { Badge } from '@/ui/Badge';
 import { GlassCard } from '@/ui/GlassCard';
@@ -202,7 +203,10 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 2. Featured Exclusive Residences */}
+      {/* 2. Karachi Property Explorer & Categorical Matrix */}
+      <BrowsePropertiesMatrix />
+
+      {/* 3. Featured Exclusive Residences */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-[#d8cebe]/60 pb-5">
           <div className="space-y-1">

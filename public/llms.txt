@@ -1,0 +1,24 @@
+# Amber Property Corner - Real Estate & Construction
+
+> Amber Property Corner is a premier real estate agency and construction consultancy in Karachi, Pakistan, specializing in verified residential bungalows, commercial assets, plots, legal approvals (SBCA/KDA), turnkey house construction, and property valuation.
+
+## Core Services
+- Property Buying & Selling: Verified houses (80 to 1000 Gaz), plots, apartments, and commercial plazas in North Nazimabad, Gulshan-e-Iqbal, Federal B Area, Scheme 33, and Buffer Zone.
+- Legal Due Diligence & SBCA Approvals: Registry checks, Sanad verification, building layout map approvals, and demolition NOCs.
+- Turnkey House Construction: Complete construction from foundation to finish, Grade-60 steel, and modern elevations.
+- Room-by-Room Renovation: Modular kitchens, Italian tile bathrooms, and gypsum false ceilings.
+- Seepage & Waterproofing: Permanent chemical waterproofing and plumbing line replacement.
+
+## Primary Pages
+- Homepage: https://amberproperty.vercel.app/
+- Properties Catalog: https://amberproperty.vercel.app/properties
+- Services: https://amberproperty.vercel.app/services
+- Neighborhood Guides: https://amberproperty.vercel.app/neighborhoods
+- Property Valuation Calculator: https://amberproperty.vercel.app/valuation
+- Contact: https://amberproperty.vercel.app/contact
+
+## Contact & Advisor
+- Senior Advisor: Syed Sikander Waqar
+- Phone / WhatsApp: +92 332 7906034
+- Email: syedsikander1401@gmail.com
+- Office: Amber Property Corner, Karachi, Pakistan

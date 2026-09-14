@@ -122,9 +122,9 @@ export default async function HomePage() {
                   <div className="w-7 h-7 rounded-lg bg-[#5c3822]/10 text-[#5c3822] flex items-center justify-center">
                     <Building2 className="w-4 h-4" />
                   </div>
-                  <h4 className="font-display font-medium text-xs text-[#1F1B16] group-hover:text-[#5c3822] transition-colors leading-snug">
+                  <span className="font-display font-medium text-xs text-[#1F1B16] group-hover:text-[#5c3822] transition-colors leading-snug block">
                     Houses & Plots for Sale
-                  </h4>
+                  </span>
                 </div>
                 <span className="text-[10px] font-mono text-[#7e7365] group-hover:text-[#5c3822] mt-2 block">
                   80–1000 Gaz →
@@ -139,9 +139,9 @@ export default async function HomePage() {
                   <div className="w-7 h-7 rounded-lg bg-[#2e3a2f]/10 text-[#2e3a2f] flex items-center justify-center">
                     <Scale className="w-4 h-4" />
                   </div>
-                  <h4 className="font-display font-medium text-xs text-[#1F1B16] group-hover:text-[#2e3a2f] transition-colors leading-snug">
+                  <span className="font-display font-medium text-xs text-[#1F1B16] group-hover:text-[#2e3a2f] transition-colors leading-snug block">
                     SBCA Map & Registry Check
-                  </h4>
+                  </span>
                 </div>
                 <span className="text-[10px] font-mono text-[#7e7365] group-hover:text-[#2e3a2f] mt-2 block">
                   Legal Approvals →
@@ -156,9 +156,9 @@ export default async function HomePage() {
                   <div className="w-7 h-7 rounded-lg bg-[#5c3822]/10 text-[#5c3822] flex items-center justify-center">
                     <HardHat className="w-4 h-4" />
                   </div>
-                  <h4 className="font-display font-medium text-xs text-[#1F1B16] group-hover:text-[#5c3822] transition-colors leading-snug">
+                  <span className="font-display font-medium text-xs text-[#1F1B16] group-hover:text-[#5c3822] transition-colors leading-snug block">
                     House Construction
-                  </h4>
+                  </span>
                 </div>
                 <span className="text-[10px] font-mono text-[#7e7365] group-hover:text-[#5c3822] mt-2 block">
                   Gray & Finish →
@@ -173,9 +173,9 @@ export default async function HomePage() {
                   <div className="w-7 h-7 rounded-lg bg-[#847666]/15 text-[#1F1B16] flex items-center justify-center">
                     <Sparkles className="w-4 h-4" />
                   </div>
-                  <h4 className="font-display font-medium text-xs text-[#1F1B16] group-hover:text-[#5c3822] transition-colors leading-snug">
+                  <span className="font-display font-medium text-xs text-[#1F1B16] group-hover:text-[#5c3822] transition-colors leading-snug block">
                     Kitchen & Bath Renovation
-                  </h4>
+                  </span>
                 </div>
                 <span className="text-[10px] font-mono text-[#7e7365] group-hover:text-[#5c3822] mt-2 block">
                   Modern Interiors →
@@ -190,9 +190,9 @@ export default async function HomePage() {
                   <div className="w-7 h-7 rounded-lg bg-[#2e3a2f]/10 text-[#2e3a2f] flex items-center justify-center">
                     <Droplets className="w-4 h-4" />
                   </div>
-                  <h4 className="font-display font-medium text-xs text-[#1F1B16] group-hover:text-[#2e3a2f] transition-colors leading-snug">
+                  <span className="font-display font-medium text-xs text-[#1F1B16] group-hover:text-[#2e3a2f] transition-colors leading-snug block">
                     Waterproofing & Seepage (سیم)
-                  </h4>
+                  </span>
                 </div>
                 <span className="text-[10px] font-mono text-[#7e7365] group-hover:text-[#2e3a2f] mt-2 block">
                   Permanent Fix →

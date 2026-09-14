@@ -130,12 +130,14 @@ export function SearchFilterBar({
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-12 gap-3 items-end">
           {/* Location Search */}
           <div className="sm:col-span-2 md:col-span-3 lg:col-span-4 relative">
-            <label className="block text-[11px] font-mono text-[#7e7365] mb-1">
+            <label htmlFor="location-search-input" className="block text-[11px] font-mono text-[#7e7365] mb-1">
               Search Location or Property
             </label>
             <div className="relative flex items-center">
               <MapPin className="absolute left-3.5 w-4 h-4 text-[#5c3822] pointer-events-none" />
               <input
+                id="location-search-input"
+                aria-label="Search Location or Property"
                 type="text"
                 placeholder={
                   isRentMode
@@ -155,12 +157,14 @@ export function SearchFilterBar({
 
           {/* Property Category */}
           <div className="sm:col-span-1 md:col-span-1 lg:col-span-3">
-            <label className="block text-[11px] font-mono text-[#7e7365] mb-1">
+            <label htmlFor="property-type-select" className="block text-[11px] font-mono text-[#7e7365] mb-1">
               {isRentMode ? 'Rental Property Type' : 'Property Type'}
             </label>
             <div className="relative flex items-center">
               <Building className="absolute left-3.5 w-4 h-4 text-[#5c3822] pointer-events-none" />
               <select
+                id="property-type-select"
+                aria-label={isRentMode ? 'Rental Property Type' : 'Property Type'}
                 value={filters.propertyType}
                 onChange={(e) => {
                   const updated = { ...filters, propertyType: e.target.value };
@@ -180,12 +184,14 @@ export function SearchFilterBar({
 
           {/* Bedrooms Selector */}
           <div className="sm:col-span-1 md:col-span-1 lg:col-span-2">
-            <label className="block text-[11px] font-mono text-[#7e7365] mb-1">
+            <label htmlFor="bedrooms-select" className="block text-[11px] font-mono text-[#7e7365] mb-1">
               Bedrooms
             </label>
             <div className="relative flex items-center">
               <BedDouble className="absolute left-3.5 w-4 h-4 text-[#5c3822] pointer-events-none" />
               <select
+                id="bedrooms-select"
+                aria-label="Bedrooms"
                 value={filters.bedrooms}
                 onChange={(e) => {
                   const updated = { ...filters, bedrooms: e.target.value };
@@ -234,10 +240,12 @@ export function SearchFilterBar({
           <div className="pt-3 border-t border-[#d8cebe]/60 grid grid-cols-1 sm:grid-cols-3 gap-3 animate-in fade-in duration-200">
             {/* Neighborhood Filter */}
             <div>
-              <label className="block text-[11px] font-mono text-[#7e7365] mb-1">
+              <label htmlFor="neighborhood-select" className="block text-[11px] font-mono text-[#7e7365] mb-1">
                 Select Karachi Area
               </label>
               <select
+                id="neighborhood-select"
+                aria-label="Select Karachi Area"
                 value={filters.neighborhood}
                 onChange={(e) => {
                   const updated = { ...filters, neighborhood: e.target.value };
@@ -261,11 +269,13 @@ export function SearchFilterBar({
 
             {/* Price / Rent Range Filter */}
             <div>
-              <label className="block text-[11px] font-mono text-[#7e7365] mb-1">
+              <label htmlFor="price-range-select" className="block text-[11px] font-mono text-[#7e7365] mb-1">
                 {isRentMode ? 'Monthly Rent Budget' : 'Price Range'}
               </label>
               {isRentMode ? (
                 <select
+                  id="price-range-select"
+                  aria-label="Monthly Rent Budget"
                   onChange={(e) => {
                     const val = e.target.value;
                     let range: [number, number] = [0, 1000000000];
@@ -287,6 +297,8 @@ export function SearchFilterBar({
                 </select>
               ) : (
                 <select
+                  id="price-range-select"
+                  aria-label="Price Range"
                   onChange={(e) => {
                     const val = e.target.value;
                     let range: [number, number] = [0, 1000000000];

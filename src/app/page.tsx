@@ -360,10 +360,10 @@ export default async function HomePage() {
                     <span className="font-mono text-xs font-semibold text-[#7e7365]">05</span>
                   </div>
                   <h3 className="font-display font-medium text-base text-[#1F1B16] group-hover:text-[#2e3a2f] transition-colors">
-                    Waterproofing, Seepage (سیم) & Tank Repair
+                    Waterproofing, Seepage (سیم) & Plumbing Solutions
                   </h3>
                   <p className="text-xs text-[#7e7365] leading-relaxed">
-                    Permanent roof and wall chemical waterproofing (*seem* solution), water tank crack repair, solar wiring, plumbing line replacement, and termite (*deemak*) treatment.
+                    Permanent roof and wall chemical waterproofing (*seem* solution), solar wiring setup, and durable plumbing line replacement.
                   </p>
                 </div>
                 <span className="text-[11px] font-mono text-[#2e3a2f] pt-2 block font-medium">Learn More &rarr;</span>

@@ -161,20 +161,16 @@ export default function ServicesPage() {
     },
     {
       id: 4,
-      title: '5. Waterproofing, Seepage (Seem) & Tank Repair',
+      title: '5. Waterproofing, Seepage (Seem) & Plumbing Solutions',
       shortTitle: 'Seepage & Waterproofing',
       icon: <Droplets className="w-5 h-5 text-[#2e3a2f]" />,
-      tagline: 'Permanent solutions for wall seepage (سیم), tank leakage, plumbing & solar',
+      tagline: 'Permanent solutions for wall seepage (سیم), plumbing renewal & solar setups',
       description:
-        'Permanent chemical solutions to stop water seepage, underground water tank leakage, hidden pipe leaks, and termite (deemak) attacks before they ruin your walls.',
+        'Permanent chemical solutions to stop water seepage, hidden pipe leaks, and wall moisture before they ruin your paint and plaster.',
       services: [
         {
           name: 'Roof & Wall Seepage (Seem) Waterproofing',
           details: 'Chemical pressure injection and multi-layer chemical polymer coatings to stop moisture and wall peeling permanently.',
-        },
-        {
-          name: 'Underground & Overhead Water Tank Repair',
-          details: 'Waterproofing chemical crack filling and tile relining to prevent water loss and contaminated drinking water.',
         },
         {
           name: 'Solar Panel Setup & Electrical Rewiring',
@@ -183,10 +179,6 @@ export default function ServicesPage() {
         {
           name: 'Complete Plumbing & Sewerage Replacement',
           details: 'Replacing old rusted GI pipes with durable PPRC water pipes and UPVC drainage to eliminate wall leaks.',
-        },
-        {
-          name: 'Termite (Deemak) Chemical Treatment',
-          details: 'Deep soil chemical barriers and wood injection to protect doors, wardrobes, and kitchen cabinets from termite damage.',
         },
       ],
     },

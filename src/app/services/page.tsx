@@ -280,9 +280,9 @@ export default function ServicesPage() {
         {/* All 5 Wings Summary Grid */}
         <div className="space-y-4 pt-6">
           <div className="space-y-1 text-center max-w-xl mx-auto">
-            <h3 className="font-display font-medium text-2xl text-[#1F1B16]">
+            <h2 className="font-display font-medium text-2xl text-[#1F1B16]">
               All 5 Specialized Departments
-            </h3>
+            </h2>
             <p className="text-xs text-[#7e7365]">
               Click any department to view complete details and get in touch.
             </p>
@@ -312,9 +312,9 @@ export default function ServicesPage() {
                 </div>
 
                 <div className="space-y-1">
-                  <h4 className="font-display font-medium text-base text-[#1F1B16]">
+                  <h3 className="font-display font-medium text-base text-[#1F1B16]">
                     {pillar.shortTitle}
-                  </h4>
+                  </h3>
                   <p className="text-xs text-[#7e7365] line-clamp-2 leading-relaxed">
                     {pillar.tagline}
                   </p>

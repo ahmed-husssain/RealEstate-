@@ -408,6 +408,23 @@ export function ValuationClient({ siteSettings }: ValuationClientProps) {
                       className="w-full bg-white text-[#1F1B16] border border-[#d8cebe] rounded-full px-4 py-2.5 text-xs sm:text-sm font-mono font-medium outline-none focus:border-[#5c3822] shadow-sm [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                       required
                     />
+                    {/* Quick Gaz Preset Chips */}
+                    <div className="flex flex-wrap gap-1.5 pt-1">
+                      {[80, 120, 240, 400, 500, 1000].map((gaz) => (
+                        <button
+                          key={gaz}
+                          type="button"
+                          onClick={() => setAreaSqYd(gaz)}
+                          className={`px-2 py-0.5 rounded-full text-[10px] font-mono transition-all cursor-pointer ${
+                            areaSqYd === gaz
+                              ? 'bg-[#5c3822] text-[#F8F4ED] font-bold shadow-xs'
+                              : 'bg-white text-[#1F1B16] border border-[#d8cebe] hover:bg-[#f5efe6]'
+                          }`}
+                        >
+                          {gaz} Gaz
+                        </button>
+                      ))}
+                    </div>
                   </div>
 
                   {/* Bedrooms (Hidden for Plots) */}

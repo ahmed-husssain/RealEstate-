@@ -94,8 +94,30 @@ export function ContactClient({ siteSettings }: { siteSettings: PublicSiteSettin
                 <p className="text-xs sm:text-sm text-[#7e7365] max-w-md mx-auto">
                   Thank you for reaching out to Amber Property Corner. Our designated advisor will contact you within 2 hours.
                 </p>
-                <div className="pt-2">
-                  <Button variant="secondary" size="sm" onClick={() => setIsSubmitted(false)}>
+                <div className="pt-3 flex flex-col sm:flex-row items-center justify-center gap-3">
+                  <a
+                    href={`https://wa.me/${siteSettings.whatsapp_clean}?text=${encodeURIComponent(
+                      `Assalam o Alaikum, I just submitted an inquiry on your website (${name || 'Client'}). I would like to discuss it directly.`
+                    )}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full sm:w-auto"
+                  >
+                    <Button variant="primary" size="md" className="w-full text-xs shadow-sm">
+                      <div className="flex items-center gap-1.5">
+                        <div className="relative w-4 h-4 rounded-full overflow-hidden shrink-0">
+                          <Image
+                            src="/amber-property-corner-whatsapp.png"
+                            alt="WhatsApp"
+                            fill
+                            className="object-contain"
+                          />
+                        </div>
+                        <span>Chat Instantly on WhatsApp</span>
+                      </div>
+                    </Button>
+                  </a>
+                  <Button variant="secondary" size="md" onClick={() => setIsSubmitted(false)} className="w-full sm:w-auto text-xs">
                     Send Another Message
                   </Button>
                 </div>

@@ -134,13 +134,13 @@ export function mapDbPropertyToProperty(dbProp: any): Property {
       id: dbProp.agent?.id || 'agent-1',
       name: dbProp.agent?.name || 'Syed Sikander Waqar',
       title: dbProp.agent?.role || 'Senior Managing Advisor',
-      phone: dbProp.agent?.phone || '+92 300 822 4110',
+      phone: dbProp.agent?.phone || '+92 332 7906034',
       email: dbProp.agent?.email || 'syedsikander1401@gmail.com',
       avatarUrl:
         dbProp.agent?.avatarUrl ||
         'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=600&q=80',
       experienceYears: dbProp.agent?.experienceYears || 15,
-      whatsapp: dbProp.agent?.whatsapp || '+923008224110',
+      whatsapp: dbProp.agent?.whatsapp || '+923327906034',
     },
     publishedAt: dbProp.createdAt ? new Date(dbProp.createdAt).toISOString() : new Date().toISOString(),
   };

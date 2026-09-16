@@ -64,8 +64,8 @@ export function PropertyDetailClient({
   const advisorRole = siteSettings?.advisor_role || property.agent.title || 'Senior Managing Advisor | North Nazimabad & Construction';
   const advisorExperience = siteSettings?.advisor_experience || (property.agent.experienceYears ? `${property.agent.experienceYears} Years Exp` : '15 Years Exp');
   const advisorAvatar = siteSettings?.advisor_avatar || property.agent.avatarUrl || 'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=600&q=80';
-  const advisorPhone = siteSettings?.advisor_phone || property.agent.phone || '+92 300 822 4110';
-  const advisorWhatsapp = siteSettings?.advisor_whatsapp || property.agent.whatsapp || '+923008224110';
+  const advisorPhone = siteSettings?.advisor_phone || property.agent.phone || '+92 332 7906034';
+  const advisorWhatsapp = siteSettings?.advisor_whatsapp || property.agent.whatsapp || '+923327906034';
   const advisorEmail = siteSettings?.advisor_email || property.agent.email || 'syedsikander1401@gmail.com';
   const defaultWaMsg = siteSettings?.advisor_wa_msg
     ? `${siteSettings.advisor_wa_msg} (${property.title} in ${property.location.neighborhood})`

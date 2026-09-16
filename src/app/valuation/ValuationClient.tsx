@@ -175,7 +175,7 @@ export function ValuationClient({ siteSettings }: ValuationClientProps) {
 
   const estimate = calculateEstimate();
   const currentArea = typeof areaSqYd === 'number' && areaSqYd > 0 ? areaSqYd : 240;
-  const advisorWhatsapp = (siteSettings.advisor_whatsapp || siteSettings.whatsapp_number || '923008224110').replace(/[^0-9]/g, '');
+  const advisorWhatsapp = (siteSettings.advisor_whatsapp || siteSettings.whatsapp_number || '923327906034').replace(/[^0-9]/g, '');
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10 space-y-6">

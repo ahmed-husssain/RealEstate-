@@ -12,7 +12,7 @@ export default function AboutPage() {
     {
       name: 'Syed Sikander Waqar',
       role: 'Senior Real Estate Advisor',
-      bio: 'Over 16 years of experience in North Nazimabad and central Karachi property transactions, registry verification, and bungalow acquisitions.',
+      bio: 'Over 15+ years of experience in North Nazimabad and central Karachi property transactions, registry verification, and bungalow acquisitions.',
       image: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=600&q=80',
     },
     {

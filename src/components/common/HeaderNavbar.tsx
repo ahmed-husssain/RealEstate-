@@ -132,7 +132,7 @@ export function HeaderNavbar({ siteSettings = DEFAULT_SITE_SETTINGS }: HeaderNav
                           Buy Property
                         </div>
                         <p className="text-[11px] text-[#7e7365] leading-snug">
-                          Verified bangalows, houses, plots, and ready flats
+                          Verified bungalows, houses, plots, and ready flats
                         </p>
                       </div>
                     </Link>
@@ -150,7 +150,7 @@ export function HeaderNavbar({ siteSettings = DEFAULT_SITE_SETTINGS }: HeaderNav
                           <span className="text-[9px] font-mono px-1.5 py-0.5 rounded-full bg-[#2e3a2f]/15 text-[#2e3a2f] font-bold">NEW</span>
                         </div>
                         <p className="text-[11px] text-[#7e7365] leading-snug">
-                          Full independent houses, bangalows & luxury apartments
+                          Full independent houses, bungalows & luxury apartments
                         </p>
                       </div>
                     </Link>

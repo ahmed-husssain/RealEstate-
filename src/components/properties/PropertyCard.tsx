@@ -146,10 +146,10 @@ export function PropertyCard({ property, priority = false }: PropertyCardProps) 
 
           <div className="flex flex-col items-center justify-center py-1 bg-[#f5efe6]/60 rounded-xl border border-[#d8cebe]/40">
             <span className="font-mono font-semibold text-[#1F1B16] text-xs sm:text-sm">
-              {formatNumber(property.specs.areaSqFt)}
+              {formatNumber(Math.round(property.specs.areaSqFt / 9))} Gaz
             </span>
             <span className="text-[10px] uppercase font-mono text-[#7e7365]">
-              Sq Ft
+              {formatNumber(property.specs.areaSqFt)} Sq Ft
             </span>
           </div>
         </div>

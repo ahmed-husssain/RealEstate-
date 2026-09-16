@@ -48,6 +48,21 @@ export const metadata: Metadata = {
     siteName: 'Amber Property Corner',
     locale: 'en_PK',
     type: 'website',
+    images: [
+      {
+        url: '/apple-touch-icon.png',
+        width: 180,
+        height: 180,
+        alt: 'Amber Property Corner Karachi',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Amber Property Corner | Real Estate & Construction Advisor Karachi',
+    description:
+      'Verified houses for sale, plot investments, and turnkey construction across North Nazimabad, Gulshan, and Scheme 33.',
+    images: ['/apple-touch-icon.png'],
   },
   icons: {
     icon: [

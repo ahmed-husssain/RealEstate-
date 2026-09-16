@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
-import { cn } from '@/lib/utils';
+import { cn, createWhatsAppUrl } from '@/lib/utils';
 
 interface WhatsAppFloatingButtonProps {
   phoneNumber?: string;
@@ -10,14 +10,13 @@ interface WhatsAppFloatingButtonProps {
 }
 
 export function WhatsAppFloatingButton({
-  // Note: Phone number is a placeholder requiring official business credential input in production phase
-  phoneNumber = '923008224110',
-  defaultMessage = 'Hello Amber Property Corner, I would like to inquire about your prime real estate portfolio.',
+  phoneNumber = '923327906034',
+  defaultMessage = 'Assalam o Alaikum Amber Property Corner, I would like to inquire about your prime properties and construction services.',
 }: WhatsAppFloatingButtonProps) {
   const [isHovered, setIsHovered] = useState(false);
 
-  const encodedMessage = encodeURIComponent(defaultMessage);
-  const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+  const whatsappUrl = createWhatsAppUrl(phoneNumber, defaultMessage);
+
 
   return (
     <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3 pointer-events-auto">

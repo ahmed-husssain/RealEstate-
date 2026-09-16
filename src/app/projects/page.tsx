@@ -54,7 +54,7 @@ export default function ProjectsPage() {
           <GlassCard
             key={project.id}
             variant="container"
-            rounded="2.5rem"
+            rounded="2rem"
             className="p-6 sm:p-10 bg-[#fbf6f0] border border-[#d8cebe] shadow-lg space-y-8"
           >
             {/* Top Meta Header */}

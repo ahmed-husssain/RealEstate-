@@ -71,3 +71,20 @@ export function calculateMonthlyMortgage(
     downPaymentAmount: Math.round(downPaymentAmount),
   };
 }
+
+/**
+ * Strips formatting characters from Pakistani and international phone numbers
+ */
+export function cleanPhoneNumber(phone: string): string {
+  if (!phone) return '';
+  return phone.replace(/[^\d+]/g, '').replace(/^0/, '92');
+}
+
+/**
+ * Builds a standardized, pre-filled WhatsApp click-to-chat URL
+ */
+export function createWhatsAppUrl(phone: string, text: string): string {
+  const clean = cleanPhoneNumber(phone);
+  return `https://wa.me/${clean}?text=${encodeURIComponent(text.trim())}`;
+}
+

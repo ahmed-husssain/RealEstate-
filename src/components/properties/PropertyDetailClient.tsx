@@ -72,14 +72,14 @@ export function PropertyDetailClient({
     : `Assalam o Alaikum, I want to inquire about ${property.title} in ${property.location.neighborhood}.`;
 
   // Dynamic Mortgage Settings
-  const mortgageTitle = siteSettings?.mortgage_title || 'Private Wealth Mortgage Estimator';
-  const mortgageBadge = siteSettings?.mortgage_badge || 'Financial Modeling';
-  const mortgageInterest = siteSettings?.mortgage_default_interest ? Number(siteSettings.mortgage_default_interest) : 6.25;
+  const mortgageTitle = siteSettings?.mortgage_title || 'Bank Loan & Monthly Installment Calculator';
+  const mortgageBadge = siteSettings?.mortgage_badge || 'Monthly Estimate';
+  const mortgageInterest = siteSettings?.mortgage_default_interest ? Number(siteSettings.mortgage_default_interest) : 12.5;
   const mortgageDownPayment = siteSettings?.mortgage_default_downpayment ? Number(siteSettings.mortgage_default_downpayment) : 20;
   const mortgageTerms = siteSettings?.mortgage_terms
     ? siteSettings.mortgage_terms.split(',').map((s) => Number(s.trim())).filter((n) => !isNaN(n) && n > 0)
-    : [15, 30];
-  const mortgageDisclaimer = siteSettings?.mortgage_disclaimer || '*Estimates provided for informational illustrative modeling. Subject to lender qualification and tax advisory review.';
+    : [5, 10, 15, 20];
+  const mortgageDisclaimer = siteSettings?.mortgage_disclaimer || '*This monthly installment is an estimate. Actual bank installment depends on bank approval, KIBOR rates, and Islamic finance terms.';
 
   // Status Badge Label
   const getStatusBadge = () => {

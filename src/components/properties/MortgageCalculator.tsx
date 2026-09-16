@@ -20,10 +20,10 @@ export function MortgageCalculator({
   initialPrice,
   title = 'Bank Loan & Monthly Installment Calculator',
   badge = 'Monthly Estimate',
-  defaultInterestRate = 6.25,
+  defaultInterestRate = 12.5,
   defaultDownPaymentPercent = 20,
-  terms = [15, 30],
-  disclaimer = '*This monthly installment is an estimate. Actual bank installment depends on bank approval and interest rates.',
+  terms = [5, 10, 15, 20],
+  disclaimer = '*This monthly installment is an estimate. Actual bank installment depends on bank approval, KIBOR rates, and Islamic finance terms.',
 }: MortgageCalculatorProps) {
   const [homePrice, setHomePrice] = useState(initialPrice);
   const [downPaymentPercent, setDownPaymentPercent] = useState(defaultDownPaymentPercent);
@@ -60,6 +60,7 @@ export function MortgageCalculator({
             </div>
             <input
               type="range"
+              aria-label="Property Price in PKR"
               min={1000000}
               max={Math.max(350000000, initialPrice * 2)}
               step={250000}
@@ -77,6 +78,7 @@ export function MortgageCalculator({
             </div>
             <input
               type="range"
+              aria-label="Advance Down Payment Percentage"
               min={10}
               max={60}
               step={5}
@@ -94,6 +96,7 @@ export function MortgageCalculator({
             </div>
             <input
               type="range"
+              aria-label="Bank Interest Rate Percentage"
               min={3.5}
               max={22.0}
               step={0.25}

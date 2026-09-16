@@ -88,3 +88,21 @@ export function createWhatsAppUrl(phone: string, text: string): string {
   return `https://wa.me/${clean}?text=${encodeURIComponent(text.trim())}`;
 }
 
+/**
+ * Pakistani land and plot measurement conversions (Gaz / Sq Yards / Sq Ft / Marla)
+ */
+export function sqYardsToSqFt(sqYards: number): number {
+  if (!sqYards || isNaN(sqYards)) return 0;
+  return Math.round(sqYards * 9);
+}
+
+export function sqFtToSqYards(sqFt: number): number {
+  if (!sqFt || isNaN(sqFt)) return 0;
+  return Math.round((sqFt / 9) * 10) / 10;
+}
+
+export function formatAreaWithGaz(sqYards: number): string {
+  if (!sqYards || isNaN(sqYards)) return '0 Sq. Yds';
+  const sqFt = sqYardsToSqFt(sqYards);
+  return `${formatNumber(sqYards)} Sq. Yds (${formatNumber(sqFt)} Sq. Ft)`;
+}

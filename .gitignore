@@ -45,3 +45,8 @@ ehthumbs.db
 # TypeScript cache
 *.tsbuildinfo
 next-env.d.ts
+
+# Audit & Report HTMLs
+*Lighthouse-Report*.html
+*.report.html
+

@@ -1,0 +1,21 @@
+SUBJECT: Live Demo: Modern Real Estate Website + CMS for [Agency Name]
+
+Hi [Name / Team],
+
+I noticed your real estate listings and wanted to share a live demo of a modern property platform I recently built:
+
+👉 Live Demo: https://amberproperty.vercel.app
+
+Why it helps your agency:
+• Direct Lead Capture: 1-click WhatsApp inquiries + built-in mortgage & property valuation calculators.
+• Smart Discovery Matrix: Buyers can filter properties by size, area, and verified paperwork status in seconds.
+• Full Admin CMS: Easily add/edit listings, photos, and track inquiries yourself with zero coding.
+• Multi-Page Layout: Complete with listing pages, area guides, and service showcases.
+
+Note: This is a live demo—we can fully customize the branding, colors, listings, and features to your exact market and agency needs.
+
+Take a quick look and let me know if you'd like a walkthrough!
+
+Best regards,
+Ahmed Hussain
+📧 ahamedhussain067@gmail.com

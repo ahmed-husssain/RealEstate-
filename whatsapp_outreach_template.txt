@@ -1,0 +1,19 @@
+Hi [Name / Team],
+
+I came across your property listings and wanted to share a live interactive demo of a modern real estate platform I recently built:
+
+🔗 *Live Demo:* https://amberproperty.vercel.app
+
+*Key Highlights:*
+✅ *Direct Lead Capture:* 1-click WhatsApp inquiries + built-in mortgage & property price calculators
+✅ *Smart Discovery Matrix:* Search by size, prime locations & verified paperwork status
+✅ *Full Admin CMS:* Add/edit listings, upload photos & manage inquiries with zero coding
+✅ *Multi-Page Layout:* Complete with listing pages, area guides & services
+
+💡 _Note: This is an interactive demo—we can fully customize the branding, colors, listings, and features to your exact business needs._
+
+Feel free to take a look and let me know your thoughts!
+
+Best regards,
+*Ahmed Hussain*
+📧 ahamedhussain067@gmail.com

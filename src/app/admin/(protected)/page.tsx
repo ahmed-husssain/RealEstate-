@@ -182,14 +182,14 @@ export default async function AdminDashboardPage() {
 
       {/* Recent Inquiries Section */}
       <GlassCard variant="container" rounded="2rem" className="p-5 sm:p-7 space-y-5 bg-[#fbf6f0]">
-        <div className="flex items-center justify-between gap-3 border-b border-[#d8cebe]/60 pb-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#d8cebe]/60 pb-4">
           <div className="space-y-1">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 flex-wrap">
               <h2 className="font-display font-medium text-lg sm:text-xl text-[#1F1B16]">
-                Recent Client Inquiries & Leads
+                Recent Inquiries & Leads
               </h2>
               {metrics.newInquiries > 0 && (
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#5c3822]/10 text-[#5c3822] border border-[#5c3822]/30">
+                <span className="shrink-0 inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-[#5c3822]/10 text-[#5c3822] border border-[#5c3822]/30 whitespace-nowrap">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#5c3822] animate-pulse" />
                   {metrics.newInquiries} New
                 </span>
@@ -200,13 +200,15 @@ export default async function AdminDashboardPage() {
             </p>
           </div>
 
-          <Link
-            href="/admin/inquiries"
-            className="group inline-flex items-center gap-1 text-xs font-mono font-medium text-[#5c3822] hover:text-[#1F1B16] bg-white hover:bg-[#5c3822]/10 px-3.5 py-1.5 rounded-xl border border-[#d8cebe] transition-all shrink-0 cursor-pointer shadow-xs"
-          >
-            <span>View All ({metrics.totalInquiries})</span>
-            <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-          </Link>
+          <div className="flex items-center justify-start sm:justify-end shrink-0">
+            <Link
+              href="/admin/inquiries"
+              className="group inline-flex items-center gap-1.5 text-xs font-mono font-semibold text-[#5c3822] hover:text-[#1F1B16] bg-white hover:bg-[#5c3822]/10 px-3.5 py-2 rounded-xl border border-[#d8cebe] transition-all shrink-0 cursor-pointer shadow-xs whitespace-nowrap"
+            >
+              <span>View All Leads ({metrics.totalInquiries})</span>
+              <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+            </Link>
+          </div>
         </div>
 
         {metrics.recentInquiries.length > 0 ? (

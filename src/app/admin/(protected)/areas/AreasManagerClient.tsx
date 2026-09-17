@@ -56,8 +56,6 @@ export function AreasManagerClient({ initialAreas }: { initialAreas: AreaData[] 
   const [description, setDescription] = useState('');
   const [heroImage, setHeroImage] = useState('');
   const [heroImagePublicId, setHeroImagePublicId] = useState<string | null>(null);
-  const [avgPriceSqYd, setAvgPriceSqYd] = useState('');
-  const [annualGrowth, setAnnualGrowth] = useState('');
 
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [uploadingHero, setUploadingHero] = useState(false);
@@ -98,8 +96,6 @@ export function AreasManagerClient({ initialAreas }: { initialAreas: AreaData[] 
     setDescription(area.description);
     setHeroImage(area.heroImage);
     setHeroImagePublicId(area.heroImagePublicId || null);
-    setAvgPriceSqYd(area.avgPriceSqYd || 'PKR 150,000 / Sq Yd');
-    setAnnualGrowth(area.annualGrowth || '+12.0%');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -112,8 +108,6 @@ export function AreasManagerClient({ initialAreas }: { initialAreas: AreaData[] 
     setDescription('');
     setHeroImage('https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80');
     setHeroImagePublicId(null);
-    setAvgPriceSqYd('PKR 150,000 / Sq Yd');
-    setAnnualGrowth('+12.5%');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -190,8 +184,6 @@ export function AreasManagerClient({ initialAreas }: { initialAreas: AreaData[] 
         description,
         heroImage,
         heroImagePublicId: heroImagePublicId || null,
-        avgPriceSqYd: avgPriceSqYd || null,
-        annualGrowth: annualGrowth || null,
         isPopular: true,
       };
 
@@ -246,7 +238,7 @@ export function AreasManagerClient({ initialAreas }: { initialAreas: AreaData[] 
             Karachi Neighborhoods
           </h1>
           <p className="text-xs sm:text-sm text-[#7e7365]">
-            Manage covered enclaves, average gaz prices, appreciation metrics, and hero banners.
+            Manage covered enclaves, descriptions, taglines, and hero banners.
           </p>
         </div>
 
@@ -313,25 +305,6 @@ export function AreasManagerClient({ initialAreas }: { initialAreas: AreaData[] 
                   placeholder="e.g. Premier Residential & Architectural Sector"
                   value={tagline}
                   onChange={(e) => setTagline(e.target.value)}
-                />
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div id="field-area-avgPrice">
-                <Input
-                  label="Avg Price / Gaz (Sq Yd)"
-                  placeholder="e.g. PKR 220,000 / Sq Yd"
-                  value={avgPriceSqYd}
-                  onChange={(e) => setAvgPriceSqYd(e.target.value)}
-                />
-              </div>
-              <div id="field-area-annualGrowth">
-                <Input
-                  label="Annual Appreciation Growth"
-                  placeholder="e.g. +14.5% YoY"
-                  value={annualGrowth}
-                  onChange={(e) => setAnnualGrowth(e.target.value)}
                 />
               </div>
             </div>
@@ -460,15 +433,11 @@ export function AreasManagerClient({ initialAreas }: { initialAreas: AreaData[] 
               <div className="p-4 space-y-2">
                 <div className="flex items-center justify-between">
                   <h3 className="font-display font-medium text-lg text-[#1F1B16]">{area.name}</h3>
-                  <span className="text-[10px] font-mono font-bold text-green-700 bg-green-50 px-2 py-0.5 rounded-full">
-                    {area.annualGrowth}
-                  </span>
                 </div>
+                {area.tagline && (
+                  <p className="text-xs font-medium text-[#5c3822]">{area.tagline}</p>
+                )}
                 <p className="text-xs text-[#7e7365] line-clamp-2">{area.description}</p>
-                <div className="pt-2 border-t border-[#d8cebe]/60 flex items-center justify-between text-xs font-mono">
-                  <span className="text-[#7e7365]">Avg Rate</span>
-                  <span className="font-bold text-[#1F1B16]">{area.avgPriceSqYd}</span>
-                </div>
               </div>
             </div>
 

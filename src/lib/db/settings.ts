@@ -19,7 +19,7 @@ export interface PublicSiteSettings {
 export const DEFAULT_SITE_SETTINGS: PublicSiteSettings = {
   hero_headline: 'Buy, Sell & Build Verified Properties in Karachi',
   hero_subtitle:
-    'Verified houses (80 to 1000 Gaz), plots, SBCA building map approvals, turnkey house construction, and seepage (سیم) solutions in North Nazimabad, Gulshan, FB Area, and Scheme 33.',
+    'Verified houses (80 to 1000 Gaz), plots, SBCA building map approvals, turnkey house construction, and interior renovations in North Nazimabad, Gulshan, FB Area, and Scheme 33.',
   office_address: 'B 693, Block 13 Gulberg Town, Karachi, Pakistan',
   phone_primary: '+92 332 7906034',
   phone_landline: '+92 21 3634 1100',

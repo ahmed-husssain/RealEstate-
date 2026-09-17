@@ -17,7 +17,6 @@ import {
   HardHat,
   Scale,
   Sparkles,
-  Droplets,
   CheckCircle2,
   Calculator,
   Compass,
@@ -62,7 +61,7 @@ export default async function HomePage() {
 
           {/* Outcome & Risk-Reducer Subtitle */}
           <p className="text-sm sm:text-lg text-[#7e7365] max-w-2xl mx-auto font-sans leading-relaxed">
-            {siteSettings.hero_subtitle || 'Verified houses (80 to 1000 Gaz), plots, SBCA map approvals, turnkey house construction, and seepage (سیم) solutions in North Nazimabad, Gulshan, FB Area, and Scheme 33.'}
+            {siteSettings.hero_subtitle || 'Verified houses (80 to 1000 Gaz), plots, SBCA map approvals, turnkey house construction, and interior renovations in North Nazimabad, Gulshan, FB Area, and Scheme 33.'}
           </p>
 
           {/* Dual Action CTAs */}
@@ -109,11 +108,11 @@ export default async function HomePage() {
                 Quick Services
               </span>
               <Link href="/services" className="text-xs font-mono text-[#5c3822] hover:underline flex items-center gap-1">
-                View All 5 Departments <ArrowUpRight className="w-3.5 h-3.5" />
+                View All 4 Departments <ArrowUpRight className="w-3.5 h-3.5" />
               </Link>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2.5">
+            <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-4 gap-2.5">
               <Link
                 href="/services"
                 className="group p-3 rounded-xl bg-white border border-[#d8cebe] hover:border-[#5c3822] hover:shadow-sm transition-all text-left flex flex-col justify-between"
@@ -181,23 +180,6 @@ export default async function HomePage() {
                   Modern Interiors →
                 </span>
               </Link>
-
-              <Link
-                href="/services"
-                className="group p-3 rounded-xl bg-white border border-[#d8cebe] hover:border-[#2e3a2f] hover:shadow-sm transition-all text-left flex flex-col justify-between col-span-2 sm:col-span-1"
-              >
-                <div className="space-y-1.5">
-                  <div className="w-7 h-7 rounded-lg bg-[#2e3a2f]/10 text-[#2e3a2f] flex items-center justify-center">
-                    <Droplets className="w-4 h-4" />
-                  </div>
-                  <span className="font-display font-medium text-xs text-[#1F1B16] group-hover:text-[#2e3a2f] transition-colors leading-snug block">
-                    Waterproofing & Seepage (سیم)
-                  </span>
-                </div>
-                <span className="text-[10px] font-mono text-[#7e7365] group-hover:text-[#2e3a2f] mt-2 block">
-                  Permanent Fix →
-                </span>
-              </Link>
             </div>
           </div>
         </div>
@@ -242,7 +224,7 @@ export default async function HomePage() {
         )}
       </section>
 
-      {/* 3. Comprehensive Five Service Wings (Detailed Bento Section) */}
+      {/* 3. Comprehensive Four Service Wings (Detailed Bento Section) */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <GlassCard
           variant="container"
@@ -255,10 +237,10 @@ export default async function HomePage() {
                 All-in-One Real Estate Services
               </Badge>
               <h2 className="font-display font-medium text-2xl sm:text-3xl text-[#1F1B16]">
-                5 Complete Real Estate & Construction Departments
+                4 Complete Real Estate & Construction Departments
               </h2>
               <p className="text-xs sm:text-sm text-[#7e7365]">
-                From verified land purchasing and SBCA map approvals to full house construction, room renovation, and permanent seepage solutions.
+                From verified land purchasing and SBCA map approvals to full house construction, room renovation, and modern interior architecture.
               </p>
             </div>
             <Link href="/services">
@@ -269,7 +251,7 @@ export default async function HomePage() {
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 pt-4 border-t border-[#d8cebe]/60">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4 border-t border-[#d8cebe]/60">
             <Link href="/services" className="group">
               <div className="bg-white hover:border-[#5c3822] border border-[#d8cebe] rounded-2xl p-5 space-y-3 shadow-xs hover:shadow-md transition-all h-full flex flex-col justify-between">
                 <div className="space-y-2">
@@ -347,26 +329,6 @@ export default async function HomePage() {
                   </p>
                 </div>
                 <span className="text-[11px] font-mono text-[#847666] pt-2 block font-medium">Learn More &rarr;</span>
-              </div>
-            </Link>
-
-            <Link href="/services" className="group sm:col-span-2 lg:col-span-2">
-              <div className="bg-white hover:border-[#2e3a2f] border border-[#d8cebe] rounded-2xl p-5 space-y-3 shadow-xs hover:shadow-md transition-all h-full flex flex-col justify-between">
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <div className="w-9 h-9 rounded-xl bg-[#2e3a2f]/10 text-[#2e3a2f] flex items-center justify-center">
-                      <Droplets className="w-5 h-5" />
-                    </div>
-                    <span className="font-mono text-xs font-semibold text-[#7e7365]">05</span>
-                  </div>
-                  <h3 className="font-display font-medium text-base text-[#1F1B16] group-hover:text-[#2e3a2f] transition-colors">
-                    Waterproofing, Seepage (سیم) & Plumbing Solutions
-                  </h3>
-                  <p className="text-xs text-[#7e7365] leading-relaxed">
-                    Permanent roof and wall chemical waterproofing (*seem* solution), solar wiring setup, and durable plumbing line replacement.
-                  </p>
-                </div>
-                <span className="text-[11px] font-mono text-[#2e3a2f] pt-2 block font-medium">Learn More &rarr;</span>
               </div>
             </Link>
           </div>

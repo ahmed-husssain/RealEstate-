@@ -10,7 +10,6 @@ import {
   FileCheck2,
   Hammer,
   Paintbrush,
-  Droplets,
   CheckCircle2,
   ShieldCheck,
 } from 'lucide-react';
@@ -139,7 +138,7 @@ export default function ServicesPage() {
       services: [
         {
           name: 'Modern Kitchen Renovation',
-          details: 'UV/Acrylic waterproof cabinets, granite & quartz slabs, soft-close drawers, and built-in stove & hood installations.',
+          details: 'High-gloss UV & Acrylic modular cabinets, granite & quartz slabs, soft-close drawers, and built-in stove & hood installations.',
         },
         {
           name: 'Modern Bathroom Upgrades',
@@ -150,35 +149,8 @@ export default function ServicesPage() {
           details: 'Gypsum false ceilings with warm LED strip lights, fluted wooden media walls, and marble feature walls.',
         },
         {
-          name: 'Master Bedroom & Wardrobes',
-          details: 'Full-height wooden wardrobes with sliding doors, internal LED lights, and custom headboard wall designs.',
-        },
-        {
           name: 'Apartment & Flat Renovation',
           details: 'Complete makeover for old apartments including floor tiling, paint, plumbing renewal, and door replacements.',
-        },
-      ],
-    },
-    {
-      id: 4,
-      title: '5. Waterproofing, Seepage (Seem) & Plumbing Solutions',
-      shortTitle: 'Seepage & Waterproofing',
-      icon: <Droplets className="w-5 h-5 text-[#2e3a2f]" />,
-      tagline: 'Permanent solutions for wall seepage (سیم), plumbing renewal & solar setups',
-      description:
-        'Permanent chemical solutions to stop water seepage, hidden pipe leaks, and wall moisture before they ruin your paint and plaster.',
-      services: [
-        {
-          name: 'Roof & Wall Seepage (Seem) Waterproofing',
-          details: 'Chemical pressure injection and multi-layer chemical polymer coatings to stop moisture and wall peeling permanently.',
-        },
-        {
-          name: 'Solar Panel Setup & Electrical Rewiring',
-          details: 'Complete Pakistan Cables wiring, 3-phase load distribution, and solar hybrid inverter net-metering installations.',
-        },
-        {
-          name: 'Complete Plumbing & Sewerage Replacement',
-          details: 'Replacing old rusted GI pipes with durable PPRC water pipes and UPVC drainage to eliminate wall leaks.',
         },
       ],
     },
@@ -199,11 +171,11 @@ export default function ServicesPage() {
           Real Estate, Construction & Renovation Services
         </h1>
         <p className="text-xs sm:text-sm text-[#7e7365] leading-relaxed">
-          From verified property buying and SBCA map approvals to full house construction, room remodeling, and permanent seepage solutions across Karachi.
+          From verified property buying and SBCA map approvals to full house construction and luxury room remodeling across Karachi.
         </p>
       </div>
 
-      {/* 5-Pillar Navigation Tabs */}
+      {/* Navigation Tabs */}
       <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none border-b border-[#d8cebe]/60">
         {pillars.map((pillar) => (
           <button
@@ -277,18 +249,18 @@ export default function ServicesPage() {
           </div>
         </GlassCard>
 
-        {/* All 5 Wings Summary Grid */}
+        {/* All 4 Wings Summary Grid */}
         <div className="space-y-4 pt-6">
           <div className="space-y-1 text-center max-w-xl mx-auto">
             <h2 className="font-display font-medium text-2xl text-[#1F1B16]">
-              All 5 Specialized Departments
+              All 4 Specialized Departments
             </h2>
             <p className="text-xs text-[#7e7365]">
               Click any department to view complete details and get in touch.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {pillars.map((pillar, idx) => (
               <button
                 key={pillar.id}

@@ -53,15 +53,15 @@ export const FEATURED_PROJECTS: ProjectCaseStudy[] = [
     durationMonths: 1.5,
     beforeImage: '/images/projects/project2_before.jpg',
     afterImage: '/images/projects/project2_after.jpg',
-    beforeDescription: 'Severe moisture seepage damage, obsolete wiring, and broken terrazzo flooring.',
+    beforeDescription: 'Outdated 1990s layout, obsolete wiring, and broken terrazzo flooring.',
     afterDescription: 'Ultra-modern living space with Calacatta marble-look flooring, acrylic modular kitchen, and cove ambient lighting.',
     clientReview: {
       clientName: 'Dr. Asim Farooqui',
       clientRole: 'Resident Homeowner',
       rating: 5,
-      quote: 'The transformation was complete in 45 days. Seepage was chemically treated with a 5-year warranty.',
+      quote: 'The transformation was complete in 45 days. The entire floor plan was modernized to open-concept perfection.',
     },
-    highlights: ['Chemical Waterproofing Barrier', 'High-Gloss Italian Tiles', 'Gypsum False Ceilings', 'Custom Modular Wardrobes'],
+    highlights: ['Open-Concept Living Area', 'High-Gloss Italian Tiles', 'Gypsum False Ceilings', 'Custom Modular Wardrobes'],
   },
   {
     id: 'proj-3',

@@ -170,7 +170,6 @@ export function ContactClient({ siteSettings }: { siteSettings: PublicSiteSettin
                     { value: 'construction', label: '4. Turnkey Construction & Gray Structure Rebuild' },
                     { value: 'legal-approvals', label: '5. Legal Due Diligence & SBCA Map Approvals' },
                     { value: 'interior-remodel', label: '6. Room-by-Room Interior Remodeling (Kitchen, Bath)' },
-                    { value: 'remedial-seepage', label: '7. Seepage Waterproofing & Plumbing Solutions' },
                     { value: 'valuation', label: 'Property Valuation & Price Estimation' },
                     { value: 'general', label: 'General Inquiry / Consultation' },
                   ]}

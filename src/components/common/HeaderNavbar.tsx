@@ -266,7 +266,7 @@ export function HeaderNavbar({ siteSettings = DEFAULT_SITE_SETTINGS }: HeaderNav
                         href="/services"
                         className="flex items-center justify-between p-2 rounded-xl text-xs font-semibold text-[#5c3822] hover:bg-[#5c3822]/10 transition-colors cursor-pointer"
                       >
-                        <span>Explore All 5 Construction Wings</span>
+                        <span>Explore All 4 Construction Wings</span>
                         <ArrowRight className="w-3.5 h-3.5" />
                       </Link>
                     </div>

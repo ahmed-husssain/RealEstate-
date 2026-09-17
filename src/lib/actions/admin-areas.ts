@@ -121,7 +121,7 @@ export async function updateAreaAction(areaId: string, rawData: any) {
     }
 
     revalidatePath('/neighborhoods');
-    revalidatePath(`/neighborhoods/${updated.slug}`);
+    revalidatePath('/properties');
     revalidatePath('/admin/areas');
     revalidatePath('/admin');
     revalidatePath('/');

@@ -400,7 +400,7 @@ export default async function HomePage() {
           {neighborhoods.slice(0, 8).map((neighborhood) => (
             <Link
               key={neighborhood.id}
-              href={`/neighborhoods/${neighborhood.slug}`}
+              href={`/properties?neighborhood=${encodeURIComponent(neighborhood.slug || neighborhood.name)}&status=for-sale`}
               className="group cursor-pointer"
             >
               <GlassCard

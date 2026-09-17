@@ -70,32 +70,32 @@ export function Footer({ siteSettings = DEFAULT_SITE_SETTINGS }: FooterProps) {
             </h4>
             <ul className="space-y-2 text-xs text-[#D7CBBB]">
               <li>
-                <Link href="/neighborhoods/north-nazimabad" className="hover:text-[#F8F4ED] transition-colors cursor-pointer">
+                <Link href="/properties?neighborhood=north-nazimabad&status=for-sale" className="hover:text-[#F8F4ED] transition-colors cursor-pointer">
                   North Nazimabad
                 </Link>
               </li>
               <li>
-                <Link href="/neighborhoods/gulshan-e-iqbal" className="hover:text-[#F8F4ED] transition-colors cursor-pointer">
+                <Link href="/properties?neighborhood=gulshan-e-iqbal&status=for-sale" className="hover:text-[#F8F4ED] transition-colors cursor-pointer">
                   Gulshan-e-Iqbal
                 </Link>
               </li>
               <li>
-                <Link href="/neighborhoods/federal-b-area" className="hover:text-[#F8F4ED] transition-colors cursor-pointer">
+                <Link href="/properties?neighborhood=federal-b-area&status=for-sale" className="hover:text-[#F8F4ED] transition-colors cursor-pointer">
                   Federal B Area (F.B Area)
                 </Link>
               </li>
               <li>
-                <Link href="/neighborhoods/scheme-33" className="hover:text-[#F8F4ED] transition-colors cursor-pointer">
+                <Link href="/properties?neighborhood=scheme-33&status=for-sale" className="hover:text-[#F8F4ED] transition-colors cursor-pointer">
                   Scheme 33 (Gulzar-e-Hijri)
                 </Link>
               </li>
               <li>
-                <Link href="/neighborhoods/buffer-zone" className="hover:text-[#F8F4ED] transition-colors cursor-pointer">
+                <Link href="/properties?neighborhood=buffer-zone&status=for-sale" className="hover:text-[#F8F4ED] transition-colors cursor-pointer">
                   Buffer Zone & North Karachi
                 </Link>
               </li>
               <li>
-                <Link href="/neighborhoods/scheme-45-taiser-town" className="hover:text-[#F8F4ED] transition-colors cursor-pointer">
+                <Link href="/properties?neighborhood=scheme-45-taiser-town&status=for-sale" className="hover:text-[#F8F4ED] transition-colors cursor-pointer">
                   Scheme 45 (Taiser Town)
                 </Link>
               </li>

@@ -284,7 +284,7 @@ export function BrowsePropertiesMatrix() {
               {current.areas.map((area) => (
                 <Link
                   key={area.label}
-                  href={`/properties?neighborhood=${encodeURIComponent(area.query)}`}
+                  href={`/properties?neighborhood=${encodeURIComponent(area.query)}&status=for-sale`}
                   className="group flex items-center justify-between p-2 rounded-xl hover:bg-[#fbf6f0] border border-transparent hover:border-[#d8cebe] transition-all"
                 >
                   <div className="space-y-0.5">

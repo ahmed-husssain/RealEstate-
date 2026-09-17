@@ -40,7 +40,10 @@ export default async function NeighborhoodsPage() {
               rounded="2rem"
               className="overflow-hidden flex flex-col group bg-[#fbf6f0]"
             >
-              <div className="relative aspect-[16/9] w-full overflow-hidden bg-[#e5decb]">
+              <Link
+                href={`/properties?neighborhood=${encodeURIComponent(neighborhood.slug)}&status=for-sale`}
+                className="relative aspect-[16/9] w-full overflow-hidden bg-[#e5decb] block cursor-pointer"
+              >
                 <Image
                   src={neighborhood.heroImage}
                   alt={neighborhood.name}
@@ -57,14 +60,14 @@ export default async function NeighborhoodsPage() {
                 </div>
 
                 <div className="absolute bottom-4 inset-x-4">
-                  <h2 className="font-display font-medium text-2xl text-[#F8F4ED]">
+                  <h2 className="font-display font-medium text-2xl text-[#F8F4ED] group-hover:text-white transition-colors">
                     {neighborhood.name}
                   </h2>
                   <p className="text-xs text-[#D7CBBB] font-sans line-clamp-1">
                     {neighborhood.tagline}
                   </p>
                 </div>
-              </div>
+              </Link>
 
               <div className="p-6 flex-1 flex flex-col justify-between space-y-4">
                 <p className="text-xs sm:text-sm text-[#7e7365] line-clamp-2 leading-relaxed">
@@ -95,10 +98,10 @@ export default async function NeighborhoodsPage() {
                     ))}
                   </div>
 
-                  <Link href={`/neighborhoods/${neighborhood.slug}`}>
-                    <Button variant="primary" size="sm" className="text-xs">
-                      <span>View Area Guide</span>
-                      <ArrowUpRight className="w-3.5 h-3.5" />
+                  <Link href={`/properties?neighborhood=${encodeURIComponent(neighborhood.slug)}&status=for-sale`}>
+                    <Button variant="primary" size="sm" className="text-xs cursor-pointer shadow-sm">
+                      <span>View Properties</span>
+                      <ArrowUpRight className="w-3.5 h-3.5 ml-1" />
                     </Button>
                   </Link>
                 </div>

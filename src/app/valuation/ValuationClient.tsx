@@ -178,31 +178,31 @@ export function ValuationClient({ siteSettings }: ValuationClientProps) {
   const advisorWhatsapp = (siteSettings.advisor_whatsapp || siteSettings.whatsapp_number || '923327906034').replace(/[^0-9]/g, '');
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10 space-y-6">
+    <div className="w-full max-w-3xl mx-auto px-3.5 sm:px-6 lg:px-8 py-4 sm:py-8 space-y-5">
       {/* Header */}
-      <div className="text-center space-y-2.5">
+      <div className="text-center space-y-2">
         <div className="flex items-center justify-center gap-2">
           <Badge variant="exclusive" size="sm">Free Tool</Badge>
           <Badge variant="stone" size="sm">Karachi Real Estate Index</Badge>
         </div>
-        <h1 className="font-display font-medium text-2xl sm:text-4xl text-[#1F1B16] tracking-tight">
+        <h1 className="font-display font-medium text-xl sm:text-3xl lg:text-4xl text-[#1F1B16] tracking-tight">
           Karachi Property Valuation Calculator
         </h1>
-        <p className="text-xs sm:text-sm text-[#7e7365] max-w-lg mx-auto">
+        <p className="text-xs sm:text-sm text-[#7e7365] max-w-lg mx-auto leading-relaxed">
           Instant algorithm-driven market valuation for houses, plots, and apartments across North Nazimabad, Gulshan, FB Area, Scheme 33, and prime sectors.
         </p>
       </div>
 
       {/* Main Valuation Container */}
-      <GlassCard variant="card" rounded="2rem" className="p-6 sm:p-8 shadow-xl bg-[#fbf6f0]">
+      <GlassCard variant="card" rounded="2rem" className="p-4 sm:p-7 shadow-xl bg-[#fbf6f0] overflow-hidden w-full">
         {isCalculated ? (
           /* Result View */
-          <div className="space-y-6 animate-in zoom-in-95 duration-200">
-            <div className="text-center space-y-1.5">
-              <div className="w-12 h-12 rounded-full bg-[#2e3a2f]/15 text-[#2e3a2f] flex items-center justify-center mx-auto">
-                <Sparkles className="w-6 h-6" />
+          <div className="space-y-5 animate-in zoom-in-95 duration-200">
+            <div className="text-center space-y-1">
+              <div className="w-11 h-11 rounded-full bg-[#2e3a2f]/15 text-[#2e3a2f] flex items-center justify-center mx-auto">
+                <Sparkles className="w-5 h-5" />
               </div>
-              <h2 className="font-display font-medium text-2xl sm:text-3xl text-[#1F1B16]">
+              <h2 className="font-display font-medium text-xl sm:text-2xl text-[#1F1B16]">
                 Estimated Market Value
               </h2>
               <p className="text-xs text-[#7e7365]">
@@ -211,14 +211,14 @@ export function ValuationClient({ siteSettings }: ValuationClientProps) {
             </div>
 
             {/* Valuation Figure Card */}
-            <div className="p-6 rounded-2xl bg-white border border-[#d8cebe] text-center space-y-2.5 shadow-sm">
-              <span className="text-[11px] font-mono text-[#7e7365] block uppercase">
+            <div className="p-4 sm:p-6 rounded-2xl bg-white border border-[#d8cebe] text-center space-y-2 shadow-sm">
+              <span className="text-[10px] sm:text-xs font-mono text-[#7e7365] block uppercase">
                 Expected Market Price Range
               </span>
-              <div className="text-2xl sm:text-4xl font-display font-medium text-[#1F1B16]">
+              <div className="text-xl sm:text-3xl lg:text-4xl font-display font-medium text-[#1F1B16] break-words">
                 {formatCurrency(estimate.low)} – {formatCurrency(estimate.high)}
               </div>
-              <div className="flex items-center justify-center gap-2 pt-1">
+              <div className="flex flex-wrap items-center justify-center gap-2 pt-1">
                 <Badge variant="moss" size="sm">
                   Average: {formatCurrency(estimate.mid)}
                 </Badge>
@@ -229,26 +229,26 @@ export function ValuationClient({ siteSettings }: ValuationClientProps) {
             </div>
 
             {/* Analysis Breakdown */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
-              <div className="p-3.5 rounded-xl bg-white border border-[#d8cebe]/60 space-y-1">
-                <span className="text-[#7e7365] block font-mono">Selected Location</span>
-                <span className="font-semibold text-[#1F1B16]">{city}</span>
-                <p className="text-[11px] text-[#7e7365]">Current market demand in this sector.</p>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs">
+              <div className="p-3 rounded-xl bg-white border border-[#d8cebe]/60 space-y-0.5">
+                <span className="text-[#7e7365] block font-mono text-[10px]">Location</span>
+                <span className="font-semibold text-[#1F1B16] block">{city}</span>
+                <p className="text-[10px] text-[#7e7365]">Current market demand in this sector.</p>
               </div>
-              <div className="p-3.5 rounded-xl bg-white border border-[#d8cebe]/60 space-y-1">
-                <span className="text-[#7e7365] block font-mono">Rate Verification</span>
-                <span className="font-semibold text-[#2e3a2f]">Live Market Data</span>
-                <p className="text-[11px] text-[#7e7365]">Calculated from verified Karachi property rates.</p>
+              <div className="p-3 rounded-xl bg-white border border-[#d8cebe]/60 space-y-0.5">
+                <span className="text-[#7e7365] block font-mono text-[10px]">Rate Accuracy</span>
+                <span className="font-semibold text-[#2e3a2f] block">Live Market Benchmark</span>
+                <p className="text-[10px] text-[#7e7365]">Calculated from actual verified Karachi rates.</p>
               </div>
-              <div className="p-3.5 rounded-xl bg-white border border-[#d8cebe]/60 space-y-1">
-                <span className="text-[#7e7365] block font-mono">Property Status</span>
-                <span className="font-semibold text-[#1F1B16]">High Demand</span>
-                <p className="text-[11px] text-[#7e7365]">Active buying & selling in this area.</p>
+              <div className="p-3 rounded-xl bg-white border border-[#d8cebe]/60 space-y-0.5">
+                <span className="text-[#7e7365] block font-mono text-[10px]">Market Activity</span>
+                <span className="font-semibold text-[#1F1B16] block">High Demand</span>
+                <p className="text-[10px] text-[#7e7365]">Active buying & selling in this neighborhood.</p>
               </div>
             </div>
 
             {/* CTA Buttons */}
-            <div className="pt-4 flex flex-col sm:flex-row gap-3 border-t border-[#d8cebe]/60">
+            <div className="pt-3 flex flex-col sm:flex-row gap-2.5 border-t border-[#d8cebe]/60">
               <a
                 href={`https://wa.me/${advisorWhatsapp}?text=${encodeURIComponent(
                   `Assalam o Alaikum, I used the price calculator for my ${currentArea} Sq Yd property in ${city}. Estimated valuation: ${formatCurrency(
@@ -259,7 +259,7 @@ export function ValuationClient({ siteSettings }: ValuationClientProps) {
                 rel="noopener noreferrer"
                 className="flex-1"
               >
-                <Button variant="primary" size="lg" className="w-full text-xs sm:text-sm">
+                <Button variant="primary" size="md" className="w-full text-xs justify-center shadow-sm">
                   <div className="flex items-center gap-2">
                     <div className="relative w-4 h-4 rounded-full overflow-hidden shrink-0">
                       <Image
@@ -274,12 +274,14 @@ export function ValuationClient({ siteSettings }: ValuationClientProps) {
                 </Button>
               </a>
               <Button
+                type="button"
                 variant="secondary"
-                size="lg"
+                size="md"
                 onClick={() => {
                   setIsCalculated(false);
                   setStep(1);
                 }}
+                className="text-xs justify-center"
               >
                 Calculate Another Property
               </Button>
@@ -287,9 +289,9 @@ export function ValuationClient({ siteSettings }: ValuationClientProps) {
           </div>
         ) : (
           /* Multi-Step Form */
-          <form onSubmit={handleFinalSubmit} className="space-y-5">
+          <form onSubmit={handleFinalSubmit} className="space-y-4">
             {/* Step Indicators */}
-            <div className="flex items-center justify-between border-b border-[#d8cebe]/60 pb-3 text-xs font-mono">
+            <div className="flex items-center justify-between border-b border-[#d8cebe]/60 pb-2.5 text-xs font-mono">
               <span className="text-[#5c3822] font-semibold">
                 Step {step} of 3
               </span>
@@ -297,7 +299,7 @@ export function ValuationClient({ siteSettings }: ValuationClientProps) {
                 {[1, 2, 3].map((s) => (
                   <div
                     key={s}
-                    className={`w-8 h-1.5 rounded-full transition-all ${
+                    className={`w-7 sm:w-9 h-1.5 rounded-full transition-all ${
                       s <= step ? 'bg-[#5c3822]' : 'bg-[#d8cebe]'
                     }`}
                   />
@@ -305,18 +307,19 @@ export function ValuationClient({ siteSettings }: ValuationClientProps) {
               </div>
             </div>
 
-            {/* STEP 1: Property Identity */}
+            {/* STEP 1: Property Type & Location */}
             {step === 1 && (
-              <div className="space-y-4">
-                <h3 className="font-display font-medium text-lg text-[#1F1B16]">
+              <div className="space-y-3.5">
+                <h3 className="font-display font-medium text-base sm:text-lg text-[#1F1B16]">
                   1. Property Type & Location
                 </h3>
-                <div className="space-y-3.5">
+                
+                <div className="space-y-3">
                   <div>
-                    <label className="block text-xs font-mono font-medium text-[#7e7365] mb-2">
+                    <label className="block text-xs font-mono font-medium text-[#7e7365] mb-1.5">
                       Select Category
                     </label>
-                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                       {[
                         { id: 'luxury-villa', label: 'Bungalow / House' },
                         { id: 'estate', label: 'Residential Plot' },
@@ -328,26 +331,31 @@ export function ValuationClient({ siteSettings }: ValuationClientProps) {
                           key={type.id}
                           type="button"
                           onClick={() => setPropertyType(type.id)}
-                          className={`p-3 rounded-xl border text-xs font-medium transition-all text-left cursor-pointer ${
+                          className={`p-2.5 sm:p-3 rounded-xl border text-xs font-medium transition-all text-left cursor-pointer flex items-center justify-between ${
                             propertyType === type.id
                               ? 'bg-[#5c3822] text-[#F8F4ED] border-[#5c3822] shadow-sm font-semibold'
                               : 'bg-white text-[#1F1B16] border-[#d8cebe] hover:border-[#5c3822]'
                           }`}
                         >
-                          {type.label}
+                          <span className="truncate">{type.label}</span>
+                          <span
+                            className={`w-1.5 h-1.5 rounded-full shrink-0 ml-1 ${
+                              propertyType === type.id ? 'bg-[#F8F4ED]' : 'bg-[#d8cebe]'
+                            }`}
+                          />
                         </button>
                       ))}
                     </div>
                   </div>
 
-                  <div className="space-y-1.5">
+                  <div className="space-y-1">
                     <label className="block text-xs font-mono font-medium text-[#7e7365]">
                       Select Karachi Area
                     </label>
                     <select
                       value={city}
                       onChange={(e) => setCity(e.target.value)}
-                      className="w-full bg-white text-[#1F1B16] border border-[#d8cebe] rounded-full px-4 py-2.5 text-xs sm:text-sm outline-none focus:border-[#5c3822] shadow-inner cursor-pointer"
+                      className="w-full bg-white text-[#1F1B16] border border-[#d8cebe] rounded-full px-3.5 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-sm outline-none focus:border-[#5c3822] shadow-xs cursor-pointer"
                     >
                       <option value="North Nazimabad">North Nazimabad (Blocks A–W)</option>
                       <option value="Gulshan-e-Iqbal">Gulshan-e-Iqbal (All Blocks)</option>
@@ -361,8 +369,8 @@ export function ValuationClient({ siteSettings }: ValuationClientProps) {
                     </select>
                   </div>
 
-                  <div>
-                    <label className="block text-xs font-mono font-medium text-[#7e7365] mb-1">
+                  <div className="space-y-1">
+                    <label className="block text-xs font-mono font-medium text-[#7e7365]">
                       Street / Block Details (Optional)
                     </label>
                     <input
@@ -370,33 +378,32 @@ export function ValuationClient({ siteSettings }: ValuationClientProps) {
                       placeholder="e.g. Block F, Street 14 / Sector 15-A"
                       value={address}
                       onChange={(e) => setAddress(e.target.value)}
-                      className="w-full bg-white text-[#1F1B16] border border-[#d8cebe] rounded-full px-4 py-2.5 text-xs sm:text-sm outline-none focus:border-[#5c3822]"
+                      className="w-full bg-white text-[#1F1B16] border border-[#d8cebe] rounded-full px-3.5 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-sm outline-none focus:border-[#5c3822] shadow-xs"
                     />
                   </div>
                 </div>
 
-                <div className="flex justify-end pt-3">
-                  <Button type="button" variant="primary" size="md" onClick={() => setStep(2)}>
-                    <span>Next: Size & Condition</span>
-                    <ArrowRight className="w-4 h-4" />
+                <div className="flex justify-end pt-2.5 border-t border-[#d8cebe]/40">
+                  <Button type="button" variant="primary" size="md" onClick={() => setStep(2)} className="w-full sm:w-auto justify-center text-xs">
+                    <span>Next: Dimensions & Condition</span>
+                    <ArrowRight className="w-4 h-4 ml-1" />
                   </Button>
                 </div>
               </div>
             )}
 
-            {/* STEP 2: Dimensions & Condition (Single-Line Row & Strict Clean Integers) */}
+            {/* STEP 2: Dimensions & Condition */}
             {step === 2 && (
-              <div className="space-y-5">
-                <h3 className="font-display font-medium text-lg text-[#1F1B16]">
+              <div className="space-y-3.5">
+                <h3 className="font-display font-medium text-base sm:text-lg text-[#1F1B16]">
                   2. Dimensions & Property Condition
                 </h3>
                 
-                {/* Single Horizontal Row for Plot Size, Bedrooms, Bathrooms (Strict Clean Integers, No Spinners) */}
-                <div className={`grid gap-3.5 ${isPlot ? 'grid-cols-1' : 'grid-cols-3'}`}>
+                <div className="space-y-3">
                   {/* Plot / Covered Size */}
                   <div className="space-y-1">
-                    <label className="block text-[10px] sm:text-xs font-mono font-medium text-[#7e7365] uppercase tracking-wider">
-                      {isPlot ? 'Plot Size (Sq Yds / Gaz) *' : 'Plot / Covered Size (Sq Yds) *'}
+                    <label className="block text-xs font-mono font-medium text-[#7e7365]">
+                      {isPlot ? 'Plot Size (Sq Yds / Gaz) *' : 'Land / Covered Size (Sq Yds / Gaz) *'}
                     </label>
                     <input
                       type="text"
@@ -405,7 +412,7 @@ export function ValuationClient({ siteSettings }: ValuationClientProps) {
                       placeholder="240"
                       value={areaSqYd === '' ? '' : areaSqYd}
                       onChange={(e) => handleIntegerChange(e.target.value, setAreaSqYd)}
-                      className="w-full bg-white text-[#1F1B16] border border-[#d8cebe] rounded-full px-4 py-2.5 text-xs sm:text-sm font-mono font-medium outline-none focus:border-[#5c3822] shadow-sm [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                      className="w-full bg-white text-[#1F1B16] border border-[#d8cebe] rounded-full px-3.5 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-sm font-mono font-medium outline-none focus:border-[#5c3822] shadow-xs"
                       required
                     />
                     {/* Quick Gaz Preset Chips */}
@@ -415,7 +422,7 @@ export function ValuationClient({ siteSettings }: ValuationClientProps) {
                           key={gaz}
                           type="button"
                           onClick={() => setAreaSqYd(gaz)}
-                          className={`px-2 py-0.5 rounded-full text-[10px] font-mono transition-all cursor-pointer ${
+                          className={`px-2.5 py-0.5 rounded-full text-[10px] font-mono transition-all cursor-pointer ${
                             areaSqYd === gaz
                               ? 'bg-[#5c3822] text-[#F8F4ED] font-bold shadow-xs'
                               : 'bg-white text-[#1F1B16] border border-[#d8cebe] hover:bg-[#f5efe6]'
@@ -427,108 +434,107 @@ export function ValuationClient({ siteSettings }: ValuationClientProps) {
                     </div>
                   </div>
 
-                  {/* Bedrooms (Hidden for Plots) */}
+                  {/* Bedrooms and Bathrooms (Hidden for Plots) */}
                   {!isPlot && (
-                    <div className="space-y-1">
-                      <label className="block text-[10px] sm:text-xs font-mono font-medium text-[#7e7365] uppercase tracking-wider">
-                        Bedrooms *
-                      </label>
-                      <input
-                        type="text"
-                        inputMode="numeric"
-                        pattern="[0-9]*"
-                        placeholder="5"
-                        value={bedrooms === '' ? '' : bedrooms}
-                        onChange={(e) => handleIntegerChange(e.target.value, setBedrooms)}
-                        className="w-full bg-white text-[#1F1B16] border border-[#d8cebe] rounded-full px-4 py-2.5 text-xs sm:text-sm font-mono font-medium outline-none focus:border-[#5c3822] shadow-sm [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                        required
-                      />
+                    <div className="grid grid-cols-2 gap-3">
+                      <div className="space-y-1">
+                        <label className="block text-xs font-mono font-medium text-[#7e7365]">
+                          Bedrooms *
+                        </label>
+                        <input
+                          type="text"
+                          inputMode="numeric"
+                          pattern="[0-9]*"
+                          placeholder="5"
+                          value={bedrooms === '' ? '' : bedrooms}
+                          onChange={(e) => handleIntegerChange(e.target.value, setBedrooms)}
+                          className="w-full bg-white text-[#1F1B16] border border-[#d8cebe] rounded-full px-3.5 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-sm font-mono font-medium outline-none focus:border-[#5c3822] shadow-xs"
+                          required
+                        />
+                      </div>
+
+                      <div className="space-y-1">
+                        <label className="block text-xs font-mono font-medium text-[#7e7365]">
+                          Bathrooms *
+                        </label>
+                        <input
+                          type="text"
+                          inputMode="numeric"
+                          pattern="[0-9]*"
+                          placeholder="6"
+                          value={bathrooms === '' ? '' : bathrooms}
+                          onChange={(e) => handleIntegerChange(e.target.value, setBathrooms)}
+                          className="w-full bg-white text-[#1F1B16] border border-[#d8cebe] rounded-full px-3.5 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-sm font-mono font-medium outline-none focus:border-[#5c3822] shadow-xs"
+                          required
+                        />
+                      </div>
                     </div>
                   )}
 
-                  {/* Bathrooms (Hidden for Plots) */}
-                  {!isPlot && (
-                    <div className="space-y-1">
-                      <label className="block text-[10px] sm:text-xs font-mono font-medium text-[#7e7365] uppercase tracking-wider">
-                        Bathrooms *
-                      </label>
-                      <input
-                        type="text"
-                        inputMode="numeric"
-                        pattern="[0-9]*"
-                        placeholder="6"
-                        value={bathrooms === '' ? '' : bathrooms}
-                        onChange={(e) => handleIntegerChange(e.target.value, setBathrooms)}
-                        className="w-full bg-white text-[#1F1B16] border border-[#d8cebe] rounded-full px-4 py-2.5 text-xs sm:text-sm font-mono font-medium outline-none focus:border-[#5c3822] shadow-sm [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                        required
-                      />
-                    </div>
-                  )}
-                </div>
-
-                {/* Property Condition Selection */}
-                <div className="space-y-2 pt-2">
-                  <label className="block text-xs font-mono font-medium text-[#7e7365]">
-                    {isPlot ? 'Plot Status & Ground Level' : 'Property Construction Condition'}
-                  </label>
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
-                    {[
-                      {
-                        id: 'museum',
-                        label: isPlot ? 'Ready to Build / Clear Ground' : 'Brand New / Modern Luxury',
-                        desc: isPlot ? 'Demarcated, level ground with utilities' : 'Recently constructed with high-end finishing',
-                      },
-                      {
-                        id: 'turnkey',
-                        label: isPlot ? 'Standard Possession' : 'Well-Maintained',
-                        desc: isPlot ? 'Clear title with verified documents' : 'Good habitable condition, move-in ready',
-                      },
-                      {
-                        id: 'renovation',
-                        label: isPlot ? 'Under Development / File' : 'Needs Renovation',
-                        desc: isPlot ? 'Pending final infrastructure completion' : 'Older structure requiring modernization',
-                      },
-                    ].map((cond) => (
-                      <button
-                        key={cond.id}
-                        type="button"
-                        onClick={() => setCondition(cond.id)}
-                        className={`p-3 rounded-xl text-left border transition-all cursor-pointer ${
-                          condition === cond.id
-                            ? 'bg-[#5c3822] text-[#F8F4ED] border-[#5c3822] shadow-sm font-semibold'
-                            : 'bg-white text-[#1F1B16] border-[#d8cebe] hover:bg-[#f5efe6]'
-                        }`}
-                      >
-                        <div className="font-medium text-xs">{cond.label}</div>
-                        <div
-                          className={`text-[10px] mt-0.5 ${
-                            condition === cond.id ? 'text-[#D7CBBB]' : 'text-[#7e7365]'
+                  {/* Property Condition Selection */}
+                  <div className="space-y-1.5 pt-1">
+                    <label className="block text-xs font-mono font-medium text-[#7e7365]">
+                      {isPlot ? 'Plot Status & Ground Level' : 'Construction Condition'}
+                    </label>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                      {[
+                        {
+                          id: 'museum',
+                          label: isPlot ? 'Ready to Build / Clear' : 'Brand New / Luxury',
+                          desc: isPlot ? 'Demarcated, level ground' : 'Recent high-end construction',
+                        },
+                        {
+                          id: 'turnkey',
+                          label: isPlot ? 'Standard Possession' : 'Well-Maintained',
+                          desc: isPlot ? 'Clear title documents' : 'Good habitable condition',
+                        },
+                        {
+                          id: 'renovation',
+                          label: isPlot ? 'Under Development' : 'Needs Renovation',
+                          desc: isPlot ? 'Pending infrastructure' : 'Requires modernization',
+                        },
+                      ].map((cond) => (
+                        <button
+                          key={cond.id}
+                          type="button"
+                          onClick={() => setCondition(cond.id)}
+                          className={`p-2.5 sm:p-3 rounded-xl text-left border transition-all cursor-pointer ${
+                            condition === cond.id
+                              ? 'bg-[#5c3822] text-[#F8F4ED] border-[#5c3822] shadow-sm font-semibold'
+                              : 'bg-white text-[#1F1B16] border-[#d8cebe] hover:bg-[#f5efe6]'
                           }`}
                         >
-                          {cond.desc}
-                        </div>
-                      </button>
-                    ))}
+                          <div className="font-medium text-xs">{cond.label}</div>
+                          <div
+                            className={`text-[10px] mt-0.5 ${
+                              condition === cond.id ? 'text-[#D7CBBB]' : 'text-[#7e7365]'
+                            }`}
+                          >
+                            {cond.desc}
+                          </div>
+                        </button>
+                      ))}
+                    </div>
                   </div>
                 </div>
 
-                <div className="flex justify-between pt-3">
-                  <Button type="button" variant="ghost" size="md" onClick={() => setStep(1)}>
-                    <ArrowLeft className="w-4 h-4" />
+                <div className="flex items-center justify-between gap-3 pt-2.5 border-t border-[#d8cebe]/40">
+                  <Button type="button" variant="ghost" size="md" onClick={() => setStep(1)} className="text-xs">
+                    <ArrowLeft className="w-4 h-4 mr-1" />
                     <span>Back</span>
                   </Button>
-                  <Button type="button" variant="primary" size="md" onClick={() => setStep(3)}>
-                    <span>Next: Get Valuation</span>
-                    <ArrowRight className="w-4 h-4" />
+                  <Button type="button" variant="primary" size="md" onClick={() => setStep(3)} className="text-xs">
+                    <span>Next: Contact Information</span>
+                    <ArrowRight className="w-4 h-4 ml-1" />
                   </Button>
                 </div>
               </div>
             )}
 
-            {/* STEP 3: Contact Details */}
+            {/* STEP 3: Contact Information */}
             {step === 3 && (
-              <div className="space-y-4">
-                <h3 className="font-display font-medium text-lg text-[#1F1B16]">
+              <div className="space-y-3.5">
+                <h3 className="font-display font-medium text-base sm:text-lg text-[#1F1B16]">
                   3. Contact Information
                 </h3>
 
@@ -544,47 +550,49 @@ export function ValuationClient({ siteSettings }: ValuationClientProps) {
                   aria-hidden="true"
                 />
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="space-y-1">
-                    <label className="block text-xs font-mono font-medium text-[#7e7365]">
-                      Your Full Name *
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="e.g. Tariq Mehmood"
-                      value={contactName}
-                      onChange={(e) => setContactName(e.target.value)}
-                      className="w-full bg-white text-[#1F1B16] border border-[#d8cebe] rounded-full px-4 py-2.5 text-xs sm:text-sm outline-none focus:border-[#5c3822]"
-                      required
-                    />
+                <div className="space-y-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div className="space-y-1">
+                      <label className="block text-xs font-mono font-medium text-[#7e7365]">
+                        Your Full Name *
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="e.g. Tariq Mehmood"
+                        value={contactName}
+                        onChange={(e) => setContactName(e.target.value)}
+                        className="w-full bg-white text-[#1F1B16] border border-[#d8cebe] rounded-full px-3.5 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-sm outline-none focus:border-[#5c3822] shadow-xs"
+                        required
+                      />
+                    </div>
+
+                    <div className="space-y-1">
+                      <label className="block text-xs font-mono font-medium text-[#7e7365]">
+                        WhatsApp / Mobile Phone *
+                      </label>
+                      <input
+                        type="tel"
+                        placeholder="e.g. 0300 1234567"
+                        value={contactPhone}
+                        onChange={(e) => setContactPhone(e.target.value)}
+                        className="w-full bg-white text-[#1F1B16] border border-[#d8cebe] rounded-full px-3.5 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-sm outline-none focus:border-[#5c3822] shadow-xs"
+                        required
+                      />
+                    </div>
                   </div>
 
                   <div className="space-y-1">
                     <label className="block text-xs font-mono font-medium text-[#7e7365]">
-                      WhatsApp / Mobile Phone *
+                      Email Address (Optional)
                     </label>
                     <input
-                      type="tel"
-                      placeholder="e.g. +92 300 1234567"
-                      value={contactPhone}
-                      onChange={(e) => setContactPhone(e.target.value)}
-                      className="w-full bg-white text-[#1F1B16] border border-[#d8cebe] rounded-full px-4 py-2.5 text-xs sm:text-sm outline-none focus:border-[#5c3822]"
-                      required
+                      type="email"
+                      placeholder="e.g. name@example.com"
+                      value={contactEmail}
+                      onChange={(e) => setContactEmail(e.target.value)}
+                      className="w-full bg-white text-[#1F1B16] border border-[#d8cebe] rounded-full px-3.5 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-sm outline-none focus:border-[#5c3822] shadow-xs"
                     />
                   </div>
-                </div>
-
-                <div className="space-y-1">
-                  <label className="block text-xs font-mono font-medium text-[#7e7365]">
-                    Email Address (Optional)
-                  </label>
-                  <input
-                    type="email"
-                    placeholder="e.g. name@example.com"
-                    value={contactEmail}
-                    onChange={(e) => setContactEmail(e.target.value)}
-                    className="w-full bg-white text-[#1F1B16] border border-[#d8cebe] rounded-full px-4 py-2.5 text-xs sm:text-sm outline-none focus:border-[#5c3822]"
-                  />
                 </div>
 
                 {errorMessage && (
@@ -593,13 +601,13 @@ export function ValuationClient({ siteSettings }: ValuationClientProps) {
                   </div>
                 )}
 
-                <div className="flex justify-between pt-3">
-                  <Button type="button" variant="ghost" size="md" onClick={() => setStep(2)}>
-                    <ArrowLeft className="w-4 h-4" />
+                <div className="flex items-center justify-between gap-3 pt-2.5 border-t border-[#d8cebe]/40">
+                  <Button type="button" variant="ghost" size="md" onClick={() => setStep(2)} className="text-xs">
+                    <ArrowLeft className="w-4 h-4 mr-1" />
                     <span>Back</span>
                   </Button>
-                  <Button type="submit" variant="primary" size="lg" isLoading={loading} disabled={loading}>
-                    <span>{loading ? 'Calculating Market Rate...' : 'Get Instant Valuation'}</span>
+                  <Button type="submit" variant="primary" size="md" isLoading={loading} disabled={loading} className="text-xs justify-center shadow-sm">
+                    <span>{loading ? 'Calculating...' : 'Get Instant Valuation'}</span>
                   </Button>
                 </div>
               </div>

@@ -59,6 +59,11 @@ export default async function NeighborhoodsPage() {
                   </Badge>
                 </div>
 
+                {/* Floating Arrow Indicator */}
+                <div className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/25 backdrop-blur-md border border-white/40 flex items-center justify-center text-[#F8F4ED] group-hover:bg-[#5c3822] group-hover:border-[#5c3822] transition-all duration-300 shadow-md group-hover:scale-110">
+                  <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                </div>
+
                 <div className="absolute bottom-4 inset-x-4">
                   <h2 className="font-display font-medium text-2xl text-[#F8F4ED] group-hover:text-white transition-colors">
                     {neighborhood.name}

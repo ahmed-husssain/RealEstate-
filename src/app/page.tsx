@@ -401,42 +401,42 @@ export default async function HomePage() {
             <Link
               key={neighborhood.id}
               href={`/properties?neighborhood=${encodeURIComponent(neighborhood.slug || neighborhood.name)}&status=for-sale`}
-              className="group cursor-pointer"
+              className="group cursor-pointer block"
             >
               <GlassCard
                 variant="interactive"
                 rounded="1.75rem"
-                className="overflow-hidden flex flex-col h-full bg-[#fbf6f0]"
+                className="overflow-hidden relative aspect-[4/3] w-full bg-[#e5decb] shadow-sm hover:shadow-xl transition-all duration-300"
               >
-                <div className="relative aspect-[4/3] w-full overflow-hidden bg-[#e5decb]">
-                  <Image
-                    src={neighborhood.heroImage}
-                    alt={neighborhood.name}
-                    fill
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                    className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#1F1B16]/80 via-transparent to-transparent" />
-                  <div className="absolute bottom-3 inset-x-3">
-                    <span className="font-mono text-[10px] uppercase text-[#F8F4ED]/80">
-                      {neighborhood.city}
-                    </span>
-                    <h3 className="font-display font-medium text-lg text-[#F8F4ED]">
+                <Image
+                  src={neighborhood.heroImage}
+                  alt={neighborhood.name}
+                  fill
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                  className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#1F1B16]/90 via-[#1F1B16]/30 to-transparent" />
+                
+                {/* Floating Arrow Indicator on Card */}
+                <div className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/25 backdrop-blur-md border border-white/40 flex items-center justify-center text-[#F8F4ED] group-hover:bg-[#5c3822] group-hover:border-[#5c3822] transition-all duration-300 shadow-md group-hover:scale-110">
+                  <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                </div>
+
+                <div className="absolute top-3 left-3">
+                  <span className="font-mono text-[9px] uppercase tracking-wider bg-[#1F1B16]/70 text-[#F8F4ED] px-2 py-0.5 rounded-full backdrop-blur-sm border border-white/20">
+                    {neighborhood.city}
+                  </span>
+                </div>
+
+                <div className="absolute bottom-3 inset-x-3.5 flex items-end justify-between">
+                  <div>
+                    <h3 className="font-display font-medium text-lg sm:text-xl text-[#F8F4ED] group-hover:text-white transition-colors leading-tight">
                       {neighborhood.name}
                     </h3>
                   </div>
-                </div>
-
-                <div className="p-3.5 flex-1 flex flex-col justify-between space-y-2 bg-[#fbf6f0]">
-                  <p className="text-xs text-[#7e7365] line-clamp-2">
-                    {neighborhood.tagline}
-                  </p>
-                  <div className="pt-2 border-t border-[#d8cebe]/60 flex items-center justify-between text-xs font-mono">
-                    <span className="text-[#7e7365]">Avg Rate</span>
-                    <span className="font-semibold text-[#1F1B16]">
-                      {neighborhood.stats.avgPriceSqFt}
-                    </span>
-                  </div>
+                  <span className="text-[11px] font-mono text-[#F8F4ED]/90 group-hover:text-white flex items-center gap-0.5 transition-colors">
+                    Explore →
+                  </span>
                 </div>
               </GlassCard>
             </Link>

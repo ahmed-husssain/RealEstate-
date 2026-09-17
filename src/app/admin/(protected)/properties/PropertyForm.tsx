@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { GlassCard } from '@/ui/GlassCard';
 import { Button } from '@/ui/Button';
 import { Input } from '@/ui/Input';
+import { CustomSelect } from '@/ui/CustomSelect';
 import { PropertyStatus, PropertyType, AreaUnit, PropertyCondition } from '@prisma/client';
 import { createPropertyAction, updatePropertyAction } from '@/lib/actions/admin-properties';
 import { PropertyGalleryUploader, GalleryImageItem } from './PropertyGalleryUploader';
@@ -22,6 +23,40 @@ interface PropertyFormProps {
   areas: AreaOption[];
   isEdit?: boolean;
 }
+
+const STATUS_OPTIONS = [
+  { value: PropertyStatus.FOR_SALE, label: 'For Sale' },
+  { value: PropertyStatus.FOR_LEASE, label: 'For Rent (Lease)' },
+  { value: PropertyStatus.EXCLUSIVE, label: 'Exclusive' },
+  { value: PropertyStatus.UNDER_OFFER, label: 'Under Offer' },
+  { value: PropertyStatus.SOLD, label: 'Sold' },
+];
+
+const PROPERTY_TYPE_OPTIONS = [
+  { value: PropertyType.HOUSE, label: 'House / Bungalow' },
+  { value: PropertyType.APARTMENT, label: 'Apartment / Flat' },
+  { value: PropertyType.PORTION, label: 'Floor Portion' },
+  { value: PropertyType.PLOT, label: 'Residential Plot (Land)' },
+  { value: PropertyType.COMMERCIAL, label: 'Commercial Property' },
+  { value: PropertyType.VILLA, label: 'Luxury Villa' },
+  { value: PropertyType.PENTHOUSE, label: 'Penthouse' },
+  { value: PropertyType.TOWNHOUSE, label: 'Townhouse' },
+];
+
+const AREA_UNIT_OPTIONS = [
+  { value: AreaUnit.SQYD, label: 'Square Yards (Gaz)' },
+  { value: AreaUnit.SQFT, label: 'Square Feet (Sq Ft)' },
+  { value: AreaUnit.MARLA, label: 'Marla' },
+  { value: AreaUnit.KANAL, label: 'Kanal' },
+];
+
+const CONDITION_OPTIONS = [
+  { value: PropertyCondition.BRAND_NEW, label: 'Brand New' },
+  { value: PropertyCondition.EXCELLENT, label: 'Excellent' },
+  { value: PropertyCondition.GOOD, label: 'Good' },
+  { value: PropertyCondition.UNDER_CONSTRUCTION, label: 'Under Construction' },
+  { value: PropertyCondition.NEEDS_RENOVATION, label: 'Needs Renovation' },
+];
 
 const COMMON_AMENITIES_BY_TYPE: Record<string, string[]> = {
   RESIDENTIAL: [
@@ -407,41 +442,22 @@ export function PropertyForm({ initialData, areas, isEdit = false }: PropertyFor
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
-          <div>
-            <label className="block text-xs font-mono font-medium text-[#7e7365] mb-1">
-              Listing Status
-            </label>
-            <select
+          <div id="field-status">
+            <CustomSelect
+              label="Listing Status"
               value={status}
-              onChange={(e) => setStatus(e.target.value as PropertyStatus)}
-              className="w-full bg-white text-[#1F1B16] border border-[#d8cebe] rounded-full px-3.5 py-2 text-xs outline-none"
-            >
-              <option value={PropertyStatus.FOR_SALE}>For Sale</option>
-              <option value={PropertyStatus.FOR_LEASE}>For Rent (Lease)</option>
-              <option value={PropertyStatus.EXCLUSIVE}>Exclusive</option>
-              <option value={PropertyStatus.UNDER_OFFER}>Under Offer</option>
-              <option value={PropertyStatus.SOLD}>Sold</option>
-            </select>
+              onChange={(val) => setStatus(val as PropertyStatus)}
+              options={STATUS_OPTIONS}
+            />
           </div>
 
-          <div>
-            <label className="block text-xs font-mono font-medium text-[#7e7365] mb-1">
-              Property Category
-            </label>
-            <select
+          <div id="field-propertyType">
+            <CustomSelect
+              label="Property Category"
               value={propertyType}
-              onChange={(e) => setPropertyType(e.target.value as PropertyType)}
-              className="w-full bg-white text-[#1F1B16] border border-[#d8cebe] rounded-full px-3.5 py-2 text-xs outline-none"
-            >
-              <option value={PropertyType.HOUSE}>House / Bungalow</option>
-              <option value={PropertyType.APARTMENT}>Apartment / Flat</option>
-              <option value={PropertyType.PORTION}>Floor Portion</option>
-              <option value={PropertyType.PLOT}>Residential Plot (Land)</option>
-              <option value={PropertyType.COMMERCIAL}>Commercial Property</option>
-              <option value={PropertyType.VILLA}>Luxury Villa</option>
-              <option value={PropertyType.PENTHOUSE}>Penthouse</option>
-              <option value={PropertyType.TOWNHOUSE}>Townhouse</option>
-            </select>
+              onChange={(val) => setPropertyType(val as PropertyType)}
+              options={PROPERTY_TYPE_OPTIONS}
+            />
           </div>
 
           <div className="flex items-center pt-6 gap-2">
@@ -513,33 +529,17 @@ export function PropertyForm({ initialData, areas, isEdit = false }: PropertyFor
           </div>
 
           <div id="field-areaId">
-            <label className="block text-xs font-mono font-medium text-[#7e7365] mb-1">
-              Select Karachi Area / Enclave *
-            </label>
-            <select
+            <CustomSelect
+              label="Select Karachi Area / Enclave *"
               value={areaId}
-              onChange={(e) => {
-                setAreaId(e.target.value);
+              onChange={(val) => {
+                setAreaId(val);
                 clearFieldError('areaId');
               }}
-              className={`w-full max-w-full bg-white text-[#1F1B16] border rounded-full px-3.5 py-2 text-xs outline-none transition-colors ${
-                fieldErrors.areaId
-                  ? 'border-red-500 bg-red-50/20'
-                  : 'border-[#d8cebe] focus:border-[#5c3822]'
-              }`}
-            >
-              {areas.map((area) => (
-                <option key={area.id} value={area.id}>
-                  {area.name}
-                </option>
-              ))}
-            </select>
-            {fieldErrors.areaId && (
-              <p className="text-xs text-red-600 font-sans mt-1 flex items-center gap-1">
-                <AlertCircle className="w-3 h-3" />
-                <span>{fieldErrors.areaId}</span>
-              </p>
-            )}
+              options={areas.map((a) => ({ value: a.id, label: a.name }))}
+              placeholder="Select Karachi Area"
+              error={fieldErrors.areaId}
+            />
           </div>
         </div>
       </GlassCard>
@@ -572,20 +572,13 @@ export function PropertyForm({ initialData, areas, isEdit = false }: PropertyFor
             />
           </div>
 
-          <div>
-            <label className="block text-xs font-mono font-medium text-[#7e7365] mb-1">
-              Measurement Unit
-            </label>
-            <select
+          <div id="field-areaUnit">
+            <CustomSelect
+              label="Measurement Unit"
               value={areaUnit}
-              onChange={(e) => setAreaUnit(e.target.value as AreaUnit)}
-              className="w-full bg-white text-[#1F1B16] border border-[#d8cebe] rounded-full px-3.5 py-2 text-xs outline-none"
-            >
-              <option value={AreaUnit.SQYD}>Square Yards (Gaz)</option>
-              <option value={AreaUnit.SQFT}>Square Feet (Sq Ft)</option>
-              <option value={AreaUnit.MARLA}>Marla</option>
-              <option value={AreaUnit.KANAL}>Kanal</option>
-            </select>
+              onChange={(val) => setAreaUnit(val as AreaUnit)}
+              options={AREA_UNIT_OPTIONS}
+            />
           </div>
         </div>
 
@@ -629,21 +622,13 @@ export function PropertyForm({ initialData, areas, isEdit = false }: PropertyFor
         )}
 
         {!isPlot && (
-          <div className="pt-2">
-            <label className="block text-xs font-mono font-medium text-[#7e7365] mb-1">
-              Construction Condition
-            </label>
-            <select
+          <div className="pt-2 sm:w-1/2">
+            <CustomSelect
+              label="Construction Condition"
               value={condition}
-              onChange={(e) => setCondition(e.target.value as PropertyCondition)}
-              className="w-full sm:w-1/2 bg-white text-[#1F1B16] border border-[#d8cebe] rounded-full px-3.5 py-2 text-xs outline-none"
-            >
-              <option value={PropertyCondition.BRAND_NEW}>Brand New</option>
-              <option value={PropertyCondition.EXCELLENT}>Excellent</option>
-              <option value={PropertyCondition.GOOD}>Good</option>
-              <option value={PropertyCondition.UNDER_CONSTRUCTION}>Under Construction</option>
-              <option value={PropertyCondition.NEEDS_RENOVATION}>Needs Renovation</option>
-            </select>
+              onChange={(val) => setCondition(val as PropertyCondition)}
+              options={CONDITION_OPTIONS}
+            />
           </div>
         )}
       </GlassCard>

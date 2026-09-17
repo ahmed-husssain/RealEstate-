@@ -6,6 +6,7 @@ import { GlassCard } from '@/ui/GlassCard';
 import { Badge } from '@/ui/Badge';
 import { Button } from '@/ui/Button';
 import { Input } from '@/ui/Input';
+import { CustomSelect } from '@/ui/CustomSelect';
 import { AdminRole } from '@prisma/client';
 import {
   createTeamUserAction,
@@ -210,23 +211,21 @@ export function UsersManagerClient({
               required
             />
 
-            <div>
-              <label className="block text-xs font-mono font-medium text-[#7e7365] mb-1">
-                Access Role & Permissions
-              </label>
-              <select
-                value={newRole}
-                onChange={(e) => setNewRole(e.target.value as AdminRole)}
-                className="w-full bg-white text-[#1F1B16] border border-[#d8cebe] rounded-full px-4 py-2.5 text-xs sm:text-sm outline-none"
-              >
-                <option value={AdminRole.USER}>
-                  USER (Staff / Real Estate Advisor) – Listings & Leads
-                </option>
-                <option value={AdminRole.ADMIN}>
-                  ADMIN (Partner / Director) – Full System & User Management
-                </option>
-              </select>
-            </div>
+            <CustomSelect
+              label="Access Role & Permissions"
+              value={newRole}
+              onChange={(val) => setNewRole(val as AdminRole)}
+              options={[
+                {
+                  value: AdminRole.USER,
+                  label: 'USER (Staff / Real Estate Advisor) – Listings & Leads',
+                },
+                {
+                  value: AdminRole.ADMIN,
+                  label: 'ADMIN (Partner / Director) – Full System & User Management',
+                },
+              ]}
+            />
 
             <div className="flex justify-end gap-2 pt-2">
               <Button type="button" variant="ghost" size="sm" onClick={() => setIsCreating(false)} disabled={loading}>

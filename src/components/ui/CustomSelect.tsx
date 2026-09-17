@@ -77,7 +77,7 @@ export function CustomSelect({
             buttonClassName
           )}
         >
-          <span className={cn('truncate', !selectedOption && 'text-[#a39788]')}>
+          <span className={cn('truncate font-medium', !selectedOption && 'text-[#a39788]')}>
             {selectedOption ? selectedOption.label : placeholder}
           </span>
           <ChevronDown
@@ -92,7 +92,7 @@ export function CustomSelect({
           <div
             role="listbox"
             className={cn(
-              'absolute left-0 top-full mt-1.5 z-50 w-full min-w-[180px] max-h-60 overflow-y-auto bg-white border border-[#d8cebe] rounded-2xl shadow-xl p-1.5 space-y-0.5 focus:outline-none animate-in fade-in-50 zoom-in-95 origin-top',
+              'absolute left-0 top-full mt-1 z-50 w-full max-h-52 overflow-y-auto bg-white border border-[#d8cebe] rounded-2xl shadow-xl p-1.5 space-y-0.5 focus:outline-none animate-in fade-in-50 zoom-in-95 origin-top',
               menuClassName
             )}
           >

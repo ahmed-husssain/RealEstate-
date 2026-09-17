@@ -8,6 +8,7 @@ import { formatCurrency } from '@/lib/utils';
 import { Sparkles, ArrowRight, ArrowLeft } from 'lucide-react';
 import { submitValuationAction } from '@/lib/actions/valuation';
 import { SiteSettingsMap } from '@/lib/actions/admin-content';
+import { CustomSelect } from '@/ui/CustomSelect';
 import { PropertyType, AreaUnit, PropertyCondition } from '@prisma/client';
 import confetti from 'canvas-confetti';
 import Image from 'next/image';
@@ -15,6 +16,18 @@ import Image from 'next/image';
 interface ValuationClientProps {
   siteSettings: SiteSettingsMap;
 }
+
+const KARACHI_AREA_OPTIONS = [
+  { value: 'North Nazimabad', label: 'North Nazimabad (Blocks A–W)' },
+  { value: 'Gulshan-e-Iqbal', label: 'Gulshan-e-Iqbal (All Blocks)' },
+  { value: 'Federal B Area', label: 'Federal B Area (F.B Area)' },
+  { value: 'Scheme 33', label: 'Scheme 33 (Gulzar-e-Hijri)' },
+  { value: 'Buffer Zone', label: 'Buffer Zone (Sector 15-A & B)' },
+  { value: 'North Karachi', label: 'North Karachi (Sectors 1–11)' },
+  { value: 'Gulberg', label: 'Gulberg Karachi' },
+  { value: 'Scheme 45', label: 'Scheme 45 (Taiser Town)' },
+  { value: 'Clifton', label: 'Clifton & Sea View' },
+];
 
 // Clean integer input sanitizer for user inputs (0-9 only, removes leading zeros)
 function handleIntegerChange(raw: string, setter: (val: number | '') => void) {
@@ -348,25 +361,13 @@ export function ValuationClient({ siteSettings }: ValuationClientProps) {
                     </div>
                   </div>
 
-                  <div className="space-y-1">
-                    <label className="block text-xs font-mono font-medium text-[#7e7365]">
-                      Select Karachi Area
-                    </label>
-                    <select
+                  <div>
+                    <CustomSelect
+                      label="Select Karachi Area"
                       value={city}
-                      onChange={(e) => setCity(e.target.value)}
-                      className="w-full bg-white text-[#1F1B16] border border-[#d8cebe] rounded-full px-3.5 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-sm outline-none focus:border-[#5c3822] shadow-xs cursor-pointer"
-                    >
-                      <option value="North Nazimabad">North Nazimabad (Blocks A–W)</option>
-                      <option value="Gulshan-e-Iqbal">Gulshan-e-Iqbal (All Blocks)</option>
-                      <option value="Federal B Area">Federal B Area (F.B Area)</option>
-                      <option value="Scheme 33">Scheme 33 (Gulzar-e-Hijri)</option>
-                      <option value="Buffer Zone">Buffer Zone (Sector 15-A & B)</option>
-                      <option value="North Karachi">North Karachi (Sectors 1–11)</option>
-                      <option value="Gulberg">Gulberg Karachi</option>
-                      <option value="Scheme 45">Scheme 45 (Taiser Town)</option>
-                      <option value="Clifton">Clifton & Sea View</option>
-                    </select>
+                      onChange={(val) => setCity(val)}
+                      options={KARACHI_AREA_OPTIONS}
+                    />
                   </div>
 
                   <div className="space-y-1">

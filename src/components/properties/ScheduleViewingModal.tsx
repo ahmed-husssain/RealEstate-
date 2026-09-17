@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { Modal } from '@/ui/Modal';
 import { Button } from '@/ui/Button';
 import { Input } from '@/ui/Input';
+import { CustomSelect } from '@/ui/CustomSelect';
 import { Property } from '@/types';
 import { CheckCircle2, Video, UserCheck, AlertCircle } from 'lucide-react';
 import { submitInquiryAction } from '@/lib/actions/inquiry';
@@ -164,19 +165,17 @@ export function ScheduleViewingModal({
             />
 
             <div>
-              <label className="block text-xs font-mono font-medium text-[#7e7365] mb-1.5">
-                Preferred Time
-              </label>
-              <select
+              <CustomSelect
+                label="Preferred Time"
                 value={timeSlot}
-                onChange={(e) => setTimeSlot(e.target.value)}
-                className="w-full bg-[#fbf6f0] text-[#1F1B16] border border-[#d8cebe] rounded-full px-4 py-2.5 text-xs outline-none focus:border-[#5c3822]"
-              >
-                <option value="11:00 AM">11:00 AM (Morning)</option>
-                <option value="02:00 PM">02:00 PM (Afternoon)</option>
-                <option value="04:30 PM">04:30 PM (Evening)</option>
-                <option value="06:00 PM">06:00 PM (Sunset)</option>
-              </select>
+                onChange={(val) => setTimeSlot(val)}
+                options={[
+                  { value: '11:00 AM', label: '11:00 AM (Morning)' },
+                  { value: '02:00 PM', label: '02:00 PM (Afternoon)' },
+                  { value: '04:30 PM', label: '04:30 PM (Evening)' },
+                  { value: '06:00 PM', label: '06:00 PM (Sunset)' },
+                ]}
+              />
             </div>
           </div>
 

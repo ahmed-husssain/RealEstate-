@@ -2,12 +2,9 @@ import { Suspense } from 'react';
 import type { Metadata } from 'next';
 import { Inter, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
-import { HeaderNavbar } from '@/components/common/HeaderNavbar';
-import { Footer } from '@/components/common/Footer';
-import { GuideRails } from '@/components/common/GuideRails';
 import { BackgroundCanvas } from '@/components/common/BackgroundCanvas';
-import { WhatsAppFloatingButton } from '@/components/common/WhatsAppFloatingButton';
 import { RouteProgressBar } from '@/components/common/RouteProgressBar';
+import { AppLayoutShell } from '@/components/common/AppLayoutShell';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -214,22 +211,10 @@ export default async function RootLayout({
         {/* Procedural WebGL Ambient Scene */}
         <BackgroundCanvas />
 
-        {/* 7xl Guide-Rails for LG+ Viewports */}
-        <GuideRails />
-
-        {/* Floating Stratified Navigation */}
-        <HeaderNavbar siteSettings={siteSettings} />
-
-        {/* Main Application Container */}
-        <main className="relative z-10 pt-24 sm:pt-28 min-h-screen">
+        {/* Route-Aware Application Layout Shell */}
+        <AppLayoutShell siteSettings={siteSettings}>
           {children}
-        </main>
-
-        {/* Floating WhatsApp Concierge */}
-        <WhatsAppFloatingButton phoneNumber={siteSettings.whatsapp_clean} />
-
-        {/* Grounded Ground-Tone Dark Footer */}
-        <Footer siteSettings={siteSettings} />
+        </AppLayoutShell>
       </body>
     </html>
   );

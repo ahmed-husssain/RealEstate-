@@ -39,15 +39,15 @@ export default async function AdminDashboardPage() {
           </p>
         </div>
 
-        <div className="flex items-center gap-2">
-          <Link href="/admin/properties/new">
-            <Button variant="primary" size="md" className="text-xs">
+        <div className="flex flex-wrap items-center gap-2">
+          <Link href="/admin/properties/new" className="flex-1 sm:flex-none">
+            <Button variant="primary" size="md" className="text-xs w-full sm:w-auto justify-center">
               <Plus className="w-4 h-4" />
               <span>Add New Property</span>
             </Button>
           </Link>
-          <Link href="/admin/content">
-            <Button variant="secondary" size="md" className="text-xs">
+          <Link href="/admin/content" className="flex-1 sm:flex-none">
+            <Button variant="secondary" size="md" className="text-xs w-full sm:w-auto justify-center">
               <FileText className="w-4 h-4" />
               <span>Edit Site Text</span>
             </Button>
@@ -58,65 +58,107 @@ export default async function AdminDashboardPage() {
       {/* KPI Cards Grid */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Properties Card */}
-        <GlassCard variant="card" rounded="1.75rem" className="p-5 bg-[#fbf6f0] space-y-2">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-mono text-[#7e7365]">Properties</span>
-            <div className="w-8 h-8 rounded-lg bg-[#5c3822]/10 text-[#5c3822] flex items-center justify-center">
-              <Building2 className="w-4 h-4" />
+        <Link href="/admin/properties" className="group block focus:outline-none cursor-pointer">
+          <GlassCard
+            variant="card"
+            rounded="1.75rem"
+            className="p-5 bg-[#fbf6f0] space-y-2 border border-[#d8cebe] group-hover:border-[#5c3822] group-hover:shadow-md transition-all h-full"
+          >
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-mono text-[#7e7365] group-hover:text-[#5c3822] transition-colors">
+                Properties
+              </span>
+              <div className="w-8 h-8 rounded-lg bg-[#5c3822]/10 text-[#5c3822] group-hover:bg-[#5c3822] group-hover:text-white transition-all flex items-center justify-center">
+                <Building2 className="w-4 h-4" />
+              </div>
             </div>
-          </div>
-          <p className="font-display font-medium text-2xl text-[#1F1B16]">{metrics.totalProperties}</p>
-          <p className="text-[11px] text-[#7e7365]">{metrics.featuredProperties} Featured on Home</p>
-        </GlassCard>
+            <p className="font-display font-medium text-2xl text-[#1F1B16]">{metrics.totalProperties}</p>
+            <div className="flex items-center justify-between text-[11px] text-[#7e7365]">
+              <span>{metrics.featuredProperties} Featured on Home</span>
+              <ArrowUpRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 text-[#5c3822] transition-all" />
+            </div>
+          </GlassCard>
+        </Link>
 
         {/* Client Inquiries Card */}
-        <GlassCard variant="card" rounded="1.75rem" className="p-5 bg-[#fbf6f0] space-y-2">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-mono text-[#7e7365]">Client Leads</span>
-            <div className="w-8 h-8 rounded-lg bg-[#2e3a2f]/10 text-[#2e3a2f] flex items-center justify-center">
-              <Inbox className="w-4 h-4" />
-            </div>
-          </div>
-          <p className="font-display font-medium text-2xl text-[#1F1B16]">{metrics.totalInquiries}</p>
-          <div className="flex items-center gap-1.5">
-            {metrics.newInquiries > 0 ? (
-              <span className="px-2 py-0.5 rounded-full bg-red-100 text-red-800 text-[10px] font-mono font-bold">
-                {metrics.newInquiries} New Leads
+        <Link href="/admin/inquiries" className="group block focus:outline-none cursor-pointer">
+          <GlassCard
+            variant="card"
+            rounded="1.75rem"
+            className="p-5 bg-[#fbf6f0] space-y-2 border border-[#d8cebe] group-hover:border-[#2e3a2f] group-hover:shadow-md transition-all h-full"
+          >
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-mono text-[#7e7365] group-hover:text-[#2e3a2f] transition-colors">
+                Client Leads
               </span>
-            ) : (
-              <span className="text-[11px] text-[#7e7365]">All caught up</span>
-            )}
-          </div>
-        </GlassCard>
+              <div className="w-8 h-8 rounded-lg bg-[#2e3a2f]/10 text-[#2e3a2f] group-hover:bg-[#2e3a2f] group-hover:text-white transition-all flex items-center justify-center">
+                <Inbox className="w-4 h-4" />
+              </div>
+            </div>
+            <p className="font-display font-medium text-2xl text-[#1F1B16]">{metrics.totalInquiries}</p>
+            <div className="flex items-center justify-between">
+              {metrics.newInquiries > 0 ? (
+                <span className="px-2 py-0.5 rounded-full bg-red-100 text-red-800 text-[10px] font-mono font-bold">
+                  {metrics.newInquiries} New Leads
+                </span>
+              ) : (
+                <span className="text-[11px] text-[#7e7365]">All caught up</span>
+              )}
+              <ArrowUpRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 text-[#2e3a2f] transition-all" />
+            </div>
+          </GlassCard>
+        </Link>
 
         {/* Valuation Requests Card */}
-        <GlassCard variant="card" rounded="1.75rem" className="p-5 bg-[#fbf6f0] space-y-2">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-mono text-[#7e7365]">Price Valuations</span>
-            <div className="w-8 h-8 rounded-lg bg-[#847666]/15 text-[#1F1B16] flex items-center justify-center">
-              <Calculator className="w-4 h-4" />
+        <Link href="/admin/valuations" className="group block focus:outline-none cursor-pointer">
+          <GlassCard
+            variant="card"
+            rounded="1.75rem"
+            className="p-5 bg-[#fbf6f0] space-y-2 border border-[#d8cebe] group-hover:border-[#847666] group-hover:shadow-md transition-all h-full"
+          >
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-mono text-[#7e7365] group-hover:text-[#1F1B16] transition-colors">
+                Price Valuations
+              </span>
+              <div className="w-8 h-8 rounded-lg bg-[#847666]/15 text-[#1F1B16] group-hover:bg-[#1F1B16] group-hover:text-white transition-all flex items-center justify-center">
+                <Calculator className="w-4 h-4" />
+              </div>
             </div>
-          </div>
-          <p className="font-display font-medium text-2xl text-[#1F1B16]">{metrics.totalValuations}</p>
-          <p className="text-[11px] text-[#7e7365]">Submitted by Sellers</p>
-        </GlassCard>
+            <p className="font-display font-medium text-2xl text-[#1F1B16]">{metrics.totalValuations}</p>
+            <div className="flex items-center justify-between text-[11px] text-[#7e7365]">
+              <span>Submitted by Sellers</span>
+              <ArrowUpRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 text-[#847666] transition-all" />
+            </div>
+          </GlassCard>
+        </Link>
 
         {/* Karachi Areas Card */}
-        <GlassCard variant="card" rounded="1.75rem" className="p-5 bg-[#fbf6f0] space-y-2">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-mono text-[#7e7365]">Target Areas</span>
-            <div className="w-8 h-8 rounded-lg bg-[#5c3822]/10 text-[#5c3822] flex items-center justify-center">
-              <MapPin className="w-4 h-4" />
+        <Link href="/admin/areas" className="group block focus:outline-none cursor-pointer">
+          <GlassCard
+            variant="card"
+            rounded="1.75rem"
+            className="p-5 bg-[#fbf6f0] space-y-2 border border-[#d8cebe] group-hover:border-[#5c3822] group-hover:shadow-md transition-all h-full"
+          >
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-mono text-[#7e7365] group-hover:text-[#5c3822] transition-colors">
+                Target Areas
+              </span>
+              <div className="w-8 h-8 rounded-lg bg-[#5c3822]/10 text-[#5c3822] group-hover:bg-[#5c3822] group-hover:text-white transition-all flex items-center justify-center">
+                <MapPin className="w-4 h-4" />
+              </div>
             </div>
-          </div>
-          <p className="font-display font-medium text-2xl text-[#1F1B16]">{metrics.totalAreas}</p>
-          <p className="text-[11px] text-[#7e7365]">{metrics.totalUsers} Team Accounts</p>
-        </GlassCard>
+            <p className="font-display font-medium text-2xl text-[#1F1B16]">{metrics.totalAreas}</p>
+            <div className="flex items-center justify-between text-[11px] text-[#7e7365]">
+              <span>{metrics.totalUsers} Team Accounts</span>
+              <ArrowUpRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 text-[#5c3822] transition-all" />
+            </div>
+          </GlassCard>
+        </Link>
       </div>
 
       {/* Recent Inquiries Table & Fast WhatsApp Response */}
       <GlassCard variant="container" rounded="2rem" className="p-6 sm:p-7 space-y-5 bg-[#fbf6f0]">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 pb-1">
           <div>
             <h2 className="font-display font-medium text-lg text-[#1F1B16]">
               Recent Client Inquiries & Leads
@@ -125,8 +167,8 @@ export default async function AdminDashboardPage() {
               Latest messages from contact forms and property visit booking requests
             </p>
           </div>
-          <Link href="/admin/inquiries">
-            <Button variant="secondary" size="sm" className="text-xs">
+          <Link href="/admin/inquiries" className="self-start sm:self-auto shrink-0 w-full sm:w-auto">
+            <Button variant="secondary" size="sm" className="text-xs whitespace-nowrap w-full sm:w-auto justify-center">
               <span>View All Leads ({metrics.totalInquiries})</span>
               <ArrowUpRight className="w-3.5 h-3.5" />
             </Button>

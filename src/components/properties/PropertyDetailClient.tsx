@@ -7,7 +7,6 @@ import { Property } from '@/types';
 import { SiteSettingsMap } from '@/lib/actions/admin-content';
 import { PropertyGallery } from '@/components/properties/PropertyGallery';
 import { FloorPlanViewer } from '@/components/properties/FloorPlanViewer';
-import { MortgageCalculator } from '@/components/properties/MortgageCalculator';
 import { ScheduleViewingModal } from '@/components/properties/ScheduleViewingModal';
 import { PropertyCard } from '@/components/properties/PropertyCard';
 import { Badge } from '@/ui/Badge';
@@ -70,16 +69,6 @@ export function PropertyDetailClient({
   const defaultWaMsg = siteSettings?.advisor_wa_msg
     ? `${siteSettings.advisor_wa_msg} (${property.title} in ${property.location.neighborhood})`
     : `Assalam o Alaikum, I want to inquire about ${property.title} in ${property.location.neighborhood}.`;
-
-  // Dynamic Mortgage Settings
-  const mortgageTitle = siteSettings?.mortgage_title || 'Bank Loan & Monthly Installment Calculator';
-  const mortgageBadge = siteSettings?.mortgage_badge || 'Monthly Estimate';
-  const mortgageInterest = siteSettings?.mortgage_default_interest ? Number(siteSettings.mortgage_default_interest) : 12.5;
-  const mortgageDownPayment = siteSettings?.mortgage_default_downpayment ? Number(siteSettings.mortgage_default_downpayment) : 20;
-  const mortgageTerms = siteSettings?.mortgage_terms
-    ? siteSettings.mortgage_terms.split(',').map((s) => Number(s.trim())).filter((n) => !isNaN(n) && n > 0)
-    : [5, 10, 15, 20];
-  const mortgageDisclaimer = siteSettings?.mortgage_disclaimer || '*This monthly installment is an estimate. Actual bank installment depends on bank approval, KIBOR rates, and Islamic finance terms.';
 
   // Status Badge Label
   const getStatusBadge = () => {
@@ -332,8 +321,8 @@ export function PropertyDetailClient({
             <FloorPlanViewer floorPlans={property.images.floorPlans} />
           )}
 
-          {/* Smart Financials Module: Mortgage for Sale vs Lease Terms for Rental */}
-          {isRental ? (
+          {/* Lease Terms for Rental Properties */}
+          {isRental && (
             <GlassCard
               variant="container"
               rounded="2rem"
@@ -375,16 +364,6 @@ export function PropertyDetailClient({
                 </p>
               </div>
             </GlassCard>
-          ) : (
-            <MortgageCalculator
-              initialPrice={property.price}
-              title={mortgageTitle}
-              badge={mortgageBadge}
-              defaultInterestRate={mortgageInterest}
-              defaultDownPaymentPercent={mortgageDownPayment}
-              terms={mortgageTerms}
-              disclaimer={mortgageDisclaimer}
-            />
           )}
         </div>
 

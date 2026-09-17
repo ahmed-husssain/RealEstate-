@@ -55,14 +55,14 @@ export function CustomSelect({
   }, [isOpen]);
 
   return (
-    <div className={cn('relative w-full space-y-1', className)} ref={containerRef}>
+    <div className={cn('relative w-full space-y-1', isOpen ? 'z-50' : 'z-10', className)} ref={containerRef}>
       {label && (
         <label className="block text-xs font-mono font-medium text-[#7e7365] mb-1">
           {label}
         </label>
       )}
 
-      <div className="relative">
+      <div className={cn('relative', isOpen ? 'z-50' : 'z-auto')}>
         <button
           type="button"
           disabled={disabled}

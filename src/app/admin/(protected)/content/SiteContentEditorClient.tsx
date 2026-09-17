@@ -31,7 +31,7 @@ import {
   Layers,
   Check,
 } from 'lucide-react';
-import { calculateMonthlyMortgage, formatCurrency } from '@/lib/utils';
+import { formatCurrency } from '@/lib/utils';
 
 // Clean integer input sanitizer (only digits 0-9, no leading zero bug)
 function sanitizeIntegerString(val: string): string {
@@ -41,7 +41,7 @@ function sanitizeIntegerString(val: string): string {
 }
 
 export function SiteContentEditorClient({ initialSettings }: { initialSettings: SiteSettingsMap }) {
-  const [activeTab, setActiveTab] = useState<'advisor' | 'mortgage' | 'valuation' | 'hero' | 'general'>('valuation');
+  const [activeTab, setActiveTab] = useState<'valuation' | 'advisor' | 'hero' | 'general'>('valuation');
 
   // --- 1. Senior Property Advisor Profile State ---
   const [advisorName, setAdvisorName] = useState(initialSettings.advisor_name || 'Syed Sikander Waqar');
@@ -64,28 +64,7 @@ export function SiteContentEditorClient({ initialSettings }: { initialSettings: 
   const [uploadingAvatar, setUploadingAvatar] = useState(false);
   const avatarInputRef = useRef<HTMLInputElement>(null);
 
-  // --- 2. Private Wealth Mortgage Estimator State ---
-  const [mortgageTitle, setMortgageTitle] = useState(
-    initialSettings.mortgage_title || 'Private Wealth Mortgage Estimator'
-  );
-  const [mortgageBadge, setMortgageBadge] = useState(initialSettings.mortgage_badge || 'Financial Modeling');
-  const [mortgageDefaultInterest, setMortgageDefaultInterest] = useState(
-    initialSettings.mortgage_default_interest || '6.25'
-  );
-  const [mortgageDefaultDownPayment, setMortgageDefaultDownPayment] = useState(
-    sanitizeIntegerString(initialSettings.mortgage_default_downpayment || '20')
-  );
-  const [mortgageTerms, setMortgageTerms] = useState(initialSettings.mortgage_terms || '15, 30');
-  const [mortgageTaxRate, setMortgageTaxRate] = useState(initialSettings.mortgage_tax_rate || '0.5');
-  const [mortgageInsuranceRate, setMortgageInsuranceRate] = useState(
-    initialSettings.mortgage_insurance_rate || '0.1'
-  );
-  const [mortgageDisclaimer, setMortgageDisclaimer] = useState(
-    initialSettings.mortgage_disclaimer ||
-    '*Estimates provided for informational illustrative modeling. Subject to lender qualification and tax advisory review.'
-  );
-
-  // --- 3. Karachi Valuation Engine Behind-The-Scenes (BTS) ---
+  // --- 2. Karachi Valuation Engine Behind-The-Scenes (BTS) ---
   // Base Gaz Rates (PKR / Gaz) - strictly clean integer strings
   const [valRateNorthNazimabad, setValRateNorthNazimabad] = useState(
     sanitizeIntegerString(initialSettings.val_rate_north_nazimabad || '280000')
@@ -207,12 +186,6 @@ export function SiteContentEditorClient({ initialSettings }: { initialSettings: 
     }
   };
 
-  // Preview Mortgage calculation
-  const samplePrice = 50000000; // 5 Crore
-  const numInterest = Number(mortgageDefaultInterest) || 6.25;
-  const numDownPct = Number(mortgageDefaultDownPayment) || 20;
-  const mortgagePreviewCalc = calculateMonthlyMortgage(samplePrice, numDownPct, numInterest, 30);
-
   // Interactive Live Simulator Calculation
   const runLiveSimulation = () => {
     let rate = 280000;
@@ -274,16 +247,6 @@ export function SiteContentEditorClient({ initialSettings }: { initialSettings: 
         advisor_email: advisorEmail,
         advisor_wa_msg: advisorWaMsg,
 
-        // Mortgage Estimator
-        mortgage_title: mortgageTitle,
-        mortgage_badge: mortgageBadge,
-        mortgage_default_interest: mortgageDefaultInterest,
-        mortgage_default_downpayment: mortgageDefaultDownPayment,
-        mortgage_terms: mortgageTerms,
-        mortgage_tax_rate: mortgageTaxRate,
-        mortgage_insurance_rate: mortgageInsuranceRate,
-        mortgage_disclaimer: mortgageDisclaimer,
-
         // Karachi Valuation BTS (Saved as normalized clean strings)
         val_rate_north_nazimabad: valRateNorthNazimabad,
         val_rate_gulshan: valRateGulshan,
@@ -333,7 +296,6 @@ export function SiteContentEditorClient({ initialSettings }: { initialSettings: 
           text: `Verified & Saved to Database at ${timeString}!`,
           details: [
             `Senior Advisor: ${advisorName} (${advisorRole})`,
-            `Mortgage Estimator: ${mortgageTitle} (${mortgageDefaultInterest}%)`,
             `Valuation Engine: North Nazimabad PKR ${Number(valRateNorthNazimabad).toLocaleString()} / Gaz`,
             `All public property detail pages and valuation calculator routes updated live.`,
           ],
@@ -384,18 +346,6 @@ export function SiteContentEditorClient({ initialSettings }: { initialSettings: 
 
         <button
           type="button"
-          onClick={() => setActiveTab('mortgage')}
-          className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-mono font-medium transition-all cursor-pointer ${activeTab === 'mortgage'
-              ? 'bg-[#5c3822] text-[#F8F4ED] shadow-sm font-bold'
-              : 'text-[#7e7365] hover:text-[#1F1B16] hover:bg-white/60'
-            }`}
-        >
-          <Calculator className="w-3.5 h-3.5" />
-          <span>3. Mortgage Estimator</span>
-        </button>
-
-        <button
-          type="button"
           onClick={() => setActiveTab('hero')}
           className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-mono font-medium transition-all cursor-pointer ${activeTab === 'hero'
               ? 'bg-[#5c3822] text-[#F8F4ED] shadow-sm font-bold'
@@ -403,7 +353,7 @@ export function SiteContentEditorClient({ initialSettings }: { initialSettings: 
             }`}
         >
           <Sparkles className="w-3.5 h-3.5" />
-          <span>4. Hero & Taglines</span>
+          <span>3. Hero & Taglines</span>
         </button>
 
         <button
@@ -415,7 +365,7 @@ export function SiteContentEditorClient({ initialSettings }: { initialSettings: 
             }`}
         >
           <Phone className="w-3.5 h-3.5" />
-          <span>5. Office Contacts</span>
+          <span>4. Office Contacts</span>
         </button>
       </div>
 
@@ -1070,160 +1020,10 @@ export function SiteContentEditorClient({ initialSettings }: { initialSettings: 
         </div>
       )}
 
-      {/* ======================================================== */}
-      {/* TAB 3: MORTGAGE ESTIMATOR CMS (SCREENSHOT 2)             */}
-      {/* ======================================================== */}
-      {activeTab === 'mortgage' && (
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-          <div className="lg:col-span-7 space-y-6">
-            <GlassCard variant="container" rounded="2rem" className="p-6 bg-[#fbf6f0] border border-[#d8cebe] space-y-4">
-              <div className="flex items-center gap-2 border-b border-[#d8cebe]/60 pb-3">
-                <Calculator className="w-4 h-4 text-[#5c3822]" />
-                <h2 className="font-display font-medium text-lg text-[#1F1B16]">
-                  Mortgage Estimator Header & Rates
-                </h2>
-              </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <Input
-                  label="Estimator Title *"
-                  placeholder="e.g. Private Wealth Mortgage Estimator"
-                  value={mortgageTitle}
-                  onChange={(e) => setMortgageTitle(e.target.value)}
-                  required
-                />
-
-                <Input
-                  label="Subtitle Badge *"
-                  placeholder="e.g. Financial Modeling or KIBOR Finance"
-                  value={mortgageBadge}
-                  onChange={(e) => setMortgageBadge(e.target.value)}
-                  required
-                />
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <Input
-                  label="Default Interest / KIBOR Rate (%) *"
-                  type="number"
-                  step="0.05"
-                  placeholder="e.g. 6.25 or 12.5"
-                  value={mortgageDefaultInterest}
-                  onChange={(e) => setMortgageDefaultInterest(e.target.value)}
-                  required
-                />
-
-                <div className="space-y-1">
-                  <label className="block text-xs font-mono font-medium text-[#7e7365]">
-                    Default Down Payment (%) *
-                  </label>
-                  <input
-                    type="text"
-                    inputMode="numeric"
-                    pattern="[0-9]*"
-                    value={mortgageDefaultDownPayment}
-                    onChange={(e) => setMortgageDefaultDownPayment(sanitizeIntegerString(e.target.value))}
-                    className="w-full bg-white text-[#1F1B16] border border-[#d8cebe] rounded-full px-3.5 py-2 text-xs font-mono outline-none focus:border-[#5c3822] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                    placeholder="20"
-                    required
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <Input
-                  label="Amortization Terms (Comma-separated years) *"
-                  placeholder="e.g. 15, 30 or 10, 15, 20, 30"
-                  value={mortgageTerms}
-                  onChange={(e) => setMortgageTerms(e.target.value)}
-                  required
-                />
-
-                <Input
-                  label="Estimated Annual Property Tax Rate (%)"
-                  type="number"
-                  step="0.05"
-                  placeholder="e.g. 0.5"
-                  value={mortgageTaxRate}
-                  onChange={(e) => setMortgageTaxRate(e.target.value)}
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-mono font-medium text-[#7e7365] mb-1">
-                  Legal Disclaimer & Compliance Note
-                </label>
-                <textarea
-                  rows={2}
-                  value={mortgageDisclaimer}
-                  onChange={(e) => setMortgageDisclaimer(e.target.value)}
-                  placeholder="*Estimates provided for informational illustrative modeling. Subject to lender qualification..."
-                  className="w-full bg-white text-[#1F1B16] border border-[#d8cebe] rounded-2xl p-3 text-xs outline-none focus:border-[#5c3822]"
-                />
-              </div>
-            </GlassCard>
-          </div>
-
-          <div className="lg:col-span-5 space-y-3">
-            <div className="flex items-center gap-1.5 text-xs font-mono text-[#7e7365]">
-              <Eye className="w-3.5 h-3.5 text-[#5c3822]" />
-              <span>Live Estimator Preview (Calculated for PKR 5.00 Crore Villa):</span>
-            </div>
-
-            <GlassCard variant="card" rounded="2rem" className="p-6 space-y-4 bg-[#fbf6f0] border border-[#d8cebe] shadow-lg">
-              <div className="flex items-center justify-between border-b border-[#d8cebe]/60 pb-3">
-                <div className="flex items-center gap-2">
-                  <Calculator className="w-4 h-4 text-[#5c3822]" />
-                  <h3 className="font-display font-medium text-sm text-[#1F1B16]">
-                    {mortgageTitle}
-                  </h3>
-                </div>
-                <Badge variant="stone" size="sm">{mortgageBadge}</Badge>
-              </div>
-
-              <div className="bg-[#f5efe6] border border-[#d8cebe] rounded-2xl p-4 space-y-3 text-xs">
-                <div>
-                  <span className="text-[10px] font-mono text-[#7e7365] uppercase tracking-widest block">
-                    ESTIMATED MONTHLY OUTLAY
-                  </span>
-                  <div className="text-2xl font-display font-medium text-[#1F1B16] mt-0.5">
-                    {formatCurrency(mortgagePreviewCalc.totalMonthly)}
-                    <span className="text-[10px] font-mono text-[#7e7365] font-normal ml-1">/ mo</span>
-                  </div>
-                </div>
-
-                <div className="space-y-1.5 pt-2 border-t border-[#d8cebe]/60 text-xs">
-                  <div className="flex justify-between text-[#7e7365]">
-                    <span>Principal & Interest ({numInterest}%)</span>
-                    <span className="font-mono font-medium text-[#1F1B16]">
-                      {formatCurrency(mortgagePreviewCalc.principalAndInterest)}
-                    </span>
-                  </div>
-                  <div className="flex justify-between text-[#7e7365]">
-                    <span>Down Payment ({numDownPct}%)</span>
-                    <span className="font-mono font-medium text-[#1F1B16]">
-                      {formatCurrency(mortgagePreviewCalc.downPaymentAmount)}
-                    </span>
-                  </div>
-                  <div className="flex justify-between text-[#7e7365]">
-                    <span>Est. Property Tax</span>
-                    <span className="font-mono font-medium text-[#1F1B16]">
-                      {formatCurrency(mortgagePreviewCalc.propertyTax)}
-                    </span>
-                  </div>
-                </div>
-
-                <p className="text-[10px] text-[#7e7365] leading-tight pt-1">
-                  {mortgageDisclaimer}
-                </p>
-              </div>
-            </GlassCard>
-          </div>
-        </div>
-      )}
 
       {/* ======================================================== */}
-      {/* TAB 4: HERO & TAGLINES                                    */}
+      {/* TAB 3: HERO & TAGLINES                                    */}
       {/* ======================================================== */}
       {activeTab === 'hero' && (
         <GlassCard variant="container" rounded="2rem" className="p-6 bg-[#fbf6f0] border border-[#d8cebe] space-y-4">
@@ -1281,7 +1081,7 @@ export function SiteContentEditorClient({ initialSettings }: { initialSettings: 
       )}
 
       {/* ======================================================== */}
-      {/* TAB 5: AGENCY CONTACT INFO                                */}
+      {/* TAB 4: AGENCY CONTACT INFO                                */}
       {/* ======================================================== */}
       {activeTab === 'general' && (
         <GlassCard variant="container" rounded="2rem" className="p-6 bg-[#fbf6f0] border border-[#d8cebe] space-y-4">

@@ -35,7 +35,7 @@ export function GlassCard({
   return (
     <div
       className={cn(
-        'relative overflow-hidden transition-all duration-300',
+        'relative transition-all duration-300',
         roundedClasses[rounded],
         variantClasses[variant],
         className
@@ -43,7 +43,7 @@ export function GlassCard({
       {...props}
     >
       {/* Tactile 1px top highlight */}
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/80 to-transparent" />
+      <div className={cn("pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/80 to-transparent", roundedClasses[rounded])} />
       {children}
     </div>
   );

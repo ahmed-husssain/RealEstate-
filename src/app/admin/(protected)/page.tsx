@@ -14,9 +14,33 @@ import {
   Phone,
   Plus,
   FileText,
+  MessageSquare,
 } from 'lucide-react';
 
 export const dynamic = 'force-dynamic';
+
+function formatInquiryMessage(rawMessage: string | null) {
+  if (!rawMessage) return { topic: null, message: null };
+  const topicMatch = rawMessage.match(/^Topic:\s*([^.]+)\.\s*Message:\s*([\s\S]*)$/i);
+  if (topicMatch) {
+    const rawTopic = topicMatch[1].trim();
+    const topicLabels: Record<string, string> = {
+      'sales-buying': 'Property Buying',
+      'rent-property': 'Rental Property',
+      'sales-selling': 'Property Selling',
+      'construction': 'Turnkey Construction',
+      'legal-approvals': 'SBCA Map & Legal Approvals',
+      'interior-remodel': 'Room & Interior Remodeling',
+      'valuation': 'Price Valuation',
+      'general': 'General Consultation',
+    };
+    return {
+      topic: topicLabels[rawTopic] || rawTopic,
+      message: topicMatch[2].trim(),
+    };
+  }
+  return { topic: null, message: rawMessage };
+}
 
 export default async function AdminDashboardPage() {
   const user = await requireAuthUserPage();
@@ -156,73 +180,148 @@ export default async function AdminDashboardPage() {
         </Link>
       </div>
 
-      {/* Recent Inquiries Table & Fast WhatsApp Response */}
-      <GlassCard variant="container" rounded="2rem" className="p-6 sm:p-7 space-y-5 bg-[#fbf6f0]">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 pb-1">
-          <div>
-            <h2 className="font-display font-medium text-lg text-[#1F1B16]">
-              Recent Client Inquiries & Leads
-            </h2>
+      {/* Recent Inquiries Section */}
+      <GlassCard variant="container" rounded="2rem" className="p-5 sm:p-7 space-y-5 bg-[#fbf6f0]">
+        <div className="flex items-center justify-between gap-3 border-b border-[#d8cebe]/60 pb-4">
+          <div className="space-y-1">
+            <div className="flex items-center gap-2">
+              <h2 className="font-display font-medium text-lg sm:text-xl text-[#1F1B16]">
+                Recent Client Inquiries & Leads
+              </h2>
+              {metrics.newInquiries > 0 && (
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#5c3822]/10 text-[#5c3822] border border-[#5c3822]/30">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#5c3822] animate-pulse" />
+                  {metrics.newInquiries} New
+                </span>
+              )}
+            </div>
             <p className="text-xs text-[#7e7365]">
               Latest messages from contact forms and property visit booking requests
             </p>
           </div>
-          <Link href="/admin/inquiries" className="self-start sm:self-auto shrink-0 w-full sm:w-auto">
-            <Button variant="secondary" size="sm" className="text-xs whitespace-nowrap w-full sm:w-auto justify-center">
-              <span>View All Leads ({metrics.totalInquiries})</span>
-              <ArrowUpRight className="w-3.5 h-3.5" />
-            </Button>
+
+          <Link
+            href="/admin/inquiries"
+            className="group inline-flex items-center gap-1 text-xs font-mono font-medium text-[#5c3822] hover:text-[#1F1B16] bg-white hover:bg-[#5c3822]/10 px-3.5 py-1.5 rounded-xl border border-[#d8cebe] transition-all shrink-0 cursor-pointer shadow-xs"
+          >
+            <span>View All ({metrics.totalInquiries})</span>
+            <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
           </Link>
         </div>
 
         {metrics.recentInquiries.length > 0 ? (
-          <div className="divide-y divide-[#d8cebe]/60">
-            {metrics.recentInquiries.map((inquiry) => (
-              <div
-                key={inquiry.id}
-                className="py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3"
-              >
-                <div className="space-y-1">
-                  <div className="flex items-center gap-2">
-                    <span className="font-semibold text-xs text-[#1F1B16]">{inquiry.name}</span>
-                    <Badge
-                      variant={inquiry.status === 'NEW' ? 'exclusive' : 'stone'}
-                      size="sm"
-                      className="text-[10px]"
-                    >
-                      {inquiry.status}
-                    </Badge>
-                    <span className="text-[10px] font-mono text-[#7e7365]">
-                      {new Date(inquiry.createdAt).toLocaleDateString()}
+          <div className="grid grid-cols-1 gap-3.5">
+            {metrics.recentInquiries.map((inquiry) => {
+              const { topic, message } = formatInquiryMessage(inquiry.message);
+              const initial = (inquiry.name || 'C').charAt(0).toUpperCase();
+
+              return (
+                <div
+                  key={inquiry.id}
+                  className="bg-white border border-[#d8cebe] hover:border-[#5c3822]/60 rounded-2xl p-4 sm:p-5 shadow-xs transition-all space-y-3.5"
+                >
+                  {/* Row 1: Client Profile Header & Metadata */}
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex items-center gap-3">
+                      <div className="w-9 h-9 rounded-xl bg-[#5c3822]/10 text-[#5c3822] font-display font-semibold text-sm flex items-center justify-center shrink-0 border border-[#5c3822]/20">
+                        {initial}
+                      </div>
+                      <div>
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <span className="font-display font-medium text-sm text-[#1F1B16]">
+                            {inquiry.name}
+                          </span>
+                          <span
+                            className={`px-2 py-0.5 rounded-full text-[10px] font-mono font-bold ${
+                              inquiry.status === 'NEW'
+                                ? 'bg-[#5c3822]/15 text-[#5c3822]'
+                                : 'bg-[#7e7365]/15 text-[#7e7365]'
+                            }`}
+                          >
+                            {inquiry.status}
+                          </span>
+                        </div>
+                        <span className="text-[11px] font-mono text-[#7e7365]">
+                          {inquiry.phone}
+                        </span>
+                      </div>
+                    </div>
+
+                    <span className="text-[10px] font-mono text-[#7e7365] shrink-0">
+                      {new Date(inquiry.createdAt).toLocaleDateString('en-US', {
+                        month: 'short',
+                        day: 'numeric',
+                        year: 'numeric',
+                      })}
                     </span>
                   </div>
-                  <p className="text-xs text-[#7e7365] line-clamp-1">
-                    {inquiry.message || (inquiry.property ? `Inquiry on: ${inquiry.property.title}` : 'General Inquiry')}
-                  </p>
-                </div>
 
-                <div className="flex items-center gap-2">
-                  <a
-                    href={`https://wa.me/${inquiry.phone.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(`Assalam o Alaikum ${inquiry.name}, thank you for contacting Amber Property Corner.`)}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <Button variant="primary" size="sm" className="text-xs py-1.5 px-3">
-                      <span>WhatsApp Client</span>
-                    </Button>
-                  </a>
-                  <a href={`tel:${inquiry.phone}`}>
-                    <Button variant="secondary" size="sm" className="text-xs py-1.5 px-2.5">
-                      <Phone className="w-3.5 h-3.5" />
-                    </Button>
-                  </a>
+                  {/* Row 2: Topic / Property Badge & Clean Message */}
+                  <div className="space-y-2">
+                    {inquiry.property ? (
+                      <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#5c3822]/10 text-[#5c3822] text-[11px] font-medium">
+                        <Building2 className="w-3.5 h-3.5" />
+                        <span className="line-clamp-1">{inquiry.property.title}</span>
+                      </div>
+                    ) : topic ? (
+                      <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#2e3a2f]/10 text-[#2e3a2f] text-[11px] font-medium">
+                        <MessageSquare className="w-3 h-3" />
+                        <span>Topic: {topic}</span>
+                      </div>
+                    ) : null}
+
+                    {message && (
+                      <div className="bg-[#fbf6f0] rounded-xl p-3 border border-[#d8cebe]/40 text-xs text-[#1F1B16] leading-relaxed">
+                        &ldquo;{message}&rdquo;
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Row 3: Action Buttons */}
+                  <div className="flex items-center gap-2 pt-1">
+                    <a
+                      href={`https://wa.me/${inquiry.phone.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(
+                        `Assalam o Alaikum ${inquiry.name}, thank you for contacting Amber Property Corner.`
+                      )}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex-1 sm:flex-none"
+                    >
+                      <Button variant="primary" size="sm" className="text-xs py-1.5 px-3.5 w-full sm:w-auto justify-center shadow-xs">
+                        <span>WhatsApp Client</span>
+                      </Button>
+                    </a>
+                    <a href={`tel:${inquiry.phone}`}>
+                      <Button
+                        variant="secondary"
+                        size="sm"
+                        className="text-xs py-1.5 px-3 bg-white"
+                        title="Call Client"
+                      >
+                        <Phone className="w-3.5 h-3.5" />
+                        <span className="hidden sm:inline ml-1">Call</span>
+                      </Button>
+                    </a>
+                    <Link href="/admin/inquiries" className="ml-auto">
+                      <Button
+                        variant="secondary"
+                        size="sm"
+                        className="text-xs py-1.5 px-2.5 bg-transparent border-transparent hover:bg-[#5c3822]/10 text-[#5c3822]"
+                      >
+                        <span>Details</span>
+                        <ArrowUpRight className="w-3 h-3 ml-0.5" />
+                      </Button>
+                    </Link>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         ) : (
-          <div className="py-8 text-center text-xs text-[#7e7365]">
-            No client inquiries yet. Submissions from the website will appear here automatically.
+          <div className="py-10 text-center space-y-2 bg-white rounded-2xl border border-[#d8cebe] p-6">
+            <Inbox className="w-8 h-8 text-[#7e7365] mx-auto opacity-50" />
+            <p className="font-display font-medium text-sm text-[#1F1B16]">No client inquiries yet</p>
+            <p className="text-xs text-[#7e7365]">Submissions from website visitors will appear here in real-time.</p>
           </div>
         )}
       </GlassCard>

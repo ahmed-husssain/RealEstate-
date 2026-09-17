@@ -57,7 +57,7 @@ export function CustomSelect({
   return (
     <div className={cn('relative w-full space-y-1', isOpen ? 'z-50' : 'z-10', className)} ref={containerRef}>
       {label && (
-        <label className="block text-xs font-mono font-medium text-[#7e7365] mb-1">
+        <label className="block text-xs font-mono font-semibold uppercase tracking-[0.18em] text-[#7e7365] mb-1">
           {label}
         </label>
       )}

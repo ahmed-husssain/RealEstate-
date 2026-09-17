@@ -7,7 +7,7 @@ import { Badge } from '@/ui/Badge';
 import { Button } from '@/ui/Button';
 import { BrandLogo } from '@/components/common/BrandLogo';
 import { Input } from '@/ui/Input';
-import { Select } from '@/ui/Select';
+import { CustomSelect } from '@/ui/CustomSelect';
 import { Phone, Mail, MapPin, CheckCircle2, ShieldCheck, AlertCircle, Loader2 } from 'lucide-react';
 import { submitInquiryAction } from '@/lib/actions/inquiry';
 import { InquiryType } from '@prisma/client';
@@ -161,7 +161,7 @@ export function ContactClient({ siteSettings }: { siteSettings: PublicSiteSettin
                   onChange={(e) => setEmail(e.target.value)}
                 />
 
-                <Select
+                <CustomSelect
                   label="Select Service / Department"
                   options={[
                     { value: 'sales-buying', label: '1. Property Buying (Bungalows, Plots, Flats)' },
@@ -174,7 +174,7 @@ export function ContactClient({ siteSettings }: { siteSettings: PublicSiteSettin
                     { value: 'general', label: 'General Inquiry / Consultation' },
                   ]}
                   value={inquiryType}
-                  onChange={(e) => setInquiryType(e.target.value)}
+                  onChange={(val) => setInquiryType(val)}
                 />
 
                 <div className="space-y-1.5">

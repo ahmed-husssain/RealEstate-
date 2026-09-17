@@ -378,7 +378,7 @@ export function PropertyForm({ initialData, areas, isEdit = false }: PropertyFor
       )}
 
       {/* 1. Basic Information */}
-      <GlassCard variant="container" rounded="2rem" className="p-6 space-y-4 bg-[#fbf6f0]">
+      <GlassCard variant="container" rounded="2rem" className="p-6 space-y-4 bg-[#fbf6f0] relative z-40">
         <h2 className="font-display font-medium text-lg text-[#1F1B16]">
           1. Basic Information
         </h2>
@@ -476,7 +476,7 @@ export function PropertyForm({ initialData, areas, isEdit = false }: PropertyFor
       </GlassCard>
 
       {/* 2. Location & Pricing (Context-Aware for Rent vs Sale) */}
-      <GlassCard variant="container" rounded="2rem" className="p-6 space-y-4 bg-[#fbf6f0]">
+      <GlassCard variant="container" rounded="2rem" className="p-6 space-y-4 bg-[#fbf6f0] relative z-30">
         <h2 className="font-display font-medium text-lg text-[#1F1B16]">
           2. Price & Karachi Location
         </h2>
@@ -545,7 +545,7 @@ export function PropertyForm({ initialData, areas, isEdit = false }: PropertyFor
       </GlassCard>
 
       {/* 3. Dimensions & Specifications (Adaptive by Property Type) */}
-      <GlassCard variant="container" rounded="2rem" className="p-6 space-y-4 bg-[#fbf6f0]">
+      <GlassCard variant="container" rounded="2rem" className="p-6 space-y-4 bg-[#fbf6f0] relative z-20">
         <div className="flex items-center justify-between">
           <h2 className="font-display font-medium text-lg text-[#1F1B16]">
             3. Dimensions & Specifications
@@ -634,11 +634,11 @@ export function PropertyForm({ initialData, areas, isEdit = false }: PropertyFor
       </GlassCard>
 
       {/* 4. Photo Gallery (Cloudinary Uploader with 5-Image Limit) */}
-      <div id="field-images">
+      <div id="field-images" className="relative z-10">
         <GlassCard
           variant="container"
           rounded="2rem"
-          className={`p-6 space-y-4 bg-[#fbf6f0] transition-colors ${
+          className={`p-6 space-y-4 bg-[#fbf6f0] transition-colors relative z-10 ${
             fieldErrors.images ? 'border-red-400 bg-red-50/10 ring-1 ring-red-400' : ''
           }`}
         >
@@ -660,7 +660,7 @@ export function PropertyForm({ initialData, areas, isEdit = false }: PropertyFor
       </div>
 
       {/* 5. Features & Amenities with 1-Click Suggestions */}
-      <GlassCard variant="container" rounded="2rem" className="p-6 space-y-4 bg-[#fbf6f0]">
+      <GlassCard variant="container" rounded="2rem" className="p-6 space-y-4 bg-[#fbf6f0] relative z-0">
         <div className="flex items-center justify-between">
           <div>
             <h2 className="font-display font-medium text-lg text-[#1F1B16]">

@@ -1337,7 +1337,7 @@ export function SiteContentEditorClient({ initialSettings }: { initialSettings: 
       )}
 
       {/* Global Save Button Bar */}
-      <div className="flex items-center justify-between p-4 bg-[#f5efe6] border border-[#d8cebe] rounded-2xl sticky bottom-4 z-20 shadow-xl backdrop-blur-md">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 bg-[#f5efe6] border border-[#d8cebe] rounded-2xl sticky bottom-4 z-20 shadow-xl backdrop-blur-md">
         <div className="text-xs text-[#7e7365]">
           {lastSavedAt ? (
             <span className="font-mono text-green-700 font-medium flex items-center gap-1">
@@ -1349,8 +1349,15 @@ export function SiteContentEditorClient({ initialSettings }: { initialSettings: 
           )}
         </div>
 
-        <Button type="submit" variant="primary" size="md" isLoading={loading} disabled={loading}>
-          <Save className="w-4 h-4" />
+        <Button
+          type="submit"
+          variant="primary"
+          size="md"
+          isLoading={loading}
+          disabled={loading}
+          className="w-full sm:w-auto shrink-0 whitespace-nowrap justify-center"
+        >
+          <Save className="w-4 h-4 shrink-0" />
           <span>{loading ? 'Saving Changes...' : 'Save All Changes Live'}</span>
         </Button>
       </div>

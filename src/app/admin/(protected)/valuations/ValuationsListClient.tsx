@@ -1,13 +1,13 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { GlassCard } from '@/ui/GlassCard';
 import { Badge } from '@/ui/Badge';
 import { Button } from '@/ui/Button';
 import { ValuationStatus } from '@prisma/client';
 import { updateValuationStatusAction } from '@/lib/actions/admin-inquiries';
-import { Phone, Mail, MapPin, Calculator, MessageSquare } from 'lucide-react';
+import { Phone, Mail, MapPin, Calculator, MessageSquare, ChevronDown, Check } from 'lucide-react';
 
 interface ValuationItem {
   id: string;
@@ -25,6 +25,98 @@ interface ValuationItem {
   estimatedMax: number | null;
   status: ValuationStatus;
   createdAt: Date;
+}
+
+const valuationStatusConfig: Record<
+  ValuationStatus,
+  { label: string; bg: string; text: string; dot: string; border: string }
+> = {
+  PENDING: { label: 'PENDING', bg: 'bg-amber-50 hover:bg-amber-100', text: 'text-amber-800', dot: 'bg-amber-500', border: 'border-amber-200' },
+  ESTIMATED: { label: 'ESTIMATED', bg: 'bg-blue-50 hover:bg-blue-100', text: 'text-blue-800', dot: 'bg-blue-500', border: 'border-blue-200' },
+  CONTACTED: { label: 'CONTACTED', bg: 'bg-purple-50 hover:bg-purple-100', text: 'text-purple-800', dot: 'bg-purple-500', border: 'border-purple-200' },
+  COMPLETED: { label: 'COMPLETED', bg: 'bg-emerald-50 hover:bg-emerald-100', text: 'text-emerald-800', dot: 'bg-emerald-500', border: 'border-emerald-200' },
+};
+
+function ValuationStatusBadgeDropdown({
+  currentStatus,
+  disabled,
+  onChange,
+}: {
+  currentStatus: ValuationStatus;
+  disabled?: boolean;
+  onChange: (status: ValuationStatus) => void;
+}) {
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    }
+    if (isOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isOpen]);
+
+  const config = valuationStatusConfig[currentStatus] || valuationStatusConfig.PENDING;
+
+  return (
+    <div className="relative inline-block text-left shrink-0" ref={dropdownRef}>
+      <button
+        type="button"
+        disabled={disabled}
+        onClick={() => setIsOpen(!isOpen)}
+        className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-mono font-bold border transition-all cursor-pointer shadow-2xs select-none ${config.bg} ${config.text} ${config.border} disabled:opacity-50`}
+        aria-haspopup="listbox"
+        aria-expanded={isOpen}
+      >
+        <span className={`w-1.5 h-1.5 rounded-full ${config.dot}`} />
+        <span>{config.label}</span>
+        <ChevronDown className={`w-3 h-3 transition-transform duration-150 ${isOpen ? 'rotate-180' : ''}`} />
+      </button>
+
+      {isOpen && (
+        <div
+          className="absolute right-0 top-full mt-1.5 z-50 w-36 bg-white border border-[#d8cebe] rounded-xl shadow-xl p-1 space-y-0.5 focus:outline-none animate-in fade-in-50 zoom-in-95 origin-top-right"
+          role="listbox"
+        >
+          {(['PENDING', 'ESTIMATED', 'CONTACTED', 'COMPLETED'] as ValuationStatus[]).map((st) => {
+            const itemCfg = valuationStatusConfig[st];
+            const isSelected = currentStatus === st;
+
+            return (
+              <button
+                key={st}
+                type="button"
+                role="option"
+                aria-selected={isSelected}
+                onClick={() => {
+                  onChange(st);
+                  setIsOpen(false);
+                }}
+                className={`w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-[11px] font-mono font-medium transition-colors text-left cursor-pointer ${
+                  isSelected
+                    ? `${itemCfg.bg} ${itemCfg.text} font-bold`
+                    : 'text-[#1F1B16] hover:bg-[#fbf6f0]'
+                }`}
+              >
+                <div className="flex items-center gap-2">
+                  <span className={`w-1.5 h-1.5 rounded-full ${itemCfg.dot}`} />
+                  <span>{st}</span>
+                </div>
+                {isSelected && <Check className="w-3 h-3" />}
+              </button>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
 }
 
 export function ValuationsListClient({ initialValuations }: { initialValuations: ValuationItem[] }) {
@@ -75,17 +167,11 @@ export function ValuationsListClient({ initialValuations }: { initialValuations:
                       </span>
                     </div>
 
-                    <select
-                      value={item.status}
+                    <ValuationStatusBadgeDropdown
+                      currentStatus={item.status}
                       disabled={loadingId === item.id}
-                      onChange={(e) => handleStatusChange(item.id, e.target.value as ValuationStatus)}
-                      className="text-[11px] font-mono font-bold rounded-full px-3 py-1 bg-white border border-[#d8cebe] outline-none cursor-pointer"
-                    >
-                      <option value="PENDING">PENDING</option>
-                      <option value="ESTIMATED">ESTIMATED</option>
-                      <option value="CONTACTED">CONTACTED</option>
-                      <option value="COMPLETED">COMPLETED</option>
-                    </select>
+                      onChange={(newStatus) => handleStatusChange(item.id, newStatus)}
+                    />
                   </div>
 
                   {/* Location & Specs */}

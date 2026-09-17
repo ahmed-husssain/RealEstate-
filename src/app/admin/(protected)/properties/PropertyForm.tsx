@@ -522,7 +522,7 @@ export function PropertyForm({ initialData, areas, isEdit = false }: PropertyFor
                 setAreaId(e.target.value);
                 clearFieldError('areaId');
               }}
-              className={`w-full bg-white text-[#1F1B16] border rounded-full px-3.5 py-2 text-xs outline-none transition-colors ${
+              className={`w-full max-w-full bg-white text-[#1F1B16] border rounded-full px-3.5 py-2 text-xs outline-none transition-colors ${
                 fieldErrors.areaId
                   ? 'border-red-500 bg-red-50/20'
                   : 'border-[#d8cebe] focus:border-[#5c3822]'
@@ -530,7 +530,7 @@ export function PropertyForm({ initialData, areas, isEdit = false }: PropertyFor
             >
               {areas.map((area) => (
                 <option key={area.id} value={area.id}>
-                  {area.name} ({area.city})
+                  {area.name}
                 </option>
               ))}
             </select>

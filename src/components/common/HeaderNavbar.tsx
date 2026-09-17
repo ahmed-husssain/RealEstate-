@@ -66,6 +66,10 @@ export function HeaderNavbar({ siteSettings = DEFAULT_SITE_SETTINGS }: HeaderNav
     }, 150);
   };
 
+  if (pathname.startsWith('/admin')) {
+    return null;
+  }
+
   return (
     <header className="fixed top-0 inset-x-0 z-40 px-3 sm:px-6 lg:px-8 pt-3 sm:pt-4 transition-all duration-300 pointer-events-none">
       <div className="max-w-7xl mx-auto flex items-center justify-between">

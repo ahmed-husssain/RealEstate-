@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 import { cn, createWhatsAppUrl } from '@/lib/utils';
 
 interface WhatsAppFloatingButtonProps {
@@ -13,7 +14,12 @@ export function WhatsAppFloatingButton({
   phoneNumber = '923327906034',
   defaultMessage = 'Assalam o Alaikum Amber Property Corner, I would like to inquire about your prime properties and construction services.',
 }: WhatsAppFloatingButtonProps) {
+  const pathname = usePathname();
   const [isHovered, setIsHovered] = useState(false);
+
+  if (pathname?.startsWith('/admin')) {
+    return null;
+  }
 
   const whatsappUrl = createWhatsAppUrl(phoneNumber, defaultMessage);
 

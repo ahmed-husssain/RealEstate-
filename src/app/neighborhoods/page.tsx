@@ -2,7 +2,6 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { getAreas } from '@/lib/db/areas';
-import { mapDbAreaToNeighborhood } from '@/lib/db/mappers';
 import { GlassCard } from '@/ui/GlassCard';
 import { Badge } from '@/ui/Badge';
 import { Button } from '@/ui/Button';
@@ -11,8 +10,7 @@ import { ArrowUpRight } from 'lucide-react';
 export const revalidate = 60;
 
 export default async function NeighborhoodsPage() {
-  const dbAreas = await getAreas();
-  const neighborhoods = dbAreas.map(mapDbAreaToNeighborhood);
+  const areas = await getAreas();
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10 space-y-8">
@@ -26,36 +24,36 @@ export default async function NeighborhoodsPage() {
           Prime Areas & Neighborhoods in Karachi
         </h1>
         <p className="text-xs sm:text-sm text-[#7e7365] max-w-xl leading-relaxed">
-          Explore neighborhood profiles, average rates per square yard, and active luxury listings in North Nazimabad, Gulshan, FB Area, Scheme 33, Buffer Zone, and central Karachi.
+          Explore prime Karachi enclaves and discover available verified properties in North Nazimabad, Gulshan, FB Area, Scheme 33, and central Karachi.
         </p>
       </div>
 
       {/* Grid of Neighborhoods */}
-      {neighborhoods.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
-          {neighborhoods.map((neighborhood) => (
+      {areas.length > 0 ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {areas.map((area) => (
             <GlassCard
-              key={neighborhood.id}
+              key={area.id}
               variant="interactive"
               rounded="2rem"
-              className="overflow-hidden flex flex-col group bg-[#fbf6f0]"
+              className="overflow-hidden flex flex-col group bg-[#fbf6f0] shadow-sm hover:shadow-md transition-all duration-300"
             >
               <Link
-                href={`/properties?neighborhood=${encodeURIComponent(neighborhood.slug)}&status=for-sale`}
+                href={`/properties?neighborhood=${encodeURIComponent(area.slug || area.name)}&status=for-sale`}
                 className="relative aspect-[16/9] w-full overflow-hidden bg-[#e5decb] block cursor-pointer"
               >
                 <Image
-                  src={neighborhood.heroImage}
-                  alt={neighborhood.name}
+                  src={area.heroImage || 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80'}
+                  alt={area.name}
                   fill
-                  sizes="(max-width: 768px) 100vw, 50vw"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#1F1B16]/80 via-transparent to-transparent" />
                 
                 <div className="absolute top-4 left-4 flex gap-2">
-                  <Badge variant="stone" size="sm" className="bg-[#fbf6f0]/90 backdrop-blur-md">
-                    {neighborhood.city}
+                  <Badge variant="stone" size="sm" className="bg-[#fbf6f0]/90 backdrop-blur-md text-[#1F1B16]">
+                    {area.city || 'Karachi'}
                   </Badge>
                 </div>
 
@@ -66,50 +64,22 @@ export default async function NeighborhoodsPage() {
 
                 <div className="absolute bottom-4 inset-x-4">
                   <h2 className="font-display font-medium text-2xl text-[#F8F4ED] group-hover:text-white transition-colors">
-                    {neighborhood.name}
+                    {area.name}
                   </h2>
-                  <p className="text-xs text-[#D7CBBB] font-sans line-clamp-1">
-                    {neighborhood.tagline}
-                  </p>
                 </div>
               </Link>
 
-              <div className="p-6 flex-1 flex flex-col justify-between space-y-4">
-                <p className="text-xs sm:text-sm text-[#7e7365] line-clamp-2 leading-relaxed">
-                  {neighborhood.description}
-                </p>
-
-                <div className="grid grid-cols-3 gap-2 py-3 border-y border-[#d8cebe]/60 text-center">
-                  <div>
-                    <span className="text-[10px] font-mono uppercase text-[#7e7365] block">Avg Rate</span>
-                    <span className="font-display font-medium text-sm sm:text-base text-[#1F1B16]">{neighborhood.stats.avgPriceSqFt}</span>
-                  </div>
-                  <div>
-                    <span className="text-[10px] font-mono uppercase text-[#7e7365] block">Annual Growth</span>
-                    <span className="font-display font-medium text-sm sm:text-base text-[#2e3a2f]">{neighborhood.stats.annualGrowth}</span>
-                  </div>
-                  <div>
-                    <span className="text-[10px] font-mono uppercase text-[#7e7365] block">Security</span>
-                    <span className="font-display font-medium text-sm sm:text-base text-[#1F1B16]">{neighborhood.stats.safetyRating}</span>
-                  </div>
-                </div>
-
-                <div className="pt-1 flex items-center justify-between">
-                  <div className="flex flex-wrap gap-1.5">
-                    {neighborhood.lifestyleTags.slice(0, 2).map((tag, i) => (
-                      <span key={i} className="px-2.5 py-1 rounded-full bg-[#f5efe6] text-[11px] font-mono text-[#1F1B16] border border-[#d8cebe]">
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-
-                  <Link href={`/properties?neighborhood=${encodeURIComponent(neighborhood.slug)}&status=for-sale`}>
-                    <Button variant="primary" size="sm" className="text-xs cursor-pointer shadow-sm">
-                      <span>View Properties</span>
-                      <ArrowUpRight className="w-3.5 h-3.5 ml-1" />
-                    </Button>
-                  </Link>
-                </div>
+              {/* Only View Properties Button in Card Body */}
+              <div className="p-4 sm:p-5 bg-[#fbf6f0]">
+                <Link
+                  href={`/properties?neighborhood=${encodeURIComponent(area.slug || area.name)}&status=for-sale`}
+                  className="block w-full"
+                >
+                  <Button variant="primary" size="md" className="w-full text-xs cursor-pointer shadow-sm justify-center">
+                    <span>View Properties</span>
+                    <ArrowUpRight className="w-3.5 h-3.5 ml-1" />
+                  </Button>
+                </Link>
               </div>
             </GlassCard>
           ))}

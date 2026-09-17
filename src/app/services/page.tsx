@@ -83,16 +83,16 @@ export default function ServicesPage() {
           details: 'Official government permission and safety NOCs to safely demolish old buildings and construct new houses.',
         },
         {
-          name: 'Non-Encumbrance Certificate (NEC)',
-          details: 'Official government certificate proving the property is free from court cases, bank mortgages, and legal disputes.',
+          name: 'Clean Property Verification / NEC Certificate (بے باق سرٹیفکیٹ)',
+          details: 'Official government certificate proving the property is 100% clean and free from court disputes, bank loans, and legal stay orders.',
         },
         {
-          name: 'Electricity, Gas & Water Clearances (NOC)',
-          details: 'Bill verification, meter transfer, and new connection clearances from K-Electric, Sui Gas (SSGC), and Water Board (KW&SC).',
+          name: 'Electricity, Gas & Water Clearances (بجلی، گیس اور پانی کی این او سی)',
+          details: 'Verifying all paid bills, meter name transfers, and official clearance NOCs from K-Electric, Sui Gas (SSGC), and Water Board (KW&SC).',
         },
         {
-          name: 'Sale Agreement & Power of Attorney Drafting',
-          details: 'Professional legal drafting of Biyana Agreements, Sale Deeds, General Power of Attorney (GPA), and registered Lease Deeds.',
+          name: 'Bayana & Legal Agreements Drafting (بیعانہ اور معاہدہ بیع)',
+          details: 'Professional legal drafting of Bayana (Advance Token) agreements, Final Sale Deeds, General Power of Attorney (GPA / مختار نامہ), and registered Lease Deeds.',
         },
       ],
     },
